@@ -29,7 +29,7 @@ const Dropdown = ({ submenus }) => {
             <Divider />      
            <ListItem disablePadding>
            <ListItemButton key={index} component={Link} to={"/" + submenu.url} selected={useLocation.pathname === submenu.url} disablePadding>
-             <ListItemText primaryTypographyProps={{fontSize: '14px', color:'#212121'}} primary={submenu.menu} />
+             <ListItemText primaryTypographyProps={{fontSize: '14px'}} primary={submenu.menu} />
            </ListItemButton>
          </ListItem>
          </List>

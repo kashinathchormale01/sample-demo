@@ -15,8 +15,11 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
+import PersonIcon from '@mui/icons-material/Person';
+import GroupIcon from '@mui/icons-material/Group';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import SummarizeIcon from '@mui/icons-material/Summarize';
+import SettingsIcon from '@mui/icons-material/Settings';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -26,7 +29,7 @@ import MenuItems from './MenuItems';
 import Header from '../header/Header';
 import Routing from '../common/Routing';
 
-const drawerWidth = 240;
+const drawerWidth = 260;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -106,7 +109,7 @@ export default function MiniDrawer() {
   };
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
         <Toolbar>
@@ -117,7 +120,7 @@ export default function MiniDrawer() {
             edge="start"
             sx={{
               marginRight: 5,
-              ...(open && { display: 'none' }),
+              ...(open && { display: "none" }),
             }}
           >
             <MenuIcon />
@@ -128,38 +131,19 @@ export default function MiniDrawer() {
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+            {theme.direction === "rtl" ? (
+              <ChevronRightIcon />
+            ) : (
+              <ChevronLeftIcon />
+            )}
           </IconButton>
         </DrawerHeader>
         <Divider />
-        {/* <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List> */}
 
-{menuItemsData.map((text, index) => (
+        {menuItemsData.map((text, index) => (
           <>
-            <Accordion key={text.id}
+            <Accordion
+              key={text.id}
               defaultExpanded={index === 0}
               sx={{
                 margin: "20px 15px 0 15px",
@@ -173,19 +157,23 @@ export default function MiniDrawer() {
                 aria-controls="panel1-content"
                 id="panel1-header"
               >
-                <Typography sx={{ color: "#1f93ce", fontWeight: "700" }}>
+                {index === 0 && <PersonIcon color='primary' />}
+                {index === 1 && <GroupIcon color='primary' />}
+                {index === 2 && <AccountBalanceIcon color='primary' />}
+                {index === 3 && <SummarizeIcon color='primary' />}
+                {index === 4 && <SettingsIcon color='primary' />}
+                <Typography sx={{ fontWeight: "700", paddingLeft:"10px" }}>
                   {text.section}
                 </Typography>
               </AccordionSummary>
               <AccordionDetails sx={{ padding: "8px 0px 16px 10px" }}>
-                {/* <Menuitems items={text} key={index} /> */}
                 <MenuItems items={text} key={index} />
               </AccordionDetails>
             </Accordion>
           </>
         ))}
 
-<List sx={{ display: open ? "none" : "block" }}>
+        <List sx={{ display: open ? "none" : "block" }}>
           {menuItemsData.map((text, index) => (
             <ListItem key={text.id} disableGutters={true}>
               <ListItemButton
@@ -203,18 +191,20 @@ export default function MiniDrawer() {
                     justifyContent: "center",
                   }}
                 >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  {/* {index === 0 ? <InboxIcon /> : <MailIcon />} */}
+                  {index === 0 && <PersonIcon />}
+                  {index === 1 && <GroupIcon />}
+                  {index === 2 && <AccountBalanceIcon />}
+                  {index === 3 && <SummarizeIcon />}
+                  {index === 4 && <SettingsIcon />}
                 </ListItemIcon>
               </ListItemButton>
             </ListItem>
           ))}
         </List>
-       
-        
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3, m:10 }}>
-       <Routing />
-      
+      <Box component="main" sx={{ flexGrow: 1, p: 3, m: 10 }}>
+        <Routing />
       </Box>
     </Box>
   );
