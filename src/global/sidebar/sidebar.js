@@ -24,6 +24,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { menuItemsData } from './SideNavMenu';
 import MenuItems from './MenuItems';
 import Header from '../header/Header';
+import Routing from '../common/Routing';
 
 const drawerWidth = 240;
 
@@ -211,9 +212,9 @@ export default function MiniDrawer() {
        
         
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-       
-       
+      <Box component="main" sx={{ flexGrow: 1, p: 3, m:10 }}>
+       <Routing />
+      
       </Box>
     </Box>
   );

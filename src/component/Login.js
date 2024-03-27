@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Checkbox, FormControlLabel, Grid, TextField, Typography,Button,Link, Container, CssBaseline } from '@mui/material';
 
-const Login = () => {
+const LoginPage = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -75,4 +75,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default LoginPage
