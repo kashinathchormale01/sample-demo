@@ -162,7 +162,7 @@ export default function MiniDrawer() {
                 {index === 2 && <AccountBalanceIcon color='primary' />}
                 {index === 3 && <SummarizeIcon color='primary' />}
                 {index === 4 && <SettingsIcon color='primary' />}
-                <Typography sx={{ fontWeight: "700", paddingLeft:"10px" }}>
+                <Typography sx={{ color:'#0000008a', fontWeight: "700", paddingLeft:"10px" }}>
                   {text.section}
                 </Typography>
               </AccordionSummary>
