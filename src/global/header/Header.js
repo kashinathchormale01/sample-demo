@@ -49,7 +49,7 @@ const Header = () => {
             variant="h6"
             sx={{ color: "#ffe200", marginRight: "10px" }}
           >
-            Kashinath Chormale
+            John Due
           </Typography>
           <Tooltip title="Open settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
