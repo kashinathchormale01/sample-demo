@@ -28,6 +28,7 @@ import { menuItemsData } from './SideNavMenu';
 import MenuItems from './MenuItems';
 import Header from '../header/Header';
 import Routing from '../common/Routing';
+import Appbreadcrumbs from '../header/Appbreadcrumbs';
 
 const drawerWidth = 260;
 
@@ -203,7 +204,8 @@ export default function MiniDrawer() {
           ))}
         </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3, m: 10 }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 2, mt: 8 }}>
+      <Appbreadcrumbs />
         <Routing />
       </Box>
     </Box>
