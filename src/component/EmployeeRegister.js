@@ -1,8 +1,14 @@
-import React from 'react'
+import React from 'react';
+import EmployeeRegisterPage from './EmployeeRegisterPage/EmployeeRegisterPage'
+import FormPageLayout from './EmployeeRegisterPage/FormLayout/FormLayout';
 
 const EmployeeRegister = () => {
   return (
-    <div>EmployeeRegister</div>
+    <>
+    <FormPageLayout>
+      <EmployeeRegisterPage />
+    </FormPageLayout>
+    </>
   )
 }
 
