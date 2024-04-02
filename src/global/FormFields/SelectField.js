@@ -21,12 +21,13 @@ function SelectField(props) {
       return <FormHelperText>{error}</FormHelperText>;
     }
   }
+  console.log(data);
   return (
-    <FormControl {...rest} error={isError}>
+    <FormControl {...rest} error={isError} fullWidth>
       <InputLabel>{label}</InputLabel>
       <Select {...field} value={selectedValue ? selectedValue : ''}>
         {data.map((item, index) => (
-          <MenuItem key={index} value={item.value}>
+          <MenuItem key={index} value={item.label}>
             {item.label}
           </MenuItem>
         ))}

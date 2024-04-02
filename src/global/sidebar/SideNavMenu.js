@@ -51,6 +51,10 @@ export const settings =  [{
               menu: 'Employee Register',
               url: 'employee-register',
             },
+            {
+              menu: 'Employee Exit',
+              url: 'employee-exit',
+            },
           ],
         },
         { id: 3,

@@ -28,27 +28,9 @@ const genderlist = [
     }
   ];
 
-  const educationLevellist = [
-    {
-        value: undefined,
-        label: 'None'
-    },
-    {
-      value: '1',
-      label: 'BA'
-    },
-    {
-        value: '2',
-        label: 'BCOM'
-    },
-    {
-        value: '3',
-        label: 'HSC'
-    }
-  ];
-
+  
 export default function EmpProfileForm(props) {
-    // const [countryName, setCountryName] = React.useState("India");
+     const [countryName, setCountryName] = React.useState("India");
     const {
         formField: {
             firstName,
@@ -102,21 +84,19 @@ export default function EmpProfileForm(props) {
             <Grid item xs={12} sm={6}>
                 <InputField name={fatherSpouseName.name} label={fatherSpouseName.label} fullWidth />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            {/* <Grid item xs={12} sm={6}>
                 <SelectField
                     name={nationality.name}
                     label={nationality.label}                    
                     data={nationalitylist}
                     fullWidth
                 />
+            </Grid> */}
+            <Grid item xs={12} sm={6}>
+                <InputField name={nationality.name} label={nationality.label} value={countryName} fullWidth disabled />
             </Grid>
             <Grid item xs={12} sm={6}>
-                <SelectField
-                    name={educationLevel.name}
-                    label={educationLevel.label}                    
-                    data={educationLevellist}
-                    fullWidth
-                />
+                <InputField name={educationLevel.name} label={educationLevel.label} fullWidth />
             </Grid>
             <Grid item xs={12} md={6}>         
                 <DatePickerField

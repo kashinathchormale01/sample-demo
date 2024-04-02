@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid, Typography } from '@mui/material';
-import { InputField, SelectField } from '../../../global/FormFields';
+import { InputField, SelectField,TextareaField } from '../../../global/FormFields';
 
 const siteLocaionlist = [
     {
@@ -93,7 +93,7 @@ export default function EmpWorkForm(props) {
                 <InputField name={serviceBookNumber.name} label={serviceBookNumber.label} fullWidth />
             </Grid>
             <Grid item xs={12} sm={6}>
-                <InputField name={serviceRemark.name} label={serviceRemark.label} fullWidth />
+                <TextareaField name={serviceRemark.name} label={serviceRemark.label} fullWidth />
             </Grid>
           </Grid>
         </>

@@ -9,12 +9,15 @@ import { Formik, Form } from 'formik';
 import EmpProfileForm from './Forms/EmpProfileForm';
 import EmpBankForm from './Forms/EmpBankForm';
 import EmpWorkForm from './Forms/EmpWorkForm';
+import EmpCommBioForm from './Forms/EmpCommBioForm';
+import EmpFormSuccess from './EmpFormSuccess';
+import ReviewForm from './FormReview';
 
-import validationSchema from './FormModel/validationSchema';
-import formInitialValues from './FormModel/formInitialValues';
-import EmpRegisterModel from './FormModel/EmpRegisterModel';
+import validationSchema from './../../global/common/FormModel/validationSchema';
+import formInitialValues from './../../global/common/FormModel/formInitialValues';
+import EmpRegisterModel from './../../global/common/FormModel/formModel';
 
-const steps = ['Profile', 'Bank Details','Work Details','Communication and Bio Details'];
+const steps = ['Profile', 'Bank Details','Work Details','Communication and Bio Details','Review Details'];
 
 const { formId, formField } = EmpRegisterModel;
 
@@ -26,8 +29,12 @@ function _renderStepContent(step) {
         return <EmpBankForm formField={formField} />;
       case 2:
         return <EmpWorkForm formField={formField} />;
+      case 3:
+        return <EmpCommBioForm formField={formField} />;
+      case 4:
+        return <ReviewForm />;
       default:
-        return <div>Not Found</div>;
+        return <div>Not Found</div>;        
     }
   }
 
@@ -42,6 +49,7 @@ function _renderStepContent(step) {
 
     async function _submitForm(values, actions) {
         await _sleep(1000);
+        console.log(JSON.stringify(values, null, 2))
         alert(JSON.stringify(values, null, 2));
         actions.setSubmitting(false);    
         setActiveStep(activeStep + 1);
@@ -79,7 +87,7 @@ function _renderStepContent(step) {
           </Box>
           <>
           {activeStep === steps.length ? (
-          <div>Successfully registred</div>
+          <EmpFormSuccess />
           ) : (
 
             <Formik

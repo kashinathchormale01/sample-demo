@@ -14,3 +14,10 @@
   background-position: center;
   border-radius: 10px;
 }
+
+.SummaryMain{
+  background-color: #eeeeee;
+  border-radius: 10px;
+  padding: 10px;
+  color: #838383;
+}
