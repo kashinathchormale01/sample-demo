@@ -14,8 +14,7 @@ function ProfileDetails(props) {
     educationLevel,
     dateOfJoning, } = formValues;
   return (
-    <Grid item xs={12} sm={12}>
-     
+    <Grid item xs={12} sm={12}>    
 
       <Grid item xs={12} sm={12} className='SummaryMain'>
       <Typography variant="h6" gutterBottom sx={{textAlign:'center',color:'#1f93ce'}}>

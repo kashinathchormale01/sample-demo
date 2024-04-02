@@ -55,6 +55,10 @@ export const settings =  [{
               menu: 'Employee Exit',
               url: 'employee-exit',
             },
+            {
+              menu: 'Employee List',
+              url: 'employee-list',
+            },
           ],
         },
         { id: 3,

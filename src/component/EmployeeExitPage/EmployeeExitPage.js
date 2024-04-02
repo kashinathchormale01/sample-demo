@@ -1,6 +1,7 @@
 import React from 'react';
 import { Grid, Typography, TextField } from '@mui/material';
 import { InputField, SelectField, DatePickerField, TextareaField } from '../../global/FormFields';
+import EmployeeList from '../EmployeeList/EmployeeList';
 
 const genderlist = [
     {
@@ -49,32 +50,33 @@ const genderlist = [
 
 export default function EmpExitForm(props) {
     // const [countryName, setCountryName] = React.useState("India");
-    const {
-        formField: {
-            empSelect,
-            empDOJ,
-            empServiceBookNumber,
-            empDesignation,
-            dateOfExit,
-            exitRemark,
-        }
-      } = props;
+    // const {
+    //     formField: {
+    //         empSelect,
+    //         empDOJ,
+    //         empServiceBookNumber,
+    //         empDesignation,
+    //         dateOfExit,
+    //         exitRemark,
+    //     }
+    //   } = props;
       return (
-        <React.Fragment>
-            <Grid mt={0} mb={2} container spacing={3}>
-            <Grid item xs={12} sm={6}>
-                <InputField name={empServiceBookNumber} label={empServiceBookNumber} value={empServiceBookNumber} fullWidth />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-                <InputField name={empDesignation} label={empDesignation} value={empDesignation} fullWidth />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-                <InputField name={dateOfExit} label={dateOfExit} fullWidth />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-                <TextareaField name={exitRemark} label={exitRemark} value={exitRemark} fullWidth />
-            </Grid>
-            </Grid>
-          </React.Fragment>
+        // <React.Fragment>
+        //     <Grid mt={0} mb={2} container spacing={3}>
+        //     <Grid item xs={12} sm={6}>
+        //         <InputField name={empServiceBookNumber} label={empServiceBookNumber} value={empServiceBookNumber} fullWidth />
+        //     </Grid>
+        //     <Grid item xs={12} sm={6}>
+        //         <InputField name={empDesignation} label={empDesignation} value={empDesignation} fullWidth />
+        //     </Grid>
+        //     <Grid item xs={12} sm={6}>
+        //         <InputField name={dateOfExit} label={dateOfExit} fullWidth />
+        //     </Grid>
+        //     <Grid item xs={12} sm={6}>
+        //         <TextareaField name={exitRemark} label={exitRemark} value={exitRemark} fullWidth />
+        //     </Grid>
+        //     </Grid>
+        //   </React.Fragment>
+        <>Employee Exit Page coming soon</>
       );
 }
