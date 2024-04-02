@@ -8,6 +8,7 @@ import { Formik, Form } from 'formik';
 
 import EmpProfileForm from './Forms/EmpProfileForm';
 import EmpBankForm from './Forms/EmpBankForm';
+import EmpWorkForm from './Forms/EmpWorkForm';
 
 import validationSchema from './FormModel/validationSchema';
 import formInitialValues from './FormModel/formInitialValues';
@@ -23,6 +24,8 @@ function _renderStepContent(step) {
         return <EmpProfileForm formField={formField} />;
       case 1:
         return <EmpBankForm formField={formField} />;
+      case 2:
+        return <EmpWorkForm formField={formField} />;
       default:
         return <div>Not Found</div>;
     }
@@ -102,7 +105,7 @@ function _renderStepContent(step) {
                       color="primary"
                       
                     >
-                      {isLastStep ? 'Place order' : 'Next'}
+                      {isLastStep ? 'Submit' : 'Next'}
                     </Button>
                     {isSubmitting && (
                       <CircularProgress

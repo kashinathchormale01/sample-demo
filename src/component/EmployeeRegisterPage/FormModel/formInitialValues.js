@@ -20,6 +20,12 @@ const {
     pfNumber, 
     esicIP,  
     lwf,
+    // work details form
+    siteLocaion,
+    categoryWork,
+    designation,
+    serviceBookNumber,
+    serviceRemark
   }
 } = empRegisterFormModel;
 
@@ -43,4 +49,10 @@ export default {
   [pfNumber.name]: '',
   [esicIP.name]: '',
   [lwf.name]: '',
+  // work details form
+  [siteLocaion.name]: '',
+  [categoryWork.name]: '',
+  [designation.name]: '',
+  [serviceBookNumber.name]: '',
+  [serviceRemark.name]: '',
 };

@@ -92,7 +92,34 @@ export default {
         name: 'lwf',
         label: 'Labour Welfair Fund Name*',
         requiredErrorMsg: 'Labour Welfair Fund Name is required'
-      },      
+      }, 
+      //  Work detail form
+    siteLocaion: {
+        name: 'siteLocaion',
+        label: 'Site Locaion*',
+        requiredErrorMsg: 'Site Locaion is required'
+      },
+      categoryWork: {
+        name: 'categoryWork',
+        label: 'Work Category*',
+        requiredErrorMsg: 'Work Category is required'
+      }, 
+      designation: {
+        name: 'designation',
+        label: 'Designation*',
+        requiredErrorMsg: 'Designation is required'
+      },
+      serviceBookNumber: {
+        name: 'serviceBookNumber',
+        label: 'Service Book Number*',
+        requiredErrorMsg: 'Service Book Number is required',
+        invalidErrorMsg: 'PAN Number is not valid (e.g. 00112234)'
+      },
+      serviceRemark: {
+        name: 'serviceRemark',
+        label: 'Service Remark*',
+        requiredErrorMsg: 'Service Remark is required'
+      }
     }
   };
   

@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import {moment} from 'moment';
+// import {moment} from 'moment';
 import empRegisterFormModel from './EmpRegisterModel';
 const {
   formField: {
@@ -23,6 +23,12 @@ const {
     pfNumber, 
     esicIP,  
     lwf,
+    // Work detail form
+    siteLocaion,
+    categoryWork,
+    designation,
+    serviceBookNumber,
+    serviceRemark
   }
 } = empRegisterFormModel;
 
@@ -66,5 +72,12 @@ export default [
     [pfNumber.name]: Yup.string().required(`${pfNumber.requiredErrorMsg}`),
     [esicIP.name]: Yup.string().required(`${esicIP.requiredErrorMsg}`),
     [lwf.name]: Yup.string().required(`${lwf.requiredErrorMsg}`),
+  }),
+  Yup.object().shape({   
+    [siteLocaion.name]: Yup.string().required(`${siteLocaion.requiredErrorMsg}`),
+    [categoryWork.name]: Yup.string().required(`${categoryWork.requiredErrorMsg}`),
+    [designation.name]: Yup.string().required(`${designation.requiredErrorMsg}`),
+    [serviceBookNumber.name]: Yup.string().required(`${serviceBookNumber.requiredErrorMsg}`),
+    [serviceRemark.name]: Yup.string().required(`${serviceRemark.requiredErrorMsg}`),
   }),
 ];

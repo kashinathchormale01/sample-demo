@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useField } from 'formik';
 import Grid from '@mui/material/Grid';
-import moment from 'moment';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';

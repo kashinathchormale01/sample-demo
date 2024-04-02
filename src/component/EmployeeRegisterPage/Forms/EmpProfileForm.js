@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Grid, Typography, TextField } from '@mui/material';
 import { InputField, SelectField, DatePickerField } from '../../../global/FormFields';
 
@@ -38,18 +38,17 @@ const genderlist = [
       label: 'BA'
     },
     {
-        value: '1',
+        value: '2',
         label: 'BCOM'
     },
     {
-        value: '2',
+        value: '3',
         label: 'HSC'
     }
   ];
 
 export default function EmpProfileForm(props) {
-    const [countryName, setCountryName] = React.useState("India");
-    console.log(countryName);
+    // const [countryName, setCountryName] = React.useState("India");
     const {
         formField: {
             firstName,
@@ -108,9 +107,7 @@ export default function EmpProfileForm(props) {
                     name={nationality.name}
                     label={nationality.label}                    
                     data={nationalitylist}
-                    selectedValue={countryName}
                     fullWidth
-                    disabled
                 />
             </Grid>
             <Grid item xs={12} sm={6}>

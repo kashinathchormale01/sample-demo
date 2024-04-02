@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
-import Login from '../component/Login';
+import React from 'react';
+// import React, { useState } from 'react';
+// import Login from '../component/Login';
 import MiniDrawer from './sidebar/sidebar';
 
 const Layout = () => {
-    const [role, setRole] = useState(false);
+    // const [role, setRole] = useState(false);
 
   return (
     <>
-    {/* <Login /> */}
-    {role ? <Login /> : <MiniDrawer />}
+    <MiniDrawer />
+    {/* {role ? <Login /> : <MiniDrawer />} */}
     </>
   )
 }
