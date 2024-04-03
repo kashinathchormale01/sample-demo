@@ -1,7 +1,9 @@
-import React from 'react';
-import { Grid, Typography, TextField } from '@mui/material';
+// import React from 'react';
+import { Grid, Typography, TextField,MenuItem,FormControl,Select,InputLabel } from '@mui/material';
 import { InputField, SelectField, DatePickerField, TextareaField } from '../../global/FormFields';
 import EmployeeList from '../EmployeeList/EmployeeList';
+import axios from "axios";
+import React, { useState, useEffect} from "react";
 
 const genderlist = [
     {
@@ -49,34 +51,79 @@ const genderlist = [
   ];
 
 export default function EmpExitForm(props) {
-    // const [countryName, setCountryName] = React.useState("India");
-    // const {
-    //     formField: {
-    //         empSelect,
-    //         empDOJ,
-    //         empServiceBookNumber,
-    //         empDesignation,
-    //         dateOfExit,
-    //         exitRemark,
-    //     }
-    //   } = props;
+  const [users, setUsers] = React.useState();
+  const [error, setError] = useState(null);
+  const [age, setAge] = React.useState('');
+  const [selectedUser, setSelectedUser] = useState();
+  const [loading, setLoading] = useState(false);
+  const handleChange = (event) => {
+    const selectedUserId = event.target.value;
+    const selectedUser = users.find(user=> user.id === parseInt(selectedUserId));
+    setAge(event.target.value);
+    console.log('current user',selectedUser);
+    setSelectedUser(selectedUser);
+  };
+    
+const baseUrl = 'https://jsonplaceholder.typicode.com/users';
+
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(baseUrl);
+        setUsers(response.data);
+        // console.log(response.data);
+        // console.log(response.status);
+        // console.log(response.statusText);
+        // console.log(response.headers);
+        // console.log(response.config);
+        setLoading(true);
+      } catch (error) {
+        // Handle error
+        setError(error);
+        console.error(error);
+      }
+    };
+    
+    // fetchData();
+
+    useEffect(() => {
+      fetchData();
+    }, []);
+
+
+    if (error) return `Error: ${error.message}`;
+  if (!users) return "No users!"
+
       return (
-        // <React.Fragment>
-        //     <Grid mt={0} mb={2} container spacing={3}>
-        //     <Grid item xs={12} sm={6}>
-        //         <InputField name={empServiceBookNumber} label={empServiceBookNumber} value={empServiceBookNumber} fullWidth />
-        //     </Grid>
-        //     <Grid item xs={12} sm={6}>
-        //         <InputField name={empDesignation} label={empDesignation} value={empDesignation} fullWidth />
-        //     </Grid>
-        //     <Grid item xs={12} sm={6}>
-        //         <InputField name={dateOfExit} label={dateOfExit} fullWidth />
-        //     </Grid>
-        //     <Grid item xs={12} sm={6}>
-        //         <TextareaField name={exitRemark} label={exitRemark} value={exitRemark} fullWidth />
-        //     </Grid>
-        //     </Grid>
-        //   </React.Fragment>
-        <>Employee Exit Page coming soon</>
+        
+        <>
+      
+        <FormControl fullWidth>
+        <InputLabel id="demo-simple-select-label">Users</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={age}
+          label="Users"
+          onChange={handleChange}
+        >{users.map((user, index) => (
+          <MenuItem key={user.id} value={user.id}>{user.name}</MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
+      <Grid container spacing={3}>
+      {selectedUser && (
+        <Grid item xs={12} md={6}>
+          <Typography>Name: {selectedUser.name}</Typography>
+          <Typography>Id: {selectedUser.id}</Typography>
+          <Typography>username: {selectedUser.username}</Typography>
+          <Typography>phone: {selectedUser.phone}</Typography>
+          <Typography>mail: {selectedUser.email}</Typography>
+          <Typography>website: {selectedUser.website}</Typography>
+        </Grid>
+      )}
+      </Grid>
+    
+        </>
       );
 }
