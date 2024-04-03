@@ -37,7 +37,7 @@ export default function EmpProfileForm(props) {
             lastName,
             gender,
             dateOfBirth,
-            addharnumber,
+            aadharnumber,
             fatherSpouseName,
             nationality,
             educationLevel,
@@ -79,7 +79,7 @@ export default function EmpProfileForm(props) {
                 />
             </Grid>
             <Grid item xs={12} md={6}>
-                <InputField name={addharnumber.name} label={addharnumber.label} fullWidth />
+                <InputField name={aadharnumber.name} label={aadharnumber.label} fullWidth />
             </Grid>
             <Grid item xs={12} sm={6}>
                 <InputField name={fatherSpouseName.name} label={fatherSpouseName.label} fullWidth />

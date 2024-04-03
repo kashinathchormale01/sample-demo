@@ -6,7 +6,7 @@ import { InputField } from '../../../global/FormFields';
 export default function EmpBankForm(props) {
     const {
         formField: {
-          banktName,
+          bankName,
           bankAccountNumber, 
           ifscCode,
           panNumber,
@@ -21,7 +21,7 @@ export default function EmpBankForm(props) {
           <Typography variant="h6" gutterBottom>Bank Form</Typography>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
-                <InputField name={banktName.name} label={banktName.label} fullWidth />
+                <InputField name={bankName.name} label={bankName.label} fullWidth />
             </Grid>
             <Grid item xs={12} sm={6}>
                 <InputField name={bankAccountNumber.name} label={bankAccountNumber.label} fullWidth />

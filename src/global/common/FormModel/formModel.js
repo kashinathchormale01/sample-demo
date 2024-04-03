@@ -22,7 +22,7 @@ export default {
         requiredErrorMsg: 'Date Of Birth is required',
         invalidErrorMsg: 'Date Of Birth is not valid'
       },
-      addharnumber: {
+      aadharnumber: {
         name: 'addharnumber',
         label: 'addharnumber*',
         requiredErrorMsg: 'Addharnumber is required',
@@ -50,7 +50,7 @@ export default {
         invalidErrorMsg: 'Date Of Joining is not valid'
       },
     //   Bank form Model
-      banktName: {
+      bankName: {
         name: 'banktName',
         label: 'Bank name*',
         requiredErrorMsg: 'Bank name is required'

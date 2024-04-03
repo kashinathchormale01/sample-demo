@@ -8,13 +8,13 @@ const {
     lastName,
     gender,
     dateOfBirth,
-    addharnumber,
+    aadharnumber,
     fatherSpouseName,
     educationLevel,
     dateOfJoning,
 
     // bank form
-    banktName,
+    bankName,
     bankAccountNumber, 
     ifscCode,
     panNumber,
@@ -54,9 +54,9 @@ export default [
     [dateOfBirth.name]: Yup.string()
       .nullable()
       .required(`${dateOfBirth.requiredErrorMsg}`),
-    [addharnumber.name]: Yup.string()
-      .required(`${addharnumber.requiredErrorMsg}`)
-      .matches(aadharRegEx, addharnumber.invalidErrorMsg),
+    [aadharnumber.name]: Yup.string()
+      .required(`${aadharnumber.requiredErrorMsg}`)
+      .matches(aadharRegEx, aadharnumber.invalidErrorMsg),
     [fatherSpouseName.name]: Yup.string().required(`${fatherSpouseName.requiredErrorMsg}`),
     [educationLevel.name]: Yup.string()
       .nullable()
@@ -67,7 +67,7 @@ export default [
   }),
   Yup.object().shape({
     //Bank form validation
-    [banktName.name]: Yup.string().required(`${banktName.requiredErrorMsg}`),
+    [bankName.name]: Yup.string().required(`${bankName.requiredErrorMsg}`),
     [bankAccountNumber.name]: Yup.string().required(`${bankAccountNumber.requiredErrorMsg}`),
     [ifscCode.name]: Yup.string().required(`${ifscCode.requiredErrorMsg}`),
     [panNumber.name]: Yup.string().required(`${panNumber.requiredErrorMsg}`).matches(pannumberRegEx,panNumber.invalidErrorMsg),
