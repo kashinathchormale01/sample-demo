@@ -8,7 +8,7 @@ const {
     lastName,
     gender,
     dateOfBirth,
-    aadharnumber,
+    aadharNumber,
     fatherSpouseName,
     educationLevel,
     dateOfJoning,
@@ -34,9 +34,6 @@ const {
     cityName,
     markOfIdentification,
     mobileNumber,
-     // Add site location
-     siteLocName,
-     siteLocArea
   }
 } = CommonFormModel;
 
@@ -57,9 +54,9 @@ export default [
     [dateOfBirth.name]: Yup.string()
       .nullable()
       .required(`${dateOfBirth.requiredErrorMsg}`),
-    [aadharnumber.name]: Yup.string()
-      .required(`${aadharnumber.requiredErrorMsg}`)
-      .matches(aadharRegEx, aadharnumber.invalidErrorMsg),
+    [aadharNumber.name]: Yup.string()
+      .required(`${aadharNumber.requiredErrorMsg}`)
+      .matches(aadharRegEx, aadharNumber.invalidErrorMsg),
     [fatherSpouseName.name]: Yup.string().required(`${fatherSpouseName.requiredErrorMsg}`),
     [educationLevel.name]: Yup.string()
       .nullable()
@@ -94,10 +91,5 @@ export default [
     [cityName.name]: Yup.string().required(`${cityName.requiredErrorMsg}`),
     [markOfIdentification.name]: Yup.string().required(`${markOfIdentification.requiredErrorMsg}`),
     [mobileNumber.name]: Yup.string().required(`${mobileNumber.requiredErrorMsg}`).matches(mobileNumberRegEx,mobileNumber.invalidErrorMsg),
-  }),
-  Yup.object().shape({   
-    //Comm and Bio form validation
-    [siteLocName.name]: Yup.string().required(`${siteLocName.requiredErrorMsg}`),
-    [siteLocArea.name]: Yup.string().required(`${siteLocArea.requiredErrorMsg}`),    
   }),
 ];

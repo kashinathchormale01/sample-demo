@@ -6,7 +6,7 @@ const {
     lastName,
     gender,
     dateOfBirth,
-    aadharnumber,
+    aadharNumber,
     fatherSpouseName,
     nationality,
     educationLevel,
@@ -32,10 +32,7 @@ const {
     cityName,
     markOfIdentification,
     mobileNumber,
-    alternateMobileNumber,
-    // Add site location
-    siteLocName,
-    siteLocArea
+    alternateMobileNumber
     }
 } = CommonFormModel;
 
@@ -45,7 +42,7 @@ export default {
       [lastName.name]: '',
       [gender.name]: '',
       [dateOfBirth.name]: '',
-      [aadharnumber.name]: '',
+      [aadharNumber.name]: '',
       [fatherSpouseName.name]: '',
       [nationality.name]: '',
       [educationLevel.name]: '',
@@ -72,7 +69,4 @@ export default {
       [markOfIdentification.name]: '',
       [mobileNumber.name]: '',
       [alternateMobileNumber.name]: '',
-      // add sitelocation
-      [siteLocName.name]: '',
-      [siteLocArea.name]: '',
     };
