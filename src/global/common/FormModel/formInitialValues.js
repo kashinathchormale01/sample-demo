@@ -32,7 +32,10 @@ const {
     cityName,
     markOfIdentification,
     mobileNumber,
-    alternateMobileNumber
+    alternateMobileNumber,
+    // Add site location
+    siteLocName,
+    siteLocArea
     }
 } = CommonFormModel;
 
@@ -69,4 +72,7 @@ export default {
       [markOfIdentification.name]: '',
       [mobileNumber.name]: '',
       [alternateMobileNumber.name]: '',
+      // add sitelocation
+      [siteLocName.name]: '',
+      [siteLocArea.name]: '',
     };

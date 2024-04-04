@@ -150,7 +150,18 @@ export default {
     alternateMobileNumber: {
       name: 'alternateMobileNumber',
       label: 'Alternate Mobile Number',
-    }
+    },
+    // add site location
+    siteLocName: {
+      name: 'siteLocName',
+      label: 'Site Location Name*',
+      requiredErrorMsg: 'Site Location Name is required',
+    },
+    siteLocArea: {
+      name: 'siteLocArea',
+      label: 'Site Location Area*',
+      requiredErrorMsg: 'Site Location Area is required',
+    },
     }
   };
   

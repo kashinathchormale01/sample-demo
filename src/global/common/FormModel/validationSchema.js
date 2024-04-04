@@ -34,6 +34,9 @@ const {
     cityName,
     markOfIdentification,
     mobileNumber,
+     // Add site location
+     siteLocName,
+     siteLocArea
   }
 } = CommonFormModel;
 
@@ -91,5 +94,10 @@ export default [
     [cityName.name]: Yup.string().required(`${cityName.requiredErrorMsg}`),
     [markOfIdentification.name]: Yup.string().required(`${markOfIdentification.requiredErrorMsg}`),
     [mobileNumber.name]: Yup.string().required(`${mobileNumber.requiredErrorMsg}`).matches(mobileNumberRegEx,mobileNumber.invalidErrorMsg),
+  }),
+  Yup.object().shape({   
+    //Comm and Bio form validation
+    [siteLocName.name]: Yup.string().required(`${siteLocName.requiredErrorMsg}`),
+    [siteLocArea.name]: Yup.string().required(`${siteLocArea.requiredErrorMsg}`),    
   }),
 ];
