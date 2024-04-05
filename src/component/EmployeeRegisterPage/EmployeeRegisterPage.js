@@ -1,4 +1,5 @@
 import React,{useState} from 'react';
+import axios from "axios";
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -49,10 +50,25 @@ function _renderStepContent(step) {
 
     async function _submitForm(values, actions) {
         await _sleep(1000);
-        console.log(JSON.stringify(values, null, 2))
-        alert(JSON.stringify(values, null, 2));
+        console.log(JSON.stringify(values))
+        // saveEmpData();
+        // fetch("http://192.168.1.121:8089/api/SaveEmp", {
+        //   method: "POST",
+        //   headers: {
+        //     Accept: "application/json",
+        //     "Content-Type": "application/json",
+        //   },
+        //   body: JSON.stringify(values),
+        // });
+        // const userPayload = JSON.stringify(values);
+        axios.post('http://192.168.1.121:8089/api/SaveEmp', values)
+        .then(res=>{
+          console.log(res);
+          console.log(res.data);
+        }) 
+        // alert(JSON.stringify(values, null, 2));
         actions.setSubmitting(false);    
-        setActiveStep(activeStep + 1);
+        setActiveStep(activeStep + 1); 
     }
 
     function _handleSubmit(values, actions) {
