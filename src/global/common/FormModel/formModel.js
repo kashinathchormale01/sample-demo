@@ -23,10 +23,10 @@ export default {
         invalidErrorMsg: 'Date Of Birth is not valid'
       },
       aadharNumber: {
-        name: 'addharnumber',
-        label: 'addharnumber*',
-        requiredErrorMsg: 'Addharnumber is required',
-        invalidErrorMsg: 'Addharnumber is not valid (e.g. 000011112222)'
+        name: 'aadharNumber',
+        label: 'aadharNumber*',
+        requiredErrorMsg: 'Aadhar Number is required',
+        invalidErrorMsg: 'Addhar Number is not valid (e.g. 000011112222)'
       },
       fatherSpouseName: {
         name: 'fatherSpouseName',
@@ -51,7 +51,7 @@ export default {
       },
     //   Bank form Model
       bankName: {
-        name: 'banktName',
+        name: 'bankName',
         label: 'Bank name*',
         requiredErrorMsg: 'Bank name is required'
       },

@@ -50,8 +50,8 @@ export default {
         invalidErrorMsg: 'Date Of Joining is not valid'
       },
     //   Bank form Model
-      banktName: {
-        name: 'banktName',
+      bankName: {
+        name: 'bankName',
         label: 'Bank name*',
         requiredErrorMsg: 'Bank name is required'
       },

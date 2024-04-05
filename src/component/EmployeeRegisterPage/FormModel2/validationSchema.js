@@ -15,7 +15,7 @@ const {
     dateOfJoning,
 
     // bank form
-    banktName,
+    bankName,
     bankAccountNumber, 
     ifscCode,
     panNumber,
@@ -71,7 +71,7 @@ export default [
       .required(`${dateOfJoning.requiredErrorMsg}`),
   }),
   Yup.object().shape({
-    [banktName.name]: Yup.string().required(`${banktName.requiredErrorMsg}`),
+    [bankName.name]: Yup.string().required(`${bankName.requiredErrorMsg}`),
     [bankAccountNumber.name]: Yup.string().required(`${bankAccountNumber.requiredErrorMsg}`),
     [ifscCode.name]: Yup.string().required(`${ifscCode.requiredErrorMsg}`),
     [panNumber.name]: Yup.string().required(`${panNumber.requiredErrorMsg}`).matches(pannumberRegEx,panNumber.invalidErrorMsg),

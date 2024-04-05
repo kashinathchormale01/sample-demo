@@ -4,7 +4,7 @@ import { Typography, Grid } from '@mui/material';
 function BankDetails(props) {
   const { formValues } = props;
 //   const classes = useStyles();
-  const { banktName,
+  const { bankName,
     bankAccountNumber, 
     ifscCode,
     panNumber,
@@ -20,7 +20,7 @@ function BankDetails(props) {
       </Typography>
         <Typography gutterBottom>
           <label>Bank Name: </label>
-          {`${banktName}`}
+          {`${bankName}`}
         </Typography>
         <Typography gutterBottom>
           <label>BANK Account Number: </label>

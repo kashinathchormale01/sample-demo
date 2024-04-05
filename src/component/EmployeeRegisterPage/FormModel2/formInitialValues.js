@@ -12,7 +12,7 @@ const {
     educationLevel,
     dateOfJoning,
 // bank form
-    banktName,
+    bankName,
     bankAccountNumber, 
     ifscCode,
     panNumber,
@@ -48,7 +48,7 @@ export default {
   [educationLevel.name]: '',
   [dateOfJoning.name]: '',
 // bank form
-  [banktName.name]: '',
+  [bankName.name]: '',
   [bankAccountNumber.name]: '',
   [ifscCode.name]: '',
   [panNumber.name]: '',

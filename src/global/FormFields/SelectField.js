@@ -21,7 +21,7 @@ function SelectField(props) {
       return <FormHelperText>{error}</FormHelperText>;
     }
   }
-  console.log(data);
+  // console.log(data);
   return (
     <FormControl {...rest} error={isError} fullWidth>
       <InputLabel>{label}</InputLabel>
