@@ -1,0 +1,198 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "siteName": "Puna-Naka",
+      "siteArea": "Near Adava Nal",
+      "creationDate": "2024-03-31T18:30:00.000Z"
+    },
+    {
+      "siteName": "dfd",
+      "siteArea": "df",
+      "creationDate": "",
+      "id": 2
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  },
+  "sites": [
+    {
+      "Id": 1,
+      "siteName": "Puna-Naka",
+      "siteArea": "Near Adava Nal",
+      "creationDate": "2024-03-31T18:30:00.000Z"
+    },
+    {
+      "Id": 3,
+      "siteName": "Puna-Naka",
+      "siteArea": "Near Adava Nal",
+      "creationDate": "2024-03-30T18:30:00.000Z"
+    },
+    {
+      "Id": 4,
+      "siteName": "kc",
+      "siteArea": "solapur",
+      "creationDate": "0000-00-00"
+    },
+    {
+      "Id": 8,
+      "siteName": "aaa",
+      "siteArea": "aaa",
+      "creationDate": "0000-00-00"
+    },
+    {
+      "Id": 16,
+      "siteName": "surjit",
+      "siteArea": "solapur",
+      "creationDate": "0000-00-00"
+    },
+    {
+      "Id": 18,
+      "siteName": "sfds",
+      "siteArea": "dsfds",
+      "creationDate": "0000-00-00"
+    },
+    {
+      "Id": 19,
+      "siteName": "Dhoni",
+      "siteArea": "Solapur",
+      "creationDate": "0000-00-00"
+    },
+    {
+      "Id": 20,
+      "siteName": "ZP Office",
+      "siteArea": "solapur",
+      "creationDate": "0000-00-00"
+    }
+  ],
+  "Emps": [
+    {
+      "Id": 1,
+      "Emp_ID": null,
+      "firstName": "Ashish",
+      "lastName": "Wangi",
+      "gender": "Male",
+      "dateOfBirth": "2005-12-30T18:30:00.000Z",
+      "aadharNumber": 534534555555,
+      "fatherSpouseName": "Ashok",
+      "nationality": "",
+      "panNumber": "aswef3332f",
+      "esicIP": "4234234",
+      "pfNumber": "4234234",
+      "bankName": "Vyapari Bank",
+      "bankAccountNumber": "2121215445",
+      "ifscCode": "VP000025",
+      "siteLocaion": "Sat Rasta",
+      "categoryWork": "High Skilled",
+      "designation": "Packer Operator",
+      "serviceBookNumber": "5435345",
+      "serviceRemark": "Very Good",
+      "dateOfJoning": "2024-04-02T18:30:00.000Z",
+      "lwf": "xvxcvxcv",
+      "presentAddress": "Murarji Peth, Sidhajin Hos, Solapur, Maharashtra 413001",
+      "permanentAddress": "Murarji Peth, Sidhajin Hos, Solapur, Maharashtra 413001",
+      "cityName": "Solapur",
+      "markOfIdentification": "Mule on right hand",
+      "mobileNumber": 9766474875,
+      "alternateMobileNumber": 976647422
+    },
+    {
+      "Id": 2,
+      "Emp_ID": null,
+      "firstName": "Angad",
+      "lastName": "Mane",
+      "gender": "Male",
+      "dateOfBirth": "2005-12-30T18:30:00.000Z",
+      "aadharNumber": 534534555555,
+      "fatherSpouseName": "Deepak",
+      "nationality": "",
+      "panNumber": "angad0015m",
+      "esicIP": "3243",
+      "pfNumber": "443424",
+      "bankName": "HDFC bank",
+      "bankAccountNumber": "021214545",
+      "ifscCode": "HDFC01245",
+      "siteLocaion": "Navi Peth",
+      "categoryWork": "Semi Skilled",
+      "designation": "Loader",
+      "serviceBookNumber": "3545345",
+      "serviceRemark": "xdsfdsf",
+      "dateOfJoning": "2024-04-01T18:30:00.000Z",
+      "lwf": "zczx",
+      "presentAddress": "Hiraj Naka",
+      "permanentAddress": "Hiraj Naka",
+      "cityName": "Solapur",
+      "markOfIdentification": "Giddu",
+      "mobileNumber": 3424343444,
+      "alternateMobileNumber": 5345
+    },
+    {
+      "Id": 3,
+      "Emp_ID": null,
+      "firstName": "Kashinath",
+      "lastName": "Chormale",
+      "gender": "Male",
+      "dateOfBirth": "2005-12-30T18:30:00.000Z",
+      "aadharNumber": 324234234344,
+      "fatherSpouseName": "nagnath",
+      "nationality": "",
+      "panNumber": "kashi0102c",
+      "esicIP": "567567",
+      "pfNumber": "6546456",
+      "bankName": "ICIC Bank",
+      "bankAccountNumber": "0123456789",
+      "ifscCode": "ICICI01245",
+      "siteLocaion": "Sat Rasta",
+      "categoryWork": "High Skilled",
+      "designation": "Packer Operator",
+      "serviceBookNumber": "54545",
+      "serviceRemark": "Good",
+      "dateOfJoning": "2024-04-02T18:30:00.000Z",
+      "lwf": "Maharashtra",
+      "presentAddress": "Murarji Peth, Sidhajin Hos, Solapur, Maharashtra 413001",
+      "permanentAddress": "Murarji Peth, Sidhajin Hos, Solapur, Maharashtra 413001",
+      "cityName": "Solapur",
+      "markOfIdentification": "mule on right chick",
+      "mobileNumber": 976647487,
+      "alternateMobileNumber": 4654645
+    },
+    {
+      "Id": 4,
+      "Emp_ID": null,
+      "firstName": "Yogesh",
+      "lastName": "Mane",
+      "gender": "Male",
+      "dateOfBirth": "2005-12-30T18:30:00.000Z",
+      "aadharNumber": 534534555555,
+      "fatherSpouseName": "APPA",
+      "nationality": "",
+      "panNumber": "sdssd4444f",
+      "esicIP": "34234",
+      "pfNumber": "42342343",
+      "bankName": "Bank of baroda",
+      "bankAccountNumber": "54564",
+      "ifscCode": "234324",
+      "siteLocaion": "Sat Rasta",
+      "categoryWork": "Unskilled",
+      "designation": "Packer Operator",
+      "serviceBookNumber": "65546",
+      "serviceRemark": "54654",
+      "dateOfJoning": "2016-04-04T18:30:00.000Z",
+      "lwf": "dgdfg",
+      "presentAddress": "Murarji Peth, Sidhajin Hos, Solapur, Maharashtra 413001",
+      "permanentAddress": "Murarji Peth, Sidhajin Hos, Solapur, Maharashtra 413001",
+      "cityName": "Solapur",
+      "markOfIdentification": "sdfdsf",
+      "mobileNumber": 976647487,
+      "alternateMobileNumber": 5435345
+    }
+  ]
+}
