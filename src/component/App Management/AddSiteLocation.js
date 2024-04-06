@@ -16,7 +16,7 @@ import moment from 'moment';
 const SiteRegisterSchema = yup.object().shape({
   siteName: yup.string().required("required"),
   siteArea: yup.string().required("required"),
-  creationDate: yup.number().required("required").nullable(),  
+  creationDate: yup.date().nullable()
 });
 
 const initialValues = {

@@ -117,6 +117,10 @@ export const settings =  [{
               menu: 'Work Location Management',
               url: 'work-location-management',
             },
+            {
+              menu: 'User Management',
+              url: 'user-management',
+            },
           ],
         },
       // ...
