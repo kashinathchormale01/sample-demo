@@ -9,6 +9,9 @@ import AddSiteLocation from '../../component/App Management/AddSiteLocation';
 import SiteLocationManagement from '../../component/App Management/SiteLocationManagement';
 import AddUser from '../../component/UserManagement/AddUser';
 import UserManagement from '../../component/UserManagement/UserManagement';
+import EditSiteLocation from '../../component/App Management/EditSiteLocation';
+import BankApplication from '../../component/FinanceManagement/BankApplication';
+
 
 
 const Routing = () => {
@@ -22,11 +25,12 @@ const Routing = () => {
         <Route path='/work-location-management' exact element={<SiteLocationManagement />} />
         <Route path='/add-user' exact element={<AddUser />} />
         <Route path='/user-management' exact element={<UserManagement />} />
+        <Route path='/edit-site-location/:id' exact element={<EditSiteLocation />} />
+        <Route path='/bank-application' exact element={<BankApplication />} />
 
         {/* Redirect for login page */}
         <Route path="/login" exact element={<LoginPage />} />
         <Route path="/dashboard" exact element={<Dashboard />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>
   );

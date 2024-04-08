@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate} from 'react-router-dom';
-import {Link, Button} from '@mui/material';
+import {Link, Button, Stack,CircularProgress } from '@mui/material';
 import axios from "axios";
 import ConfirmationDialog from "../../global/common/ConfirmationDialog";
 import SiteDatagrid from "./SiteDatagrid";
+import EditLocationAltIcon from '@mui/icons-material/EditLocationAlt';
+import WrongLocationIcon from '@mui/icons-material/WrongLocation';
+import AddLocationIcon from '@mui/icons-material/AddLocation';
+import { toast } from "react-toastify";
 // import { DataGrid } from "@material-ui/data-grid";
 
 const columns = [
@@ -17,7 +21,10 @@ const columns = [
 const SiteLocationManagement = (props) => {
   const { title, children, open, setOpen, onConfirm } = props;
     const [sitelocations, setSitelocations] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null)
     const [siteId, setSiteId] = useState();
+    const navigate = useNavigate();
     const { data, rowSelected, setRowSelected, animate } = props;
   const selectionModel = rowSelected;
 
@@ -26,33 +33,45 @@ const SiteLocationManagement = (props) => {
     console.log(e);
   };
     
-    const navigate = useNavigate();
+    
 
-   
-
-      const deleteSiteLocation = async (id) => {
+    const deleteSiteLocation = async (id) => {
         setSiteId(id);
         const selectedSite = {"Id": id}        
         console.log(JSON.stringify(selectedSite))
         await axios.delete(
           `http://192.168.1.121:8089/api/DeleteProj_Site/`+id
-        );
+        ).then(res=>{
+          toast.success(res.data.msg);
+        }); 
         loadSiteLocation();
       };
 
-      const loadSiteLocation = async () => {
-        const result = await axios.get(
-          `http://192.168.1.121:8089/api/GetProj_Site`
-        );
-        // const result = await axios.get('http://192.168.1.121:8089/api/GetProj_Site')
-        // .then(res=>{
-        //   console.log(res);
-        //   console.log(res.data);
-        //   setSitelocations(res.data);
-        // })  
-         console.log(result)
-        setSitelocations(result.data.data);
-        console.log(sitelocations)
+      const loadSiteLocation = async () => {      
+        try {
+          let result = await axios.get('http://192.168.1.121:8089/api/GetProj_Site');
+          setSitelocations(result.data.data);          
+          setLoading(false);
+          // Work with the response...
+      } catch (err) {
+          if (err.response) {
+            setLoading(false);
+            console.log('Status', err.response.status);
+            setError(err.message);
+              // The client was given an error response (5xx, 4xx)
+              console.log('Error response', err.message);
+          } else if (err.request) {
+            setLoading(false);
+            setError(err.message);
+              // The client never received a response, and the request was never left
+              console.log('Error Request', err.message);
+          } else {
+              // Anything else
+              setLoading(false);
+              setError(err.message);
+              console.log('Error anything', err.message);
+          }
+      }
         
       };
 
@@ -67,13 +86,30 @@ const SiteLocationManagement = (props) => {
         loadSiteLocation();
       }, []);
 
+  if (loading) return <>Loading...<CircularProgress /></>;
+  if (error) return <p>Error: {error}</p>;
+  if (!sitelocations.length) return <> <Button
+  variant="contained"
+  color="primary"
+  startIcon={<AddLocationIcon />}
+  onClick={() => navigate('/add-site-location')} 
+>    
+Add New Site Location
+</Button> <p>No Site Locations!</p></>
+
   return (
     <>
-    <Link color="inherit" onClick={() => navigate('/add-site-location')} style={{ cursor: 'pointer', textTransform:'capitalize' }}>
-    Add New Site location
-    </Link>
+     <Button
+                variant="contained"
+                color="primary"
+                startIcon={<AddLocationIcon />}
+                onClick={() => navigate('/add-site-location')} 
+              >    
+    Add New Site Location
+    </Button>
+    
     <div className="home-page">
-      <table className="table">
+      <table className="table" style={{width:'100%'}}>
         <thead className="thead-dark">
           <tr>
             <th scope="col">#</th>
@@ -91,28 +127,32 @@ const SiteLocationManagement = (props) => {
               <td>{site.siteName}</td>
               <td>{site.siteArea}</td>
               <td>{site.creationDate}</td>
-              <Button
+              {/* <Button
                 variant="contained"
                 color="inherit"
                 onClick={() => navigate(`/site/${site.Id}`)}
               >
-                View
-              </Button>
-              {/* <Link class="btn btn-outline-primary mr-2" to={`./edituser/${user.id}`}>Edit</Link> */}
+                <PreviewIcon />
+              </Button> 
+               <Link class="btn btn-outline-primary mr-2" to={`./edituser/${user.id}`}>Edit</Link> */}
+               <Stack direction="row" spacing={2}>
               <Button
                 variant="contained"
-                color="primary"
-                onClick={() => navigate(`/editsite/${site.Id}`)}
+                color="warning"
+                startIcon={<EditLocationAltIcon />}
+                onClick={() => navigate(`/edit-site-location/${site.Id}`)}
               >
                 Edit
               </Button>
               <Button
                 variant="contained"
-                color="secondary"
+                color="error"
+                startIcon={<WrongLocationIcon />}
                 onClick={() => deleteSiteLocation(site.Id)}
               >
                 Delete
               </Button>
+              </Stack>
             </tr>
           ))}
         </tbody>
