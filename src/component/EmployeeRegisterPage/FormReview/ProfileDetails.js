@@ -8,7 +8,7 @@ function ProfileDetails(props) {
     lastName,
     gender,
     dateOfBirth,
-    aadharnumber,
+    aadharNumber,
     fatherSpouseName,
     nationality,
     educationLevel,
@@ -33,8 +33,8 @@ function ProfileDetails(props) {
           {`${gender}`}
         </Typography>
         <Typography gutterBottom>
-          <label>Addharnumber: </label>
-          {`${aadharnumber}`}
+          <label>Aadhar Number: </label>
+          {`${aadharNumber}`}
         </Typography>
         <Typography gutterBottom>
           <label>Father/Spouse Name: </label>
