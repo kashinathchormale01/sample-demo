@@ -46,6 +46,7 @@ export default function EmpProfileForm(props) {
             dateOfJoning,
         }
       } = props;
+      
       return (
         <React.Fragment>
           <Typography mt={4} variant="h6" gutterBottom>
@@ -120,9 +121,7 @@ export default function EmpProfileForm(props) {
               <InputField
                 name={nationality.name}
                 label={nationality.label}
-                value={countryName}
-                fullWidth
-                disabled
+                fullWidth                
               />
             </Grid>
             <Grid item xs={12} sm={6}>
