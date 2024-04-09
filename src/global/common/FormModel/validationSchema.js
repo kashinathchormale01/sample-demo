@@ -58,9 +58,9 @@ export default [
       .required(`${aadharNumber.requiredErrorMsg}`)
       .matches(aadharRegEx, aadharNumber.invalidErrorMsg),
     [fatherSpouseName.name]: Yup.string().required(`${fatherSpouseName.requiredErrorMsg}`),
-    [educationLevel.name]: Yup.string()
-      .nullable()
-      .required(`${educationLevel.requiredErrorMsg}`),
+    // [educationLevel.name]: Yup.string()
+    //   .nullable()
+    //   .required(`${educationLevel.requiredErrorMsg}`),
     [dateOfJoning.name]: Yup.string()
       .nullable()
       .required(`${dateOfJoning.requiredErrorMsg}`),

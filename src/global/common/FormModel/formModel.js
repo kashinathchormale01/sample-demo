@@ -40,7 +40,7 @@ export default {
       },
       educationLevel: {
         name: 'educationLevel',
-        label: 'Education Level*',
+        label: 'Education Level',
         requiredErrorMsg: 'Education Level is required'
       },
       dateOfJoning: {
