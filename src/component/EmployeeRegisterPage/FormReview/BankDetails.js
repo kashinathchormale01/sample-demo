@@ -8,7 +8,7 @@ function BankDetails(props) {
     bankAccountNumber, 
     ifscCode,
     panNumber,
-    uan,
+    UAN,
     pfNumber, 
     esicIP,  
     lwf } = formValues;
@@ -36,7 +36,7 @@ function BankDetails(props) {
         </Typography>
         <Typography gutterBottom>
           <label>UAN: </label>
-          {`${uan}`}
+          {`${UAN}`}
         </Typography>
         <Typography gutterBottom>
           <label>PF Number: </label>

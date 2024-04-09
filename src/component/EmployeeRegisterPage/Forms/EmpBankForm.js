@@ -10,7 +10,7 @@ export default function EmpBankForm(props) {
           bankAccountNumber, 
           ifscCode,
           panNumber,
-          uan,
+          UAN,
           pfNumber, 
           esicIP,  
           lwf,
@@ -33,7 +33,7 @@ export default function EmpBankForm(props) {
                 <InputField name={panNumber.name} label={panNumber.label} fullWidth />
             </Grid>
             <Grid item xs={12} sm={6}>
-                <InputField name={uan.name} label={uan.label} fullWidth />
+                <InputField name={UAN.name} label={UAN.label} fullWidth />
             </Grid>
             <Grid item xs={12} sm={6}>
                 <InputField name={pfNumber.name} label={pfNumber.label} fullWidth />

@@ -71,8 +71,8 @@ export default {
         requiredErrorMsg: 'PAN Number is required',
         invalidErrorMsg: 'PAN Number is not valid (e.g. abcde1234f)'
       },
-      uan: {
-        name: 'uan',
+      UAN: {
+        name: 'UAN',
         label: 'UAN Number*',
         requiredErrorMsg: 'UAN Number is required',
         invalidErrorMsg: 'UAN Number is not valid (e.g. 000011112222)'
