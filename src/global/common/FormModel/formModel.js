@@ -35,13 +35,13 @@ export default {
       },
       nationality: {
         name: 'nationality',
-        label: 'Nationality *',
-        requiredErrorMsg: 'Nationality is required'
+        label: 'Nationality',
+        // requiredErrorMsg: 'Nationality is required'
       },
       educationLevel: {
         name: 'educationLevel',
         label: 'Education Level',
-        requiredErrorMsg: 'Education Level is required'
+        // requiredErrorMsg: 'Education Level is required'
       },
       dateOfJoning: {
         name: 'dateOfJoning',
@@ -71,8 +71,8 @@ export default {
         requiredErrorMsg: 'PAN Number is required',
         invalidErrorMsg: 'PAN Number is not valid (e.g. abcde1234f)'
       },
-      uan: {
-        name: 'uan',
+      UAN: {
+        name: 'UAN',
         label: 'UAN Number*',
         requiredErrorMsg: 'UAN Number is required',
         invalidErrorMsg: 'UAN Number is not valid (e.g. 000011112222)'
