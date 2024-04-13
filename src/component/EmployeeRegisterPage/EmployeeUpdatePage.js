@@ -46,7 +46,7 @@ const EmployeeUpdatePage = () => {
     const [activeStep, setActiveStep] = useState(4);
     const currentValidationSchema = validationSchema[activeStep];
     const isLastStep = activeStep === steps.length - 1;
-    const [selectedEmpID, setSelectedEmpID] = useState(7);
+    const [selectedEmpID, setSelectedEmpID] = useState(8);
     const [selectedEmp, setSelectedEmp] = useState();
 
     function loadSelectedEmployee() {

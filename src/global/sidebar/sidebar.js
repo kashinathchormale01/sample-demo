@@ -98,6 +98,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function MiniDrawer() {
+  const userCode='1';
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -143,6 +144,7 @@ export default function MiniDrawer() {
 
         {menuItemsData.map((text, index) => (
           <>
+            
             <Accordion
               key={text.id}
               defaultExpanded={index === 0}
@@ -171,6 +173,7 @@ export default function MiniDrawer() {
                 <MenuItems items={text} key={index} />
               </AccordionDetails>
             </Accordion>
+
           </>
         ))}
 

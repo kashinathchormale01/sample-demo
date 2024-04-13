@@ -31,3 +31,11 @@
 .stepFormButtonGroup button{
   border-radius: 4px !important;
 }
+
+.wrapper-main{
+  margin: 0 auto;
+  width: 50%;
+}
+.wrapper-main .summaryData{
+  color: #838383;
+}

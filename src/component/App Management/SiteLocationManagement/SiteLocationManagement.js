@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate} from 'react-router-dom';
 import {Link, Button, Stack,CircularProgress } from '@mui/material';
 import axios from "axios";
-import ConfirmationDialog from "../../global/common/ConfirmationDialog";
+import ConfirmationDialog from "../../../global/common/ConfirmationDialog";
 import SiteDatagrid from "./SiteDatagrid";
 import EditLocationAltIcon from '@mui/icons-material/EditLocationAlt';
 import WrongLocationIcon from '@mui/icons-material/WrongLocation';
@@ -159,7 +159,7 @@ Add New Site Location
       </table>
     </div>
 
-    <SiteDatagrid />
+    {/* <SiteDatagrid /> */}
     <div>
   
     <ConfirmationDialog
