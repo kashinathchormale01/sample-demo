@@ -28,7 +28,7 @@ const EditSiteLocation = () => {
 
   function loadSelectedSiteLocation() {
     axios
-      .get(`http://192.168.1.121:8089/api/GetProj_Site/${id}`)
+      .get(`/GetProj_Site/${id}`)
       .then((res) => {
         console.log(res);
         console.log(JSON.stringify(res.data.data[0]));
@@ -51,7 +51,7 @@ const EditSiteLocation = () => {
     //     });
 
     axios
-      .put("http://192.168.1.121:8089/api/UpdateProj_Site", values)
+      .put("/UpdateProj_Site", values)
       .then((res) => {
        // console.log(res);
         console.log(res.data.msg);

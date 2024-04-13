@@ -40,7 +40,7 @@ const SiteLocationManagement = (props) => {
         const selectedSite = {"Id": id}        
         console.log(JSON.stringify(selectedSite))
         await axios.delete(
-          `http://192.168.1.121:8089/api/DeleteProj_Site/`+id
+          `/DeleteProj_Site/`+id
         ).then(res=>{
           toast.success(res.data.msg);
         }); 
@@ -49,7 +49,7 @@ const SiteLocationManagement = (props) => {
 
       const loadSiteLocation = async () => {      
         try {
-          let result = await axios.get('http://192.168.1.121:8089/api/GetProj_Site');
+          let result = await axios.get('/GetProj_Site');
           setSitelocations(result.data.data);          
           setLoading(false);
           // Work with the response...

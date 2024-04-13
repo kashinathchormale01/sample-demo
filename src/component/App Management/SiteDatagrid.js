@@ -15,7 +15,7 @@ const SiteDatagrid = () => {
 console.log(tableData);
 
     useEffect(() => {
-        fetch("http://192.168.1.121:8089/api/GetProj_Site")
+        fetch("/GetProj_Site")
           .then((data) => data.json())
           .then((data) => setTableData(data.data))
     

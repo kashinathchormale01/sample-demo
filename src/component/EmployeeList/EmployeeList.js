@@ -1,18 +1,18 @@
-
 import axios from "axios";
 import React, { useState, useEffect} from "react";
-import { Grid, Typography } from "@mui/material";
+import { Grid, Typography,FormControlLabel,Checkbox } from "@mui/material";
 
-const baseURL = "http://192.168.1.121:8089/api/GetEmp";
+// const baseURL = "http://192.168.1.121:8089/api/GetEmp";
 
 const EmployeeList = () => {
   const [emplist, setEmplist] = useState(null);
   const [error, setError] = useState(null);
 // const [post, setPost] = React.useState(null);
+const [selectedCheckbox, setSelectedCheckbox] = useState();
 
   useEffect(() => {
     axios
-      .get(baseURL)
+      .get('/GetEmp')
       .then((response) => {
         console.log(response.data);
         setEmplist(response.data.data);
@@ -22,6 +22,12 @@ const EmployeeList = () => {
       });
   }, []);
 
+  const handleCheckboxChange = (event) => {
+  
+    setSelectedCheckbox(event.target.value)
+   
+  }
+
 //   if (!emplist) return null;
   if (error) return `Error: ${error.message}`;
   if (!emplist) return "No post!"
@@ -29,47 +35,60 @@ const EmployeeList = () => {
   return (
     <>
       {emplist.map((emp, index) => (
-        <Grid key={emp.ID} p={2} sx={{backgroundColor:'#eeeeee'}}>
-          <Typography gutterBottom>
+        <Grid key={emp.Id} p={2} sx={{backgroundColor:'#eeeeee'}}>
+          {/* <Typography gutterBottom>
             <label>Name:</label>
-            {`${emp.Fname}`} {`${emp.Mname}`}
+            {`${emp.firstName}`} {`${emp.lastName}`}
           </Typography>
           <Typography gutterBottom>
             <label>Last Name:</label>
-            {`${emp.Mname}`}
+            {`${emp.lastName}`}
           </Typography>
           <Typography gutterBottom>
             <label>Gender: </label>
-            {`${emp.Gender}`}
+            {`${emp.gender}`}
           </Typography>
           <Typography gutterBottom>
             <label>Date Of Birth: </label>
-            {`${emp.Doj}`}
+            {`${emp.dateOfBirth}`}
           </Typography>
           <Typography gutterBottom>
             <label>Aadhar Number: </label>
-            {`${emp.Adharno}`}
+            {`${emp.aadharNumber}`}
           </Typography>
           <Typography gutterBottom>
             <label>Fathers/Spouse Name: </label>
-            {`${emp.Lname}`}
+            {`${emp.fatherSpouseName}`}
           </Typography>
           <Typography gutterBottom>
             <label>Nationality: </label>
-            {`${emp.Nationality}`}
+            {`${emp.nationality}`}
           </Typography>
           <Typography gutterBottom>
             <label>Education Level: </label>
-            {`${emp.Eductionlvll}`}
+            {`${emp.educationLevel}`}
+          </Typography>
+          <Typography gutterBottom>
+            <label>Bank Name: </label>
+            {`${emp.bankName}`}
+          </Typography>
+          <Typography gutterBottom>
+            <label>Bank Account Number: </label>
+            {`${emp.bankAccountNumber}`}
+          </Typography> */}
+          <Typography gutterBottom>
+          <FormControlLabel
+          
+          value={emp.Id}
+          checked={emp.Id == selectedCheckbox}
+          control={<Checkbox onChange={handleCheckboxChange} />}
+          label={emp.firstName}
+          labelPlacement="left"
+        />
           </Typography>
 
         </Grid>
-        // <ul>
-        //       <li key={post.id}>
-        //         <span>{post.title}</span>
-        //         <span>{post.body}</span>
-        //       </li>
-        // </ul>
+        
       ))}
     </>
   );

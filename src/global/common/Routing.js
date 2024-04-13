@@ -11,6 +11,8 @@ import AddUser from '../../component/UserManagement/AddUser';
 import UserManagement from '../../component/UserManagement/UserManagement';
 import EditSiteLocation from '../../component/App Management/EditSiteLocation';
 import BankApplication from '../../component/FinanceManagement/BankApplication';
+import EmployeeUpdatePage from '../../component/EmployeeRegisterPage/EmployeeUpdatePage';
+import MyProfile from '../../component/MyDetails/MyProfile';
 
 
 
@@ -18,14 +20,24 @@ const Routing = () => {
   return (
     <>
       <Routes>
+
+       {/* Employee Managament Routes */}
+        <Route path='/employee-list' exact element={<EmployeeList /> } /> 
         <Route path="/employee-register" exact element={<EmployeeRegister />} />
+        <Route path="/employee-update" exact element={<EmployeeUpdatePage />} />
         <Route path="/employee-exit" exact element={<EmpExitForm />} />
-        <Route path='/employee-list' exact element={<EmployeeList /> } />
-        <Route path='/add-site-location' exact element={<AddSiteLocation /> } />
-        <Route path='/work-location-management' exact element={<SiteLocationManagement />} />
+                
+        {/* User Managament Routes */}
         <Route path='/add-user' exact element={<AddUser />} />
         <Route path='/user-management' exact element={<UserManagement />} />
+        <Route path='/my-profile' exact element={<MyProfile />} />
+
+         {/* Site Location Managament Routes */}
+        <Route path='/work-location-management' exact element={<SiteLocationManagement />} />
+        <Route path='/add-site-location' exact element={<AddSiteLocation /> } />
         <Route path='/edit-site-location/:id' exact element={<EditSiteLocation />} />
+        
+         {/* Finance Managament Routes */}
         <Route path='/bank-application' exact element={<BankApplication />} />
 
         {/* Redirect for login page */}

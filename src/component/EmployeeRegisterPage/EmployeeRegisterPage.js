@@ -52,7 +52,7 @@ function _renderStepContent(step) {
     async function _submitForm(values, actions) {
         await _sleep(1000);
         // console.log(JSON.stringify(values))
-        axios.post('http://192.168.1.121:8089/api/SaveEmp', values)
+        axios.post('/SaveEmp', values)
         .then(res=>{
           console.log(res);
           console.log(res.data);

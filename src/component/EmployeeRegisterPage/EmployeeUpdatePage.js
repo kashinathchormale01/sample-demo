@@ -51,7 +51,7 @@ const EmployeeUpdatePage = () => {
 
     function loadSelectedEmployee() {
       axios
-        .get(`http://192.168.1.121:8089/api/GetEmp/${selectedEmpID}`)
+        .get(`/GetEmp/${selectedEmpID}`)
         .then((res) => {
           console.log(res);
           console.log(JSON.stringify(res.data.data[0]));
@@ -72,7 +72,7 @@ const EmployeeUpdatePage = () => {
         await _sleep(1000);
         console.log(JSON.stringify(values))        
 
-        axios.put('http://192.168.1.121:8089/api/UpdateEmp', values)
+        axios.put('/UpdateEmp', values)
         .then(res=>{
           console.log(res);
           console.log(res.data);

@@ -36,7 +36,7 @@ const AddSiteLocation = () => {
     //       body: JSON.stringify(values),
     //     });   
 
-    axios.post('http://192.168.1.121:8089/api/SaveProj_Site', values)
+    axios.post('/SaveProj_Site', values)
       .then(res=>{
         console.log(res);
         console.log(res.data);
