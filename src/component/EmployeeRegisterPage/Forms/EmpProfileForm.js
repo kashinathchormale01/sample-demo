@@ -2,22 +2,9 @@ import React from 'react';
 import { Grid, Typography, TextField } from '@mui/material';
 import { InputField, SelectField, DatePickerField } from '../../../global/FormFields';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import {genderData} from '../../../global/common/StubData/CommonStubData'
 import moment from 'moment';
 
-const genderlist = [
-    {
-      value: '1',
-      label: 'Male'
-    },
-    {
-      value: '2',
-      label: 'Female'
-    },
-    {
-      value: '3',
-      label: 'Other'
-    }
-  ];
 
   const nationalitylist = [
     {
@@ -33,6 +20,7 @@ const genderlist = [
   
 export default function EmpProfileForm(props) {
      const [countryName, setCountryName] = React.useState("India");
+     const [genderlist, setGenderlist] = React.useState(genderData);
     const {
         formField: {
             firstName,
