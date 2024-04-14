@@ -127,6 +127,7 @@ const EditSiteLocation = () => {
               <Button type="submit" variant="contained" color="primary">
                 Update Site Location
               </Button>
+              <Button sx={{marginLeft:'10px'}} variant="outlined" color="secondary" onClick={() => navigate(-1)}>Back</Button>
             </Box>
           </Form>
         )}

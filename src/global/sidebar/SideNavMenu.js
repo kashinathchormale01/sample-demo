@@ -143,6 +143,10 @@ export const menuItemsData = [
         url: "work-location-management",
       },
       {
+        menu: "User Promote",
+        url: "user-promote",
+      },
+      {
         menu: "User Management",
         url: "user-management",
       },

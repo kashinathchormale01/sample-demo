@@ -12,7 +12,7 @@ import EmpProfileForm from './Forms/EmpProfileForm';
 import EmpBankForm from './Forms/EmpBankForm';
 import EmpWorkForm from './Forms/EmpWorkForm';
 import EmpCommBioForm from './Forms/EmpCommBioForm';
-import EmpFormSuccess from './EmpFormSuccess';
+import EmpFormSuccessUpdate from './EmpFormSuccessUpdate';
 import ReviewForm from './FormReview';
 
 import validationSchema from './../../global/common/FormModel/validationSchema';
@@ -125,7 +125,7 @@ const EmployeeUpdatePage = () => {
         </Box>
         <>
           {activeStep === steps.length ? (
-            <EmpFormSuccess />
+            <EmpFormSuccessUpdate />
           ) : (
             <Formik
               initialValues={selectedEmp || formInitialValues}

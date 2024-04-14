@@ -1,52 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate} from 'react-router-dom';
-import {Link, Button, Stack,CircularProgress } from '@mui/material';
+import {Button, Stack,CircularProgress,Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Paper } from '@mui/material';
 import axios from "axios";
-import ConfirmationDialog from "../../../global/common/ConfirmationDialog";
-import SiteDatagrid from "./SiteDatagrid";
 import EditLocationAltIcon from '@mui/icons-material/EditLocationAlt';
 import WrongLocationIcon from '@mui/icons-material/WrongLocation';
 import AddLocationIcon from '@mui/icons-material/AddLocation';
 import { toast } from "react-toastify";
-// import { DataGrid } from "@material-ui/data-grid";
+import ConfirmBox from "../../../global/common/confirmDialog/ConfirmDialog";
 
-const columns = [
-  { field: "Id", headerName: "Site Name", flex: 1 },
-  { field: "siteName", headerName: "Site Name", flex: 1 },
-  { field: "siteArea", headerName: "Area Name", flex: 1 },
-  { field: "creationDate", headerName: "Creation Date", flex: 1 },
-  { field: "Action", headerName: "Action", flex: 1 },  
-];
 
 const SiteLocationManagement = (props) => {
-  const { title, children, open, setOpen, onConfirm } = props;
     const [sitelocations, setSitelocations] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null)
-    const [siteId, setSiteId] = useState();
+    // const [siteId, setSiteId] = useState();
+    const [open, setOpen] = useState(false);
+    const [deleteData, setDeleteData] = useState({});
     const navigate = useNavigate();
-    const { data, rowSelected, setRowSelected, animate } = props;
-  const selectionModel = rowSelected;
-
-  const handleRowSelection = (e) => {
-    setRowSelected(e);
-    console.log(e);
-  };
-    
-    
-
-    const deleteSiteLocation = async (id) => {
-        setSiteId(id);
-        const selectedSite = {"Id": id}        
-        console.log(JSON.stringify(selectedSite))
-        await axios.delete(
-          `/DeleteProj_Site/`+id
-        ).then(res=>{
-          toast.success(res.data.msg);
-        }); 
-        loadSiteLocation();
-      };
-
+  
       const loadSiteLocation = async () => {      
         try {
           let result = await axios.get('/GetProj_Site');
@@ -75,16 +46,26 @@ const SiteLocationManagement = (props) => {
         
       };
 
-      const handleConfirmation = (id) => {
-        // Perform action upon confirmation
-        console.log('Confirmed!');
-        alert('Confirmed')
-        deleteSiteLocation(id);
-      };
-
       useEffect(() => {
         loadSiteLocation();
       }, []);
+
+      const deleteSiteLocation = async () => {
+        await axios.delete(
+          `/DeleteProj_Site/${deleteData?.Id}`
+        ).then(res=>{
+          toast.error(res.data.msg);
+          loadSiteLocation();
+          setOpen(false);
+        }); 
+      };
+
+      function openDelete(data) {
+        setOpen(true);
+        setDeleteData(data);
+      }
+
+      console.log(deleteData);
 
   if (loading) return <>Loading...<CircularProgress /></>;
   if (error) return <p>Error: {error}</p>;
@@ -106,36 +87,39 @@ Add New Site Location
                 onClick={() => navigate('/add-site-location')} 
               >    
     Add New Site Location
-    </Button>
-    
-    <div className="home-page">
-      <table className="table" style={{width:'100%'}}>
-        <thead className="thead-dark">
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Site Name</th>
-            <th scope="col">Area Name</th>
-            <th scope="col">Creation Date</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
+    </Button>  
+    <TableContainer sx={{ maxWidth: '50%', marginTop:'20px' }} component={Paper}>
+      <Table aria-label="customized table">
+        <TableHead>
+          <TableRow
+            sx={{
+              "& th": {
+                fontSize: "1rem",
+                color: "rgba(96, 96, 96)",
+                backgroundColor: "#b1dbdf"
+              }
+            }}
+          >
+            <TableCell>Sr.No</TableCell>
+            <TableCell>Site Id</TableCell>
+            <TableCell>Site Name</TableCell>
+            <TableCell>Site Area</TableCell>
+            <TableCell>Creation Date</TableCell>
+            <TableCell>Action</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
           {sitelocations.map((site, index) => (
-           // console.log(site.Id)
-            <tr>
-              <th scope="row">{index + 1}</th>
-              <td>{site.siteName}</td>
-              <td>{site.siteArea}</td>
-              <td>{site.creationDate}</td>
-              {/* <Button
-                variant="contained"
-                color="inherit"
-                onClick={() => navigate(`/site/${site.Id}`)}
-              >
-                <PreviewIcon />
-              </Button> 
-               <Link class="btn btn-outline-primary mr-2" to={`./edituser/${user.id}`}>Edit</Link> */}
-               <Stack direction="row" spacing={2}>
+            <TableRow key={site.siteName}>
+              <TableCell>{index + 1}</TableCell>
+              <TableCell>
+                {site.Id}
+              </TableCell>
+              <TableCell>{site.siteName}</TableCell>
+              <TableCell>{site.siteArea}</TableCell>
+              <TableCell>{site.creationDate}</TableCell>
+              <TableCell>
+              <Stack direction="row" spacing={2}>
               <Button
                 variant="contained"
                 color="warning"
@@ -148,30 +132,25 @@ Add New Site Location
                 variant="contained"
                 color="error"
                 startIcon={<WrongLocationIcon />}
-                onClick={() => deleteSiteLocation(site.Id)}
+                onClick={() => openDelete(site)}
               >
                 Delete
               </Button>
               </Stack>
-            </tr>
+              </TableCell>
+            </TableRow>
           ))}
-        </tbody>
-      </table>
-    </div>
+        </TableBody>
+      </Table>
+    </TableContainer>
 
-    {/* <SiteDatagrid /> */}
-    <div>
-  
-    <ConfirmationDialog
-      title="Confirmation"
-      description="Are you sure you want to proceed?"
-      response={handleConfirmation}
-    >
-      {(showDialog) => (
-        <button onClick={showDialog}>Open Confirmation Dialog</button>
-      )}
-    </ConfirmationDialog>
-</div>
+{/* Confirmation dialog functionality */}
+    <ConfirmBox
+        open={open}
+        closeDialog={() => setOpen(false)}
+        title={deleteData?.siteName}
+        deleteFunction={deleteSiteLocation}
+      />  
     </>
   )
 }

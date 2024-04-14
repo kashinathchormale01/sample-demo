@@ -39,3 +39,11 @@
 .wrapper-main .summaryData{
   color: #838383;
 }
+.buttonMain{
+  display: block !important;
+  margin-top: 20px !important;
+}
+.DialogTitle{
+  color: red;
+  font-weight: bold;
+}
