@@ -1,4 +1,4 @@
-import React,{useEffect, useState,useParams} from 'react';
+import React,{useEffect, useState} from 'react';
 import axios from "axios";
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
@@ -43,7 +43,7 @@ function _renderStepContent(step) {
 
 const EmployeeUpdatePage = () => {
     // const { id } = useParams();
-    const [activeStep, setActiveStep] = useState(4);
+    const [activeStep, setActiveStep] = useState(0);
     const currentValidationSchema = validationSchema[activeStep];
     const isLastStep = activeStep === steps.length - 1;
     const [selectedEmpID, setSelectedEmpID] = useState(8);
@@ -157,23 +157,6 @@ const EmployeeUpdatePage = () => {
                       </Button>
                       {isSubmitting && <CircularProgress size={24} />}
                   </ButtonGroup>
-
-                  {/* <div>
-                    {activeStep !== 0 && (
-                      <Button onClick={_handleBack}>Back</Button>
-                    )}
-                    <div>
-                      <Button
-                        disabled={isSubmitting}
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                      >
-                        {isLastStep ? "Submit" : "Next"}
-                      </Button>
-                      {isSubmitting && <CircularProgress size={24} />}
-                    </div>
-                  </div> */}
                 </Form>
               )}
             </Formik>

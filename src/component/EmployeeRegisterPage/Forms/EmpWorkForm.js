@@ -1,57 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Grid, Typography } from '@mui/material';
 import { InputField, SelectField,TextareaField } from '../../../global/FormFields';
-
-const siteLocaionlist = [
-    {
-      value: '1',
-      label: 'Sat Rasta'
-    },
-    {
-      value: '2',
-      label: 'Pune Naka'
-    },
-    {
-      value: '3',
-      label: 'Navi Peth'
-    }
-  ];
-
-  const workCategorylist = [
-    {
-      value: '1',
-      label: 'Unskilled'
-    },
-    {
-      value: '2',
-      label: 'Skilled'
-    },
-    {
-      value: '3',
-      label: 'Semi Skilled'
-    },
-    {
-        value: '4',
-        label: 'High Skilled'
-    }
-  ];
-
-  const designationlist = [
-    {
-      value: '1',
-      label: 'Packer Operator'
-    },
-    {
-      value: '2',
-      label: 'Loader'
-    },
-    {
-      value: '3',
-      label: 'B.T.'
-    }
-  ];
+import {workCategoryData, designationData} from '../../../global/common/StubData/CommonStubData';
 
 export default function EmpWorkForm(props) {
+  const [workCategorylist, setWorkCategorylist] = React.useState(workCategoryData);
+  const [designationlist, setDesignationlist] = React.useState(designationData);
+  const [sitelocations, setSitelocations] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null)
     const {
         formField: {
             siteLocaion,
@@ -61,6 +19,44 @@ export default function EmpWorkForm(props) {
             serviceRemark
         }
       } = props;
+
+      const siteLocaionlist = sitelocations.map((value) => ({
+        value: value.id,
+        label: value.siteName,
+      }));
+
+      const loadSiteLocation = async () => {      
+        try {
+          let result = await axios.get('/GetProj_Site');
+          setSitelocations(result.data.data);          
+          setLoading(false);
+          // Work with the response...
+      } catch (err) {
+          if (err.response) {
+            setLoading(false);
+            console.log('Status', err.response.status);
+            setError(err.message);
+              // The client was given an error response (5xx, 4xx)
+              console.log('Error response', err.message);
+          } else if (err.request) {
+            setLoading(false);
+            setError(err.message);
+              // The client never received a response, and the request was never left
+              console.log('Error Request', err.message);
+          } else {
+              // Anything else
+              setLoading(false);
+              setError(err.message);
+              console.log('Error anything', err.message);
+          }
+      }
+        
+      };
+    
+      useEffect(() => {
+        loadSiteLocation();
+      }, []);
+
       return (
         <>
           <Typography variant="h6" gutterBottom>Work Form</Typography>
