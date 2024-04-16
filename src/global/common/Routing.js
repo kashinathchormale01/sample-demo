@@ -13,7 +13,7 @@ import EditSiteLocation from '../../component/App Management/SiteLocationManagem
 import BankApplication from '../../component/FinanceManagement/BankApplication';
 import EmployeeUpdatePage from '../../component/EmployeeRegisterPage/EmployeeUpdatePage';
 import MyProfile from '../../component/MyDetails/MyProfile';
-import Example from '../../component/EmployeeWageRegister/EmployeeWageRegister';
+import BasicTable from '../../component/EmployeeWageRegister/EmployeeWageRegister';
 import UserPromote from '../../component/App Management/UserPromote/UserPromote';
 
 
@@ -31,7 +31,7 @@ const Routing = () => {
         <Route path="/employee-exit" exact element={<EmpExitForm />} />
 
         {/* Employee Wage Register */}
-        <Route path="/employee-wage-register" exact element={<Example />} />
+        <Route path="/employee-wage-register" exact element={<BasicTable />} />
                 
         {/* User Managament Routes */}
         <Route path='/add-user' exact element={<AddUser />} />

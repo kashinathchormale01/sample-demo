@@ -203,7 +203,7 @@ const generatePDF = () => {
             {/* BUTTONS */}
             <Box sx={{ marginTop: "20px" }}>
               <Button type="submit" variant="contained" color="primary">
-                Add Site Location
+                Generate Bank Application
               </Button>
             </Box>
           </Form>

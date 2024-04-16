@@ -1,9 +1,12 @@
 import React from 'react';
 import { Box, Checkbox, FormControlLabel, Grid, TextField, Typography,Button,Link, Container, CssBaseline } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
-
+  const navigate = useNavigate();
     const handleSubmit = (event) => {
+     
+      navigate('/my-profile');
         event.preventDefault();
         // const data = new FormData(event.currentTarget);
         // console.log({
