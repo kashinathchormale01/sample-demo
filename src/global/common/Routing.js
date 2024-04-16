@@ -49,7 +49,7 @@ const Routing = () => {
 
         {/* Redirect for login page */}
         <Route path="/login" exact element={<LoginPage />} />
-        <Route path="/dashboard" exact element={<Dashboard />} />
+        <Route path="/" exact element={<Dashboard />} />
       </Routes>
     </>
   );

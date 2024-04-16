@@ -1,8 +1,9 @@
 import React from 'react'
+import MyProfile from './MyDetails/MyProfile'
 
 const Dashboard = () => {
   return (
-    <div>Dashboard</div>
+    <MyProfile />
   )
 }
 
