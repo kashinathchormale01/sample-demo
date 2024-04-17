@@ -19,7 +19,7 @@ const SiteRegisterSchema = yup.object().shape({
 const initialValues = {
   siteName: "",
   siteArea: "",
-  creationDate: ""
+  creationDate: new Date()
 };
 
 const AddSiteLocation = () => {   
@@ -95,6 +95,8 @@ const AddSiteLocation = () => {
                 <DatePicker
                   label="Creation Date"
                   disableFuture
+                  onBlur={handleBlur}
+                  onChange={handleChange}
                   value={values.creationDate}
                   slotProps={{ field: { shouldRespectLeadingZeros: true } }}
                   error={Boolean(touched.creationDate) && Boolean(errors.creationDate)}

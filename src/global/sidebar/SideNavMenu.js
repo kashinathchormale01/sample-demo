@@ -67,7 +67,7 @@ export const menuItemsData = [
       },
       {
         menu: "Employee Attendance",
-        url: "employee-attendace",
+        url: "employee-attendance",
       },
       {
         menu: "Employee Register",

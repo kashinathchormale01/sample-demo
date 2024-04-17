@@ -15,6 +15,7 @@ import EmployeeUpdatePage from '../../component/EmployeeRegisterPage/EmployeeUpd
 import MyProfile from '../../component/MyDetails/MyProfile';
 import BasicTable from '../../component/EmployeeWageRegister/EmployeeWageRegister';
 import UserPromote from '../../component/App Management/UserPromote/UserPromote';
+import { EmployeeTimeSheet } from '../../component/EmployeeAttendance/EmployeeAttendance';
 
 
 
@@ -32,6 +33,9 @@ const Routing = () => {
 
         {/* Employee Wage Register */}
         <Route path="/employee-wage-register" exact element={<BasicTable />} />
+
+        {/* Employee attendance */}
+        <Route path='/employee-attendance' exact element={<EmployeeTimeSheet />} />
                 
         {/* User Managament Routes */}
         <Route path='/add-user' exact element={<AddUser />} />

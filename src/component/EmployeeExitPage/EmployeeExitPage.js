@@ -10,6 +10,9 @@ import Divider from '@mui/material/Divider';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import MuiForm from './MuiForm';
 
 const genderlist = [
     {
@@ -221,6 +224,9 @@ renderInput={(params) => (
             )}
           </Paper>
   </Box>
+  <LocalizationProvider dateAdapter={AdapterDayjs}>
+  <MuiForm />
+  </LocalizationProvider>
         </>
       );
 }

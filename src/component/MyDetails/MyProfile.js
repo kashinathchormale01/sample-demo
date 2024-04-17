@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, Grid, Paper,Stack,Typography,Divider } from '@mui/material';
 import axios from 'axios';
 import { Gauge, gaugeClasses } from '@mui/x-charts/Gauge';
+import { green } from '@mui/material/colors';
 
 
 const MyProfile = () => {
@@ -116,8 +117,13 @@ const MyProfile = () => {
   innerRadius="80%"
   outerRadius="100%"
   text={
-    ({ value, valueMax }) => `${value} / ${valueMax}`
+    ({ value, valueMax }) => `Attendance: ${value} %`
  }
+ sx={(theme) => ({
+  [`& .${gaugeClasses.valueText}`]: {
+    fill: green,
+  },
+})}
   // ...
 />
     </>
