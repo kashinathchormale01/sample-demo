@@ -6,7 +6,8 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from "react-router-dom";
 import axios from 'axios';
 
-axios.defaults.baseURL="http://localhost:8089/api";
+// axios.defaults.baseURL="http://localhost:8089/api";
+axios.defaults.baseURL="http://192.168.1.121:8089/api";
 axios.defaults.headers['AUTHORIZATION']="AUTH_TOKEN";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

@@ -56,8 +56,8 @@ import {
                 </Typography> */}
 
                 <Typography variant="body1">
-                  Are you sure you want to delete this{" "}
-                  <label className="DialogTitle">{title}</label> ? <br /> If
+                  Can not delete the {" "}
+                  <label className="DialogTitle">{title}</label> <br /> If
                   deleted then you will loss for all the refference data related
                   to the same.
                 </Typography>
@@ -76,14 +76,14 @@ import {
               >
                 Cancel
               </Button>
-              <Button
+              {/* <Button
                 onClick={deleteFunction}
                 size="medium"
                 variant="contained"
                 color="error"
               >
                 Delete
-              </Button>{" "}
+              </Button>{" "} */}
             </Grid>
           </Grid>
         </DialogContent>

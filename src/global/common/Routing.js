@@ -16,6 +16,9 @@ import MyProfile from '../../component/MyDetails/MyProfile';
 import BasicTable from '../../component/EmployeeWageRegister/EmployeeWageRegister';
 import UserPromote from '../../component/App Management/UserPromote/UserPromote';
 import { EmployeeTimeSheet } from '../../component/EmployeeAttendance/EmployeeAttendance';
+import AddDesignation from '../../component/App Management/DesignationManagement/AddDesignation';
+import DesignationManagement from '../../component/App Management/DesignationManagement/DesignationManagement';
+import EditDesignation from '../../component/App Management/DesignationManagement/EditDesignation';
 
 
 
@@ -42,6 +45,12 @@ const Routing = () => {
         <Route path='/user-management' exact element={<UserManagement />} />
         <Route path='/my-profile' exact element={<MyProfile />} />
         <Route path='/user-promote' exact element={<UserPromote />} />
+
+        {/* Site Location Managament Routes */}
+
+        <Route path='/designation-management' exact element={<DesignationManagement /> } />
+        <Route path='/add-designation' exact element={<AddDesignation />} />
+        <Route path='/edit-designation/:id' exact element={<EditDesignation />} />
 
          {/* Site Location Managament Routes */}
         <Route path='/work-location-management' exact element={<SiteLocationManagement />} />

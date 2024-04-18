@@ -150,6 +150,10 @@ export const menuItemsData = [
         menu: "User Management",
         url: "user-management",
       },
+      {
+        menu: "Role Management",
+        url: "designation-management",
+      },
     ],
   },
   // ...
