@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from "axios"; 
 import * as yup from "yup";
-import { TextField,Box,Button } from '@mui/material'
+import { TextField,Box,Button,CircularProgress } from '@mui/material'
 import { Formik, Form, } from 'formik';
 import { useNavigate, useParams} from 'react-router-dom';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
@@ -25,8 +25,6 @@ const EditDesignation = () => {
     const[categorylist, setCategorylist] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
-    console.log('savedRoles', savedRoles);
    
       const loadCategories = async () => {      
         try {
@@ -37,7 +35,7 @@ const EditDesignation = () => {
       } catch (err) {
           if (err.response) {
             setLoading(false);
-            console.log('Status', err.response.status);
+           // console.log('Status', err.response.status);
             setError(err.message);
               // The client was given an error response (5xx, 4xx)
               console.log('Error response', err.message);
@@ -45,12 +43,12 @@ const EditDesignation = () => {
             setLoading(false);
             setError(err.message);
               // The client never received a response, and the request was never left
-              console.log('Error Request', err.message);
+             // console.log('Error Request', err.message);
           } else {
               // Anything else
               setLoading(false);
               setError(err.message);
-              console.log('Error anything', err.message);
+             // console.log('Error anything', err.message);
           }
       }
         
@@ -59,9 +57,7 @@ const EditDesignation = () => {
     function loadSelectedRole() {
         axios
           .get(`/GetRole/${id}`)
-          .then((res) => {
-            console.log(res);
-            console.log(JSON.stringify(res.data.data[0]));
+          .then((res) => {           
             setSavedRoles(res.data.data[0]);
           });
       }
@@ -75,12 +71,14 @@ const EditDesignation = () => {
         console.log(values);
         axios.put('/UpdateRole', values)
           .then(res=>{
-            console.log(res);
-            console.log(res.data);
             toast.success(res.data.msg);  
           })      
           navigate('/designation-management');
       };
+
+      if (loading) return <>Loading...<CircularProgress /></>;
+      if (error) return <p>Error: {error}</p>;
+
   return (
     <>
     <Formik

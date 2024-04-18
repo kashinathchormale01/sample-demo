@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from "axios"; 
 import * as yup from "yup";
-import { TextField,Box,Button } from '@mui/material'
+import { TextField,Box,Button,CircularProgress } from '@mui/material'
 import { Formik, Form, } from 'formik';
 import { useNavigate} from 'react-router-dom';
 import MenuItem from '@mui/material/MenuItem';
@@ -20,14 +20,12 @@ const DesignationRegisterSchema = yup.object().shape({
   };
 
 const AddDesignation = () => {
-    const navigate = useNavigate();
 
+    const navigate = useNavigate();
     const[categorylist, setCategorylist] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [age, setAge] = React.useState('');
-
-    console.log('categorylist',categorylist)
 
     const loadCategories = async () => {      
         try {
@@ -38,20 +36,20 @@ const AddDesignation = () => {
       } catch (err) {
           if (err.response) {
             setLoading(false);
-            console.log('Status', err.response.status);
+           // console.log('Status', err.response.status);
             setError(err.message);
               // The client was given an error response (5xx, 4xx)
-              console.log('Error response', err.message);
+              //console.log('Error response', err.message);
           } else if (err.request) {
             setLoading(false);
             setError(err.message);
               // The client never received a response, and the request was never left
-              console.log('Error Request', err.message);
+             // console.log('Error Request', err.message);
           } else {
               // Anything else
               setLoading(false);
               setError(err.message);
-              console.log('Error anything', err.message);
+            // console.log('Error anything', err.message);
           }
       }
         
@@ -62,15 +60,15 @@ const AddDesignation = () => {
       }, []);      
 
     function handleFormSubmit (values){
-        console.log(values);
         axios.post('/AddRole', values)
           .then(res=>{
-            console.log(res);
-            console.log(res.data);
             toast.success(res.data.msg);  
           })      
           navigate('/designation-management');
       };
+
+      if (loading) return <>Loading...<CircularProgress /></>;
+      if (error) return <p>Error: {error}</p>;
 
   return (
     <>

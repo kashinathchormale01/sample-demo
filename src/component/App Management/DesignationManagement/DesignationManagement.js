@@ -23,7 +23,7 @@ const DesignationManagement = () => {
       } catch (err) {
           if (err.response) {
             setLoading(false);
-            console.log('Status', err.response.status);
+          //  console.log('Status', err.response.status);
             setError(err.message);
               // The client was given an error response (5xx, 4xx)
               console.log('Error response', err.message);
@@ -31,12 +31,12 @@ const DesignationManagement = () => {
             setLoading(false);
             setError(err.message);
               // The client never received a response, and the request was never left
-              console.log('Error Request', err.message);
+            //  console.log('Error Request', err.message);
           } else {
               // Anything else
               setLoading(false);
               setError(err.message);
-              console.log('Error anything', err.message);
+             // console.log('Error anything', err.message);
           }
       }
         
@@ -61,8 +61,7 @@ const DesignationManagement = () => {
         setDeleteDesignationData(data);
       }
 
-      console.log(deleteDesignationData);
-
+     
   if (loading) return <>Loading...<CircularProgress /></>;
   if (error) return <p>Error: {error}</p>;
   if (!designationlist.length) return <> <Button
@@ -73,6 +72,7 @@ const DesignationManagement = () => {
 >    
 Add New Designation/Role
 </Button> <p>No Designation available!</p></>
+
   return (
     <>
      <Button
