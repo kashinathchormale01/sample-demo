@@ -15,9 +15,32 @@ import autoTable from 'jspdf-autotable';
 const Example = () => {
     const handleExportRows = (rows) => {
       const doc = new jsPDF('landscape');
-      const tableData = rows.map((row) => Object.keys(row.original));
+      const tableData = rows.map((row) => Object.values(row._valuesCache));
       const tableHeaders = columns.map((c) => c.header);
-      //console.log(tableData);
+      console.log(tableData);
+      console.log(tableHeaders);
+
+      doc.autoTable({
+        html: '#table',
+        columnStyles: {
+          0: {cellWidth: 20},
+          1: {cellWidth: 100},
+          2: {cellWidth: 80},
+          3: {cellWidth: 100},
+          4: {cellWidth: 80},
+          5: {cellWidth: 80},
+          6: {cellWidth: 100},
+          7: {cellWidth: 80},
+          8: {cellWidth: 80},
+          9: {cellWidth: 100},
+          10: {cellWidth: 80},
+          11: {cellWidth: 80},
+          12: {cellWidth: 100},
+          13: {cellWidth: 80},
+          14: {cellWidth: 80},
+          // etc
+        }
+      });
   
       autoTable(doc, {
         head: [tableHeaders],
@@ -26,6 +49,12 @@ const Example = () => {
   
       doc.save('mrt-pdf-example.pdf');
     };
+
+    // const handleExportRows = (rows) => {
+    //   const rowData = rows.map((row) => row.original);
+    //   const csv = generateCsv(csvConfig)(rowData);
+    //   download(csvConfig)(csv);
+    // };
 
     const columns = useMemo(
       () => [
@@ -75,9 +104,9 @@ const Example = () => {
           header: 'Total Wage',
           accessorFn: (row) => row.noOfDayswork * (row.basicWage + row.wageDA),  
           Cell: ({ renderedCellValue, row }) => {           
-            return (<span>
+            return (<>
               {renderedCellValue}
-              </span>)
+              </>)
           }
         },
         {

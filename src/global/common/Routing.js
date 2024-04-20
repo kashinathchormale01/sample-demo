@@ -35,7 +35,7 @@ const Routing = () => {
         <Route path="/employee-exit" exact element={<EmpExitForm />} />
 
         {/* Employee Wage Register */}
-        <Route path="/employee-wage-register" exact element={<BasicTable />} />
+        <Route path="/generate-wage-reports" exact element={<BasicTable />} />
 
         {/* Employee attendance */}
         <Route path='/employee-attendance' exact element={<EmployeeTimeSheet />} />
