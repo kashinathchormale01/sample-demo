@@ -31,7 +31,7 @@ const dateOffset = (date, offset) => {
   return newDate;
 };
 
-const getFirstDayOfWeek = (date) => {
+const getFirstDayOfWeek = (date) => {  
   const day = (date.getDay() + 6) % 7; // Monday is the first day of week
   return dateOffset(date, -day);
 };
@@ -39,12 +39,13 @@ const getFirstDayOfWeek = (date) => {
 const weekDayFormat = { weekday: 'short', month: 'short', day: 'numeric' };
 
 export const EmployeeTimeSheet = () => {
-    const [dateValue, setDateValue] = React.useState(dayjs('04/10/2024'));
-  const [startDate, setStartDate] = useState(getFirstDayOfWeek(new Date(dateValue.$d)));
-  const isFutureStartDate = useMemo(() => startDate > new Date(), [startDate]);
-  const [tableValue, setTableValue] = React.useState(31);
-//   console.log(isFutureStartDate);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+    const [dateValue, setDateValue] = React.useState(dayjs());
+  const [startDate, setStartDate] = useState(getFirstDayOfWeek(selectedDate));
   
+  const isFutureStartDate = useMemo(() => startDate > new Date(), [startDate]);
+  const [monthly, setMonthly] = React.useState(false);
+
  
 
   const [data, setData] = useState(
@@ -122,11 +123,12 @@ export const EmployeeTimeSheet = () => {
 //     });
 //   };
 
-function handleCalendarTableWeekly(){
-       alert('clicked');
-       let weekDates = Array.from({ length: 7 }, (_, i) =>
-    dateOffset(startDate, i)
-  );
+const handleCalendarTableWeekly = () =>{
+  setMonthly(false);  
+};
+
+const handleCalendarTableMonthly = () =>{
+  setMonthly(true);  
 };
 
   const getTotal = (index, dates) => {
@@ -138,100 +140,147 @@ function handleCalendarTableWeekly(){
 
  
 
-  const weekDates = Array.from({ length: 7 }, (_, i) =>
+  const weekDates = Array.from({ length: monthly ? 32 : 7 }, (_, i) =>
     dateOffset(startDate, i)
   );
+
+ 
+
+  const handleDateChange = date => { 
+ // setDateValue(date);
+ setSelectedDate(date.$d);
+};
+
+
 
 
 
   return (
-   <>
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DemoContainer components={['DateCalendar', 'DateCalendar']}>
-        <DemoItem label="Controlled calendar">
-          <DateCalendar value={dateValue} onChange={(newValue) => setDateValue(newValue)} />
-        </DemoItem>
-      </DemoContainer>
-    </LocalizationProvider>
+    <>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DemoContainer components={["DateCalendar", "DateCalendar"]}>
+          <DemoItem label="Controlled calendar">
+            <DateCalendar
+              value={dateValue}
+              // onChange={(newValue) => setDateValue(newValue)}
+              onChange={handleDateChange}
 
-      <Stack direction="row" spacing={2} alignItems={'center'}>
-      <Button size='medium' onClick={handlePreviousWeek} variant="outlined" startIcon={<ArrowBackIosOutlinedIcon />}>
-        Previous Week
-      </Button>
-      <Typography>
-      {` ${weekDates[0].toLocaleDateString(
-          'en-US'
-        )} - ${weekDates[6].toLocaleDateString('en-US')} `}
-      </Typography>
-      <Button size='medium' onClick={handleNextWeek} variant="outlined" endIcon={<ArrowForwardIosOutlinedIcon />}>
-      Next Week
-      </Button>
-    </Stack>
-    <Button onClick={handleCalendarTableWeekly}>Weekly</Button>
+            />
+          </DemoItem>
+        </DemoContainer>        
+      </LocalizationProvider>
 
-      <TableContainer sx={{ maxWidth: '100%', marginTop:'20px' }} component={Paper}>
-      <Table aria-label="customized table">
-      <TableHead>
-      <TableRow
-            sx={{
-              "& th": {
-                fontSize: "1rem",
-                color: "rgba(96, 96, 96)",
-                backgroundColor: "#b1dbdf"
-              }
-            }}
-          >
-             <TableCell>Employee</TableCell>
-            {weekDates.map((day) => (
-              <TableCell key={day}>
-                {day.toLocaleDateString('en-US', weekDayFormat)}
-              </TableCell>
-            ))}
-            <TableCell>Total Attendance</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data.map((item, index) => (
-            <StyledTableRow key={index}>
-              <TableCell>{item.emp_id}</TableCell>
-              {weekDates.map((date) => (
-                <TableCell key={date}>
-                   <Checkbox
-                    id={`epds-${index}`}
-                    type="checkbox"
-                      name={getValue(index, date)}
-                      checked={getValue(index, date)}
-                      onChange={(e) => setValue(index, date, e.target.checked)}
-                      disabled={isFutureStartDate}                      
-        
-            sx={{ '& .MuiSvgIcon-root': { fontSize: 48 } }}
-        icon={<ToggleOn />} checkedIcon={<ToggleOff />}
-      />
-                  
+      <Stack direction="row" spacing={2} alignItems={"center"}>
+        <Button
+          size="medium"
+          onClick={handlePreviousWeek}
+          variant="outlined"
+          startIcon={<ArrowBackIosOutlinedIcon />}
+        >
+          Previous Week
+        </Button>
+        {monthly ? (
+          <Typography>
+            {` ${weekDates[0].toLocaleDateString(
+              "en-US"
+            )} - ${weekDates[31].toLocaleDateString("en-US")} `}
+          </Typography>
+        ) : (
+          <Typography>
+            {` ${weekDates[0].toLocaleDateString(
+              "en-US"
+            )} - ${weekDates[6].toLocaleDateString("en-US")} `}
+          </Typography>
+        )}
+
+        <Button
+          size="medium"
+          onClick={handleNextWeek}
+          variant="outlined"
+          endIcon={<ArrowForwardIosOutlinedIcon />}
+        >
+          Next Week
+        </Button>
+      </Stack>
+
+      <Stack direction="row" spacing={2} alignItems={"center"}>
+        <Button size="medium" onClick={handleCalendarTableWeekly}>Weekly</Button>
+        <Button size="medium" onClick={handleCalendarTableMonthly}>Monthly</Button>
+      </Stack>
+      
+      <TableContainer
+        sx={{ maxWidth: "100%", marginTop: "20px" }}
+        component={Paper}
+      >
+        <Table aria-label="customized table">
+          <TableHead>
+            <TableRow
+              sx={{
+                "& th": {
+                  fontSize: "1rem",
+                  color: "rgba(96, 96, 96)",
+                  backgroundColor: "#b1dbdf",
+                },
+              }}
+            >
+              <TableCell>Employee</TableCell>
+              <TableCell>Total Attendance {selectedDate.toDateString()}</TableCell>
+              {weekDates.map((day) => (
+                <TableCell key={day}>
+                  {day.toLocaleDateString("en-US", weekDayFormat)}
                 </TableCell>
               ))}
-              <TableCell><Chip label={getTotal(index, weekDates)} color="success" variant="filled" /></TableCell>
-              {/* <td>
+              {/* <TableCell>Total Attendance</TableCell> */}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data.map((item, index) => (
+              <StyledTableRow key={index}>
+                <TableCell>{item.emp_id}</TableCell>
+                <TableCell>
+                  <Chip
+                    label={getTotal(index, weekDates)}
+                    color="success"
+                    variant="filled"
+                  />
+                </TableCell>
+                {weekDates.map((date) => (
+                  <TableCell key={date}>
+                    <Checkbox
+                      id={`epds-${index}`}
+                      type="checkbox"
+                      name={getValue(index, date).toString()}
+                      checked={Boolean(getValue(index, date))}
+                      onChange={(e) => setValue(index, date, e.target.checked)}
+                      disabled={isFutureStartDate}
+                      sx={{ "& .MuiSvgIcon-root": { fontSize: 48 } }}
+                      checkedIcon={<ToggleOn />}
+                      icon={<ToggleOff />}
+                    />
+                  </TableCell>
+                ))}
+                {/* <TableCell><Chip label={getTotal(index, weekDates)} color="success" variant="filled" /></TableCell> */}
+                {/* <td>
                 <button onClick={() => handleDeleteRow(index)}>Delete</button>
               </td> */}
-            </StyledTableRow>
-          ))}
-          <TableRow>
-            <TableCell></TableCell>
-            {weekDates.map((day) => (
-              <TableCell key={day}>
-                {day.toLocaleDateString('en-US', weekDayFormat)}
-              </TableCell>              
+              </StyledTableRow>
             ))}
-             <TableCell></TableCell>
-          </TableRow>
-        </TableBody>
+            <TableRow>
+              <TableCell></TableCell>
+              {weekDates.map((day) => (
+                <TableCell key={day}>
+                  {day.toLocaleDateString("en-US", weekDayFormat)}
+                </TableCell>
+              ))}
+              <TableCell></TableCell>
+            </TableRow>
+          </TableBody>
         </Table>
       </TableContainer>
       {/* <button onClick={handleAddRow}>Add New Project</button> */}
 
       {/* Just for visualization purposes */}
       <pre>{JSON.stringify(data, null, 4)}</pre>
-      </>
+    </>
   );
 };
