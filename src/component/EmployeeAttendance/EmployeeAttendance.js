@@ -1,29 +1,37 @@
-
-import React, { useEffect, useMemo, useState } from 'react';
-import { Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Paper, Typography,Chip  } from '@mui/material';
-import Checkbox from '@mui/material/Checkbox';
-import { styled } from '@mui/material/styles';
-import ToggleOn from '@mui/icons-material/ToggleOn';
-import ToggleOff from '@mui/icons-material/ToggleOff';
-import Button from '@mui/material/Button';
-import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosOutlined';
-import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined';
-import Stack from '@mui/material/Stack';
-import dayjs from 'dayjs';
-import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
-
+import React, { useMemo, useState } from "react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Typography,
+  Chip,
+} from "@mui/material";
+import Checkbox from "@mui/material/Checkbox";
+import { styled } from "@mui/material/styles";
+import ToggleOn from "@mui/icons-material/ToggleOn";
+import ToggleOff from "@mui/icons-material/ToggleOff";
+import Button from "@mui/material/Button";
+import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
+import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
+import Stack from "@mui/material/Stack";
+import dayjs from "dayjs";
+import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    '&:nth-of-type(odd)': {
-      backgroundColor: "white",
-    },
-    '&:nth-of-type(even)': {
-      backgroundColor: "#f1f1f1",
-    },
-  }));
+  "&:nth-of-type(odd)": {
+    backgroundColor: "white",
+  },
+  "&:nth-of-type(even)": {
+    backgroundColor: "#f1f1f1",
+  },
+}));
 
 const dateOffset = (date, offset) => {
   const newDate = new Date(date);
@@ -31,55 +39,57 @@ const dateOffset = (date, offset) => {
   return newDate;
 };
 
-const getFirstDayOfWeek = (date) => {  
+const getFirstDayOfWeek = (date) => {
   const day = (date.getDay() + 6) % 7; // Monday is the first day of week
   return dateOffset(date, -day);
 };
 
-const weekDayFormat = { weekday: 'short', month: 'short', day: 'numeric' };
+const weekDayFormat = { weekday: "short", month: "short", day: "numeric" };
 
 export const EmployeeTimeSheet = () => {
-  const [selectedDate, setSelectedDate] = useState(new Date());
-    const [dateValue, setDateValue] = React.useState(dayjs());
-  const [startDate, setStartDate] = useState(getFirstDayOfWeek(selectedDate));
-  
+  //const [selectedDate, setSelectedDate] = useState(new Date());
+  const [dateValue, setDateValue] = React.useState(dayjs());
+
+  /**
+   * week start date
+   */
+  const [startDate, setStartDate] = useState(getFirstDayOfWeek(new Date()));
+  /**
+   * Week end date
+   */
   const isFutureStartDate = useMemo(() => startDate > new Date(), [startDate]);
+
   const [monthly, setMonthly] = React.useState(false);
 
- 
-
-  const [data, setData] = useState(
-    [
-        {
-            "emp_id": 1,
-            "sheet": {
-                "4/15/2024": true,
-                "4/16/2024": false,
-                "4/19/2024": true,
-                "4/18/2024": true
-            }
-        },
-        {
-            "emp_id": 2,
-            "sheet": {
-                "4/16/2024": true,
-                "4/17/2024": true,
-                "4/20/2024": true,
-                "4/21/2024": true
-            }
-        },
-        {
-            "emp_id": 3,
-            "sheet": {
-                "4/18/2024": true,
-                "4/19/2024": true,
-                "4/15/2024": true,
-                "4/16/2024": true
-            }
-        }
-       
-    ]
-  );
+  const [data, setData] = useState([
+    {
+      emp_id: 1,
+      sheet: {
+        "4/15/2024": true,
+        "4/16/2024": false,
+        "4/19/2024": true,
+        "4/18/2024": true,
+      },
+    },
+    {
+      emp_id: 2,
+      sheet: {
+        "4/16/2024": true,
+        "4/17/2024": true,
+        "4/20/2024": true,
+        "4/21/2024": true,
+      },
+    },
+    {
+      emp_id: 3,
+      sheet: {
+        "4/18/2024": true,
+        "4/19/2024": true,
+        "4/15/2024": true,
+        "4/16/2024": true,
+      },
+    },
+  ]);
 
   const handlePreviousWeek = () => {
     setStartDate((currDate) => dateOffset(currDate, -7));
@@ -90,46 +100,46 @@ export const EmployeeTimeSheet = () => {
   };
 
   const getValue = (index, date) => {
-    const key = date.toLocaleDateString('en-US');
-    return data[index].sheet[key] ?? '';
+    const key = date.toLocaleDateString("en-US");
+    return data[index].sheet[key] ?? "";
   };
 
   const setValue = (index, date, value) => {
-    const key = date.toLocaleDateString('en-US');
+    const key = date.toLocaleDateString("en-US");
     setData((prevData) => {
       const newData = [...prevData];
       // remove key if empty
-      if (value === '') delete newData[index].sheet[key];
+      if (value === "") delete newData[index].sheet[key];
       else newData[index].sheet[key] = value;
       return newData;
     });
   };
 
-//   const handleAddRow = () => {
-//     setData([
-//       ...data,
-//       {
-//         employee: `Employee ${data.length + 1}`,
-//         sheet: {},
-//       },
-//     ]);
-//   };
+  //   const handleAddRow = () => {
+  //     setData([
+  //       ...data,
+  //       {
+  //         employee: `Employee ${data.length + 1}`,
+  //         sheet: {},
+  //       },
+  //     ]);
+  //   };
 
-//   const handleDeleteRow = (index) => {
-//     setData((prevData) => {
-//       const updatedData = [...prevData];
-//       updatedData.splice(index, 1);
-//       return updatedData;
-//     });
-//   };
+  //   const handleDeleteRow = (index) => {
+  //     setData((prevData) => {
+  //       const updatedData = [...prevData];
+  //       updatedData.splice(index, 1);
+  //       return updatedData;
+  //     });
+  //   };
 
-const handleCalendarTableWeekly = () =>{
-  setMonthly(false);  
-};
+  const handleCalendarTableWeekly = () => {
+    setMonthly(false);
+  };
 
-const handleCalendarTableMonthly = () =>{
-  setMonthly(true);  
-};
+  const handleCalendarTableMonthly = () => {
+    setMonthly(true);
+  };
 
   const getTotal = (index, dates) => {
     return dates.reduce((total, date) => {
@@ -138,22 +148,15 @@ const handleCalendarTableMonthly = () =>{
     }, 0);
   };
 
- 
-
   const weekDates = Array.from({ length: monthly ? 32 : 7 }, (_, i) =>
     dateOffset(startDate, i)
   );
 
- 
-
-  const handleDateChange = date => { 
- // setDateValue(date);
- setSelectedDate(date.$d);
-};
-
-
-
-
+  const handleDateChange = (date) => {
+    setDateValue(date);
+    const firstDayOfWeek = getFirstDayOfWeek(date.$d);
+    setStartDate(firstDayOfWeek);
+  };
 
   return (
     <>
@@ -164,10 +167,9 @@ const handleCalendarTableMonthly = () =>{
               value={dateValue}
               // onChange={(newValue) => setDateValue(newValue)}
               onChange={handleDateChange}
-
             />
           </DemoItem>
-        </DemoContainer>        
+        </DemoContainer>
       </LocalizationProvider>
 
       <Stack direction="row" spacing={2} alignItems={"center"}>
@@ -204,10 +206,14 @@ const handleCalendarTableMonthly = () =>{
       </Stack>
 
       <Stack direction="row" spacing={2} alignItems={"center"}>
-        <Button size="medium" onClick={handleCalendarTableWeekly}>Weekly</Button>
-        <Button size="medium" onClick={handleCalendarTableMonthly}>Monthly</Button>
+        <Button size="medium" onClick={handleCalendarTableWeekly}>
+          Weekly
+        </Button>
+        <Button size="medium" onClick={handleCalendarTableMonthly}>
+          Monthly
+        </Button>
       </Stack>
-      
+
       <TableContainer
         sx={{ maxWidth: "100%", marginTop: "20px" }}
         component={Paper}
@@ -224,7 +230,7 @@ const handleCalendarTableMonthly = () =>{
               }}
             >
               <TableCell>Employee</TableCell>
-              <TableCell>Total Attendance {selectedDate.toDateString()}</TableCell>
+              <TableCell>Total Attendance</TableCell>
               {weekDates.map((day) => (
                 <TableCell key={day}>
                   {day.toLocaleDateString("en-US", weekDayFormat)}
