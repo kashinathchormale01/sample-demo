@@ -1,4 +1,5 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState,useEffect } from "react";
+import axios from "axios";
 import {
   Table,
   TableBody,
@@ -44,12 +45,16 @@ const getFirstDayOfWeek = (date) => {
   return dateOffset(date, -day);
 };
 
+
+
 const weekDayFormat = { weekday: "short", month: "short", day: "numeric" };
 
 export const EmployeeTimeSheet = () => {
-  //const [selectedDate, setSelectedDate] = useState(new Date());
+  const [emplist, setEmplist] = useState([]);
+  const [error, setError] = useState();
   const [dateValue, setDateValue] = React.useState(dayjs());
-
+  const [loading, setLoading] = useState();
+ console.log('emplist',emplist);
   /**
    * week start date
    */
@@ -61,35 +66,65 @@ export const EmployeeTimeSheet = () => {
 
   const [monthly, setMonthly] = React.useState(false);
 
-  const [data, setData] = useState([
-    {
-      emp_id: 1,
-      sheet: {
-        "4/15/2024": true,
-        "4/16/2024": false,
-        "4/19/2024": true,
-        "4/18/2024": true,
-      },
-    },
-    {
-      emp_id: 2,
-      sheet: {
-        "4/16/2024": true,
-        "4/17/2024": true,
-        "4/20/2024": true,
-        "4/21/2024": true,
-      },
-    },
-    {
-      emp_id: 3,
-      sheet: {
-        "4/18/2024": true,
-        "4/19/2024": true,
-        "4/15/2024": true,
-        "4/16/2024": true,
-      },
-    },
-  ]);
+  // const payloadData = emplist.map(emp => ({
+  //   emp_id: emp.Id,
+  //   sheet: {},
+  // }))
+   const [data, setData] = useState();
+
+
+   function filterTrueSheets(data) {
+    const trueSheets = [];
+
+    data.forEach(employee => {
+        const emp_id = employee.emp_id;
+        const sheet = employee.sheet;
+        const trueDates = Object.keys(sheet).filter(date => sheet[date] === true);
+        if (trueDates.length > 0) {
+            trueSheets.push({ emp_id, sheet: Object.fromEntries(trueDates.map(date => [date, true])) });
+        }
+    });
+
+    return trueSheets;
+}
+
+const trueSheets = filterTrueSheets(data);
+console.log('truesheet',trueSheets);
+
+
+  //  console.log('data',data);
+  
+  
+  // console.log('payloadData',payloadData);
+  
+
+  // const [data, setData] = useState([
+  //   {
+  //     emp_id: 111,
+  //     sheet: {
+  //       "4/15/2024": false,
+  //       "4/16/2024": true,
+  //       "4/18/2024": true,
+  //     },
+  //   },
+  //   {
+  //     emp_id: 112,
+  //     sheet: {
+  //       "4/15/2024": true,
+  //       "4/16/2024": false,
+  //       "4/18/2024": true,
+  //     },
+  //   },
+  // ]);
+
+ 
+  // console.log('data',data);
+  // const empID = emplist.map((emp)=>emp.Id);
+  // console.log(empID);
+  // data.map((item)=>item.emp_id).push(empID);
+
+  
+
 
   const handlePreviousWeek = () => {
     setStartDate((currDate) => dateOffset(currDate, -7));
@@ -115,24 +150,7 @@ export const EmployeeTimeSheet = () => {
     });
   };
 
-  //   const handleAddRow = () => {
-  //     setData([
-  //       ...data,
-  //       {
-  //         employee: `Employee ${data.length + 1}`,
-  //         sheet: {},
-  //       },
-  //     ]);
-  //   };
-
-  //   const handleDeleteRow = (index) => {
-  //     setData((prevData) => {
-  //       const updatedData = [...prevData];
-  //       updatedData.splice(index, 1);
-  //       return updatedData;
-  //     });
-  //   };
-
+  
   const handleCalendarTableWeekly = () => {
     setMonthly(false);
   };
@@ -157,6 +175,40 @@ export const EmployeeTimeSheet = () => {
     const firstDayOfWeek = getFirstDayOfWeek(date.$d);
     setStartDate(firstDayOfWeek);
   };
+
+  const loadEmployees = async () => {      
+    try {
+      let result = await axios.get('/GetEmp');               
+      setLoading(false);
+      const payloadData = result?.data?.data?.map(emp => ({
+        emp_id: emp.Id,
+        sheet: {},
+      }))
+      setData(payloadData); 
+      // Work with the response...
+  } catch (err) {
+      if (err.response) {
+        setLoading(false);
+        console.log('Status', err.response.status);
+        setError(err.message);
+          // The client was given an error response (5xx, 4xx)
+          console.log('Error response', err.message);
+      } else if (err.request) {
+        setLoading(false);
+        setError(err.message);
+          // The client never received a response, and the request was never left
+          console.log('Error Request', err.message);
+      } else {
+          // Anything else
+          setLoading(false);
+          setError(err.message);
+          console.log('Error anything', err.message);
+      }
+  }
+  };
+  useEffect(() => {
+    loadEmployees();  
+  }, []);
 
   return (
     <>
@@ -231,7 +283,7 @@ export const EmployeeTimeSheet = () => {
             >
               <TableCell>Employee</TableCell>
               <TableCell>Total Attendance</TableCell>
-              {weekDates.map((day) => (
+              {weekDates?.map((day) => (
                 <TableCell key={day}>
                   {day.toLocaleDateString("en-US", weekDayFormat)}
                 </TableCell>
@@ -240,9 +292,11 @@ export const EmployeeTimeSheet = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((item, index) => (
+            {data?.map((item, index) => (
               <StyledTableRow key={index}>
                 <TableCell>{item.emp_id}</TableCell>
+
+            
                 <TableCell>
                   <Chip
                     label={getTotal(index, weekDates)}
@@ -273,12 +327,13 @@ export const EmployeeTimeSheet = () => {
             ))}
             <TableRow>
               <TableCell></TableCell>
+              <TableCell></TableCell>
               {weekDates.map((day) => (
                 <TableCell key={day}>
                   {day.toLocaleDateString("en-US", weekDayFormat)}
                 </TableCell>
               ))}
-              <TableCell></TableCell>
+             
             </TableRow>
           </TableBody>
         </Table>
