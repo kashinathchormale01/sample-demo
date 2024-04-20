@@ -22,7 +22,7 @@ const EmployeeList = () => {
   const [emplist, setEmplist] = useState([]);
   const [error, setError] = useState();
 
-const fakeData = emplist;
+const empData = emplist;
 
 function loadSelectedEmployee() {
   axios
@@ -39,10 +39,9 @@ function loadSelectedEmployee() {
   }, []);
 
   const handleExportRows = (rows) => {
-    const doc = new jsPDF('landscape');
-    const tableData = rows.map((row) => Object.keys(row.original));
+    const doc = new jsPDF();
+    const tableData = rows.map((row) => Object.values(row._valuesCache));
     const tableHeaders = columns.map((c) => c.header);
-
     autoTable(doc, {
       head: [tableHeaders],
       body: tableData,
@@ -110,7 +109,7 @@ function loadSelectedEmployee() {
 
   const table = useMaterialReactTable({
     columns,
-    data:fakeData,
+    data:empData,
     enableRowSelection: true,
     enableEditing: false,
     columnFilterDisplayMode: 'popover',
