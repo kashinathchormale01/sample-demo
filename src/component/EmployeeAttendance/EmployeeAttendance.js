@@ -18,6 +18,7 @@ import ToggleOff from "@mui/icons-material/ToggleOff";
 import Button from "@mui/material/Button";
 import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
+import ViewWeekIcon from '@mui/icons-material/ViewWeek';
 import Stack from "@mui/material/Stack";
 import dayjs from "dayjs";
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
@@ -323,8 +324,8 @@ export const EmployeeTimeSheet = () => {
       </Stack>
 
       <Stack direction="row" spacing={2} alignItems={"center"} marginLeft={'100px'}>
-        <Button variant="contained" color="primary" size="medium" onClick={handleCalendarTableWeekly}>
-          Weekly view
+        <Button variant="contained" color="secondary" size="medium" onClick={handleCalendarTableWeekly} 
+        endIcon={<ViewWeekIcon />}>
         </Button><Typography>/</Typography>
         <Button variant="contained" color="primary" size="medium" onClick={handleCalendarTableMonthly}>
           Monthly view
