@@ -50,3 +50,22 @@ export let designationData = [
     label: 'PLC Operator'
   }
 ];
+
+export let sitesloc = [
+  { siteId:121,
+    siteName: "SaRasta",
+  siteArea: "Solapur",
+  creationDate: "0002121"},
+  { siteId:22,
+    siteName: "Pune naka",
+  siteArea: "Solapur",
+  creationDate: "0002121"},
+  { siteId:354,
+    siteName: "Awanti nagar",
+  siteArea: "Solapur",
+  creationDate: "0002121"},
+  { siteId:44,
+    siteName: "bijapur ves",
+  siteArea: "Solapur",
+  creationDate: "0002121"}
+]

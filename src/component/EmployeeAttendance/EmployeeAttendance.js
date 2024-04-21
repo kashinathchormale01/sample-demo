@@ -9,7 +9,7 @@ import {
   TableRow,
   Paper,
   Typography,
-  Chip,
+  FormControl,InputLabel,Select,OutlinedInput,MenuItem,ListItemText,Box,Chip
 } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import { styled } from "@mui/material/styles";
@@ -24,6 +24,8 @@ import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { sitesloc } from "../../global/common/StubData/CommonStubData";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -33,6 +35,17 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     backgroundColor: "#f1f1f1",
   },
 }));
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
 
 const dateOffset = (date, offset) => {
   const newDate = new Date(date);
@@ -50,11 +63,16 @@ const getFirstDayOfWeek = (date) => {
 const weekDayFormat = { weekday: "short", month: "short", day: "numeric" };
 
 export const EmployeeTimeSheet = () => {
-  const [emplist, setEmplist] = useState([]);
-  const [error, setError] = useState();
+  /**
+   * site locationlist state
+   */
+  const [sitelocationlist, setSitelocationlist] = useState(sitesloc);
+  const [error, setError] = useState(null);
+  const [selectedSite, setSelectedSite] = React.useState([]);
+
   const [dateValue, setDateValue] = React.useState(dayjs());
   const [loading, setLoading] = useState();
- console.log('emplist',emplist);
+//  console.log('emplist',emplist);
   /**
    * week start date
    */
@@ -65,31 +83,44 @@ export const EmployeeTimeSheet = () => {
   const isFutureStartDate = useMemo(() => startDate > new Date(), [startDate]);
 
   const [monthly, setMonthly] = React.useState(false);
-
+  const [data, setData] = useState([
+    {emp_id:1,
+    sheet:{}
+  },
+  {emp_id:2,
+    sheet:{}
+  },
+  {emp_id:3,
+    sheet:{}
+  },
+  {emp_id:4,
+    sheet:{}
+  }
+  ]);
   // const payloadData = emplist.map(emp => ({
   //   emp_id: emp.Id,
   //   sheet: {},
   // }))
-   const [data, setData] = useState();
+//    const [data, setData] = useState();
 
 
-   function filterTrueSheets(data) {
-    const trueSheets = [];
+//    function filterTrueSheets(data) {
+//     const trueSheets = [];
 
-    data.forEach(employee => {
-        const emp_id = employee.emp_id;
-        const sheet = employee.sheet;
-        const trueDates = Object.keys(sheet).filter(date => sheet[date] === true);
-        if (trueDates.length > 0) {
-            trueSheets.push({ emp_id, sheet: Object.fromEntries(trueDates.map(date => [date, true])) });
-        }
-    });
+//     data.forEach(employee => {
+//         const emp_id = employee.emp_id;
+//         const sheet = employee.sheet;
+//         const trueDates = Object.keys(sheet).filter(date => sheet[date] === true);
+//         if (trueDates.length > 0) {
+//             trueSheets.push({ emp_id, sheet: Object.fromEntries(trueDates.map(date => [date, true])) });
+//         }
+//     });
 
-    return trueSheets;
-}
+//     return trueSheets;
+// }
 
-const trueSheets = filterTrueSheets(data);
-console.log('truesheet',trueSheets);
+// const trueSheets = filterTrueSheets(data);
+// console.log('truesheet',trueSheets);
 
 
   //  console.log('data',data);
@@ -123,7 +154,15 @@ console.log('truesheet',trueSheets);
   // console.log(empID);
   // data.map((item)=>item.emp_id).push(empID);
 
-  
+  const handleChangeselect = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setSelectedSite(
+      // On autofill we get a stringified value.
+      typeof value === 'string' ? value.split(',') : value,
+    );
+  };
 
 
   const handlePreviousWeek = () => {
@@ -212,16 +251,41 @@ console.log('truesheet',trueSheets);
 
   return (
     <>
+      <FormControl sx={{ m: 1, width: 300 }}>
+        <InputLabel id="demo-multiple-checkbox-label">Location</InputLabel>
+        <Select
+          labelId="demo-multiple-checkbox-label"
+          id="demo-multiple-checkbox"
+          name="demo-multiple-checkbox"
+          value={selectedSite}
+          onChange={handleChangeselect}
+          input={<OutlinedInput label="Tag" />}
+          MenuProps={MenuProps}
+        >
+          {sitesloc.map((site) => (
+            <MenuItem key={site.siteId} value={site.siteId}>
+              {/* <Checkbox checked={selectedSite.includes(site.siteId)} /> */}
+              <ListItemText primary={site.siteName} />
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DemoContainer components={["DateCalendar", "DateCalendar"]}>
-          <DemoItem label="Controlled calendar">
+        {/* <DemoContainer components={["DateCalendar", "DateCalendar"]}>
+          <DemoItem>
             <DateCalendar
               value={dateValue}
-              // onChange={(newValue) => setDateValue(newValue)}
               onChange={handleDateChange}
             />
-          </DemoItem>
-        </DemoContainer>
+            </DemoItem>
+        </DemoContainer> */}
+            <DemoContainer sx={{margin:'20px 0'}} components={['DatePicker']}>
+              <DatePicker label="Select a Date"  
+              value={dateValue}
+              onChange={handleDateChange} />
+            </DemoContainer>
+          
       </LocalizationProvider>
 
       <Stack direction="row" spacing={2} alignItems={"center"}>
