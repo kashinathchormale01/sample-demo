@@ -288,6 +288,7 @@ export const EmployeeTimeSheet = () => {
           
       </LocalizationProvider>
 
+<Box sx={{display:'flex', flexDirection:'row'}}>
       <Stack direction="row" spacing={2} alignItems={"center"}>
         <Button
           size="medium"
@@ -321,15 +322,15 @@ export const EmployeeTimeSheet = () => {
         </Button>
       </Stack>
 
-      <Stack direction="row" spacing={2} alignItems={"center"}>
-        <Button size="medium" onClick={handleCalendarTableWeekly}>
-          Weekly
-        </Button>
-        <Button size="medium" onClick={handleCalendarTableMonthly}>
-          Monthly
+      <Stack direction="row" spacing={2} alignItems={"center"} marginLeft={'100px'}>
+        <Button variant="contained" color="primary" size="medium" onClick={handleCalendarTableWeekly}>
+          Weekly view
+        </Button><Typography>/</Typography>
+        <Button variant="contained" color="primary" size="medium" onClick={handleCalendarTableMonthly}>
+          Monthly view
         </Button>
       </Stack>
-
+</Box>
       <TableContainer
         sx={{ maxWidth: "100%", marginTop: "20px" }}
         component={Paper}
