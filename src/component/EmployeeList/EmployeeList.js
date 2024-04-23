@@ -20,22 +20,51 @@ import autoTable from 'jspdf-autotable';
 
 const EmployeeList = () => {
   const [emplist, setEmplist] = useState([]);
-  const [error, setError] = useState();
-
+  const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null)
+console.log(!emplist);
 const empData = emplist;
 
-function loadSelectedEmployee() {
-  axios
-    .get(`/GetEmp`)
-    .then((res) => {
-      console.log(res);
-      console.log(res.data);
-      setEmplist(res.data.data);
-    });
+// function loadSelectedEmployee() {
+//   axios
+//     .get(`/GetEmp`)
+//     .then((res) => {
+//       console.log(res);
+//       console.log(res.data);
+//       setEmplist(res.data.data);
+//     });
+// }
+
+const loadEmployees = async () => {      
+  try {
+    let result = await axios.get('/GetEmp');
+    setEmplist(result.data.data);     
+    setLoading(false);
+    // Work with the response...
+} catch (err) {
+    if (err.response) {
+      setLoading(false);
+     // console.log('Status', err.response.status);
+      setError(err.message);
+        // The client was given an error response (5xx, 4xx)
+        //console.log('Error response', err.message);
+    } else if (err.request) {
+      setLoading(false);
+      setError(err.message);
+        // The client never received a response, and the request was never left
+       // console.log('Error Request', err.message);
+    } else {
+        // Anything else
+        setLoading(false);
+        setError(err.message);
+      // console.log('Error anything', err.message);
+    }
 }
+  
+};
 
   useEffect(() => {
-    loadSelectedEmployee();
+    loadEmployees();
   }, []);
 
   const handleExportRows = (rows) => {
@@ -87,22 +116,27 @@ function loadSelectedEmployee() {
         header: 'Date Of Birth',
         accessorFn: (row) => `${moment(row.dateOfBirth).format('DD/MM/YYYY')}`,
         size:50         
-      },     
-      {
-        accessorKey: 'designation',
-        header: 'Designation',
-        size:50         
-      },
-      {
-        accessorKey: 'siteLocaion',
-        header: 'Work Locaion',
-        size:50         
-      },
+      },  
       {
         accessorKey: 'mobileNumber',
         header: 'Mobile Number',
         size:50         
-      }
+      },   
+      {
+        accessorKey: 'RoleName',
+        header: 'Designation',
+        size:50         
+      },
+      {
+        accessorKey: 'CategoryWork',
+        header: 'Work Category',
+        size:50         
+      },    
+      {
+        accessorKey: 'siteName',
+        header: 'Work Locaion',
+        size:50         
+      }       
     ],
     [],
   );
@@ -160,7 +194,8 @@ function loadSelectedEmployee() {
 
 
   if (error) return `Error: ${error.message}`;
-  if (!emplist) return "No Employees available!"
+  if (!empData.length) return "No Employees available!";
+
 
   return (
     <>      
