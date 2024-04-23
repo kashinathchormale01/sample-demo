@@ -21,43 +21,25 @@ import autoTable from 'jspdf-autotable';
 const EmployeeList = () => {
   const [emplist, setEmplist] = useState([]);
   const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null)
-console.log(!emplist);
-const empData = emplist;
-
-// function loadSelectedEmployee() {
-//   axios
-//     .get(`/GetEmp`)
-//     .then((res) => {
-//       console.log(res);
-//       console.log(res.data);
-//       setEmplist(res.data.data);
-//     });
-// }
+  const [error, setError] = useState(null)
+  const empData = emplist;
 
 const loadEmployees = async () => {      
   try {
     let result = await axios.get('/GetEmp');
     setEmplist(result.data.data);     
-    setLoading(false);
-    // Work with the response...
+    setLoading(false);    
 } catch (err) {
     if (err.response) {
-      setLoading(false);
-     // console.log('Status', err.response.status);
-      setError(err.message);
-        // The client was given an error response (5xx, 4xx)
-        //console.log('Error response', err.message);
+      setLoading(false);    
+      setError(err.message);       
     } else if (err.request) {
       setLoading(false);
-      setError(err.message);
-        // The client never received a response, and the request was never left
-       // console.log('Error Request', err.message);
+      setError(err.message);      
     } else {
         // Anything else
         setLoading(false);
-        setError(err.message);
-      // console.log('Error anything', err.message);
+        setError(err.message);     
     }
 }
   
@@ -78,15 +60,7 @@ const loadEmployees = async () => {
 
     doc.save('mrt-pdf-example.pdf');
   };
-
-
-
-  // const handleCheckboxChange = (event) => {
   
-  //   setSelectedCheckbox(event.target.value)
-   
-  // }
-
   const columns = useMemo(
     () => [
       {
