@@ -3,11 +3,15 @@ import axios from "axios";
 import { Grid, Typography } from '@mui/material';
 import { InputField, SelectField,TextareaField } from '../../../global/FormFields';
 import {workCategoryData, designationData} from '../../../global/common/StubData/CommonStubData';
+import { toast } from "react-toastify";
 
-export default function EmpWorkForm(props) {
-  const [workCategorylist, setWorkCategorylist] = React.useState(workCategoryData);
-  const [designationlist, setDesignationlist] = React.useState(designationData);
+export default function EmpWorkForm(props) {  
   const [sitelocations, setSitelocations] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [designations, setDesignations] = useState([]);
+  const [selectedsitelocation, setSelectedsitelocation] = useState('');
+  const [selectedDesignation, setSelectedDesignation] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null)
     const {
@@ -21,10 +25,20 @@ export default function EmpWorkForm(props) {
       } = props;
 
       const siteLocaionlist = sitelocations.map((value) => ({
-        value: value.id,
+        value: value.Id,
         label: value.siteName,
       }));
 
+      const designationlist = designations.map((value) => ({
+        value: value.Id,
+        label: value.RoleName,
+      }));
+
+      const categorieslist = categories.map((value) => ({
+        value: value.Id,
+        label: value.CategoryWork,
+      }));
+      
       const loadSiteLocation = async () => {      
         try {
           let result = await axios.get('/GetProj_Site');
@@ -52,9 +66,62 @@ export default function EmpWorkForm(props) {
       }
         
       };
-    
+
+      const loadCategories = async () => {      
+        try {
+          let result = await axios.get('/GetCategory');
+          setCategories(result.data.data);          
+          setLoading(false);
+          // Work with the response...
+      } catch (err) {
+          if (err.response) {
+            setLoading(false);
+            setError(err.message);
+          } else if (err.request) {
+            setLoading(false);
+            setError(err.message);
+          } else {
+              // Anything else
+              setLoading(false);
+              setError(err.message);
+          }
+      }
+        
+      };
+      
+      const handleSitelocationChange = (value) => {
+        const selectedsiteId = siteLocaionlist?.find(item => item.label === value)?.value;
+        console.log('site Handle change',selectedsiteId)
+        localStorage.setItem('selectedsiteId', JSON.stringify(selectedsiteId));
+        setSelectedsitelocation({selectedsiteId});       
+      };
+
+      const handleRoleChange = (value) => {
+        const selectedroleId = designationlist?.find(item => item.label === value)?.value;
+        console.log('Role Handle change',selectedroleId)
+        localStorage.setItem('selectedroleId', JSON.stringify(selectedroleId));
+        setSelectedsitelocation({selectedroleId});        
+      };
+
+      const handleCategoryChange = (value) => {
+        const selectedCategoryId = categorieslist?.find(item => item.label === value)?.value;
+        console.log('cat Handle change',selectedCategoryId)
+        setSelectedCategory({selectedCategoryId}); // Update the state with the selected category
+        localStorage.setItem('selectedCategoryId', JSON.stringify(selectedCategoryId));
+        // You can perform additional actions here if needed
+        axios.get(`/GetRoleCat/${selectedCategoryId}`)
+        .then(res=>{
+          console.log(res);
+          console.log(res.data);
+          setDesignations(res.data.data); 
+          toast.success(res.msg);
+        }) 
+      };
+      
+         
       useEffect(() => {
         loadSiteLocation();
+        loadCategories();
       }, []);
 
       return (
@@ -64,8 +131,9 @@ export default function EmpWorkForm(props) {
           <Grid item xs={12} sm={6}>
                 <SelectField
                     name={siteLocaion.name}
-                    label={siteLocaion.label}
-                    data={siteLocaionlist}                    
+                    label={siteLocaion.value}
+                    data={siteLocaionlist}
+                    onChange={handleSitelocationChange}                    
                     fullWidth
                 />
             </Grid>
@@ -73,7 +141,8 @@ export default function EmpWorkForm(props) {
                 <SelectField
                     name={categoryWork.name}
                     label={categoryWork.label}
-                    data={workCategorylist}                    
+                    data={categorieslist}                      
+                    onChange={handleCategoryChange}
                     fullWidth
                 />
             </Grid>
@@ -81,7 +150,8 @@ export default function EmpWorkForm(props) {
                 <SelectField
                     name={designation.name}
                     label={designation.label}
-                    data={designationlist}                    
+                    data={designationlist}    
+                    onChange={handleRoleChange}               
                     fullWidth
                 />
             </Grid>

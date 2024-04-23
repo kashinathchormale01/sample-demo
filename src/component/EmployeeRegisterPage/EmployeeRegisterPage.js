@@ -52,7 +52,13 @@ function _renderStepContent(step) {
     async function _submitForm(values, actions) {
         await _sleep(1000);
         // console.log(JSON.stringify(values))
-        axios.post('/SaveEmp', values)
+       
+        let categoryId = localStorage.getItem('selectedCategoryId');
+        let siteId = localStorage.getItem('selectedsiteId');
+        let roleId = localStorage.getItem('selectedroleId');
+        let sitepageIdsobj ={categoryId:categoryId, siteId:siteId, roleId:roleId};
+        const sendingdata = {values, sitepageIdsobj};
+        axios.post('/SaveEmp', sendingdata)
         .then(res=>{
           console.log(res);
           console.log(res.data);
