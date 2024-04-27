@@ -23,6 +23,8 @@ const EmployeeList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null)
   const empData = emplist;
+  const [selectedRowsId, setSelectedRowsId] = React.useState([]);
+  const [selectedRowsData, setSelectedRowsData] = React.useState();
 
 const loadEmployees = async () => {      
   try {
@@ -59,8 +61,16 @@ const loadEmployees = async () => {
     });
 
     doc.save('mrt-pdf-example.pdf');
-  };
-  
+  }; 
+
+  const handleDownloadRows = (rows) => {
+    // alert('Hi')
+    const tableData = rows.map((row) => Object.values(row.original));
+    setSelectedRowsData(tableData);
+    // console.log('Hi',tableData)
+    console.log('Hi',selectedRowsData)
+  }
+    
   const columns = useMemo(
     () => [
       {
@@ -161,11 +171,22 @@ const loadEmployees = async () => {
       >
         Export Selected Rows
       </Button>
+      <Button
+        disabled={
+          !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
+        }
+        //only export selected rows
+        onClick={() => handleDownloadRows(table.getSelectedRowModel().rows)}
+        startIcon={<FileDownloadIcon />}
+      >
+        Download Selected Rows
+      </Button>
     </Box>
     ),
     
   });
 
+  // console.log(table.getRowModel().rows)
 
   if (error) return `Error: ${error.message}`;
   if (!empData.length) return "No Employees available!";
@@ -174,6 +195,9 @@ const loadEmployees = async () => {
   return (
     <>      
       <MaterialReactTable table={table} />
+      <pre style={{ fontSize: 10 }}>
+        {JSON.stringify(selectedRowsData, null, 4)}
+      </pre>
     </>
   );
 };

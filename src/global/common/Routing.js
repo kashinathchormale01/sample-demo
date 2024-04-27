@@ -19,6 +19,7 @@ import { EmployeeTimeSheet } from '../../component/EmployeeAttendance/EmployeeAt
 import AddDesignation from '../../component/App Management/DesignationManagement/AddDesignation';
 import DesignationManagement from '../../component/App Management/DesignationManagement/DesignationManagement';
 import EditDesignation from '../../component/App Management/DesignationManagement/EditDesignation';
+import WageSlip from '../../component/FinanceManagement/Wageslip';
 
 
 
@@ -36,6 +37,7 @@ const Routing = () => {
 
         {/* Employee Wage Register */}
         <Route path="/generate-wage-reports" exact element={<BasicTable />} />
+        <Route path="/generate-wage-slip" exact element={<WageSlip />} />
 
         {/* Employee attendance */}
         <Route path='/employee-attendance' exact element={<EmployeeTimeSheet />} />
