@@ -12,7 +12,7 @@ import {
   TableRow,
   Paper,
   Typography,
-  FormControl,InputLabel,Select,OutlinedInput,MenuItem,ListItemText,Box,Chip,CircularProgress
+  FormControl,InputLabel,Select,OutlinedInput,MenuItem,ListItemText,Box,Chip
 } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import { styled } from "@mui/material/styles";
@@ -37,7 +37,6 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { sitesloc } from "../../global/common/StubData/CommonStubData";
 import Autocomplete from '@mui/material/Autocomplete';
 import { toast } from "react-toastify";
-import moment from "moment";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -91,8 +90,7 @@ export const EmployeeTimeSheet = () => {
   const [selectedSite, setSelectedSite] = React.useState([]);
 
   const [dateValue, setDateValue] = React.useState(dayjs());
-  // const [loading, setLoading] = useState();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState();
   const [emplistbylocation, setEmplistbylocation] = useState();
   // console.log('selectedSite',selectedSite);
   /**
@@ -105,7 +103,7 @@ export const EmployeeTimeSheet = () => {
   const isFutureStartDate = useMemo(() => startDate > new Date(), [startDate]);
 
   const [monthly, setMonthly] = React.useState(false);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(emplistbylocation);
   // const [data, setData] = useState([
   //   {emp_id:1,
   //   sheet:{}
@@ -123,14 +121,6 @@ export const EmployeeTimeSheet = () => {
   
 //    const [data, setData] = useState();
 
-// const filteredData = data.map(emp => ({
-//   emp_id: emp.emp_id,
-//   sheet: Object.fromEntries(
-//     Object.entries(emp.sheet).filter(([_, value]) => value === true)
-//   )
-// }));
-
-// console.log('filteredData',filteredData);
 
 //    function filterTrueSheets(data) {
 //     const trueSheets = [];
@@ -151,17 +141,46 @@ export const EmployeeTimeSheet = () => {
 // console.log('truesheet',trueSheets);
 
 
+  //  console.log('data',data);
+  
+  
+  // console.log('payloadData',payloadData);
   
 
-  // const handleChangeselect = (event) => {
-  //   const {
-  //     target: { value },
-  //   } = event;
-  //   setSelectedSite(
-  //     // On autofill we get a stringified value.
-  //     typeof value === 'string' ? value.split(',') : value,
-  //   );
-  // };
+  // const [data, setData] = useState([
+  //   {
+  //     emp_id: 111,
+  //     sheet: {
+  //       "4/15/2024": false,
+  //       "4/16/2024": true,
+  //       "4/18/2024": true,
+  //     },
+  //   },
+  //   {
+  //     emp_id: 112,
+  //     sheet: {
+  //       "4/15/2024": true,
+  //       "4/16/2024": false,
+  //       "4/18/2024": true,
+  //     },
+  //   },
+  // ]);
+
+ 
+  // console.log('data',data);
+  // const empID = emplist.map((emp)=>emp.Id);
+  // console.log(empID);
+  // data.map((item)=>item.emp_id).push(empID);
+
+  const handleChangeselect = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setSelectedSite(
+      // On autofill we get a stringified value.
+      typeof value === 'string' ? value.split(',') : value,
+    );
+  };
 
 
   const handlePreviousWeek = () => {
@@ -214,10 +233,8 @@ export const EmployeeTimeSheet = () => {
     setStartDate(firstDayOfWeek);
   };
 
- 
-  const loadSiteLocation = async () => {  
+  const loadSiteLocation = async () => {      
     try {
-      setLoading(true);
       let result = await axios.get('/GetProj_Site');
       setSitelocationlist(result.data.data);          
       setLoading(false);
@@ -249,80 +266,38 @@ export const EmployeeTimeSheet = () => {
 // }
 
 const submit = values => {
-  // let valuestoprint = [];
-  // valuestoprint.push(selectedSite);
-  // payload = {
-  //   valuestoprint: valuestoprint,
-  //   values: values
-  // }
-  // console.log('payload:',values);
-  setSelectedSite(values);
+// const sendpayload = JSON.stringify(values);
+  let valuestoprint = [];
+  valuestoprint.push(selectedSite);
+  // console.log('Value for aceess is:',selectedSite);
+  // console.log('Value for aceess is:',values);
+  // console.log('valuestoprint:',valuestoprint);
+  let payload = {};
+  payload = {
+    valuestoprint: valuestoprint,
+    values: values
+  }
+  console.log('payload:',values);
+  // alert(`Value for aceess is: ${JSON.stringify(values)}`);
+  // setSelectedSite(values);  
+  // loadEmpDataByLocation();
   axios.post('/GetSiteEmp',values)
         .then(res=>{
           console.log(res);
           console.log(res.data);
-          const payloads = res.data.data.map(emp => ({
-            emp_id: emp.Id,
-            sheet: {}
-        }));   
           setEmplistbylocation(res.data.data)
-          setData(payloads)
-          toast.success(res.data.msg);
+          toast.success(res.msg);
         }) 
 };
 
-const submitAttendance = async () => {
-  const dateKeys = {};
-  data.forEach((emp) => {
-    Object.entries(emp.sheet).forEach(([date, value]) => {
-      if (value === true) {
-        if (!dateKeys[date]) {
-          dateKeys[date] = [];
-        }
-        dateKeys[date].push(emp.emp_id);
-      }
-    });
-  });
-
-  // Create filtered data with emp_id arrays
-  const filteredData = Object.keys(dateKeys).map((date) => ({
-    date,
-    emp_ids: dateKeys[date],
-  }));
-
-  const makeAttendancePayload = {
-    selectedSite,
-    filteredData,
-  };
-  // post api call for attendance with required payload
-  try {
-    setLoading(true); // Set loading before sending API request
-    const res = await axios.post("/Attendance", makeAttendancePayload);
-    const response = res; // Response received
-    setLoading(false); // Stop loading
-  } catch (err) {
-    setLoading(false); // Stop loading in case of error
-    console.error(error);
-  }
-  // post api call for attendance with required payload
-  // axios.post('/Attendance',makeAttendancePayload)
-  // .then(res=>{
-  //   console.log(res);
-  //   console.log(res.data);
-  //   setLoading(true);
-  //   toast.success(res.data.msg);
-  // })
-};
-
   useEffect(() => {
+    // loadEmployees();  
     loadSiteLocation();
   }, []);
 
   console.log('emplistbylocation',emplistbylocation);
-  if (loading) return <>Loading...<CircularProgress /></>;
-
+ 
   return (
-   
     <>
       <Box sx={{display:'flex', flexDirection:'row', alignItems:'center'}}>
 
@@ -338,7 +313,6 @@ const submitAttendance = async () => {
               style={{ width: 300 }}
               onChange={(e, value) => {
                 //console.log(value);
-                isSubmitting = false;
                 setFieldValue(
                   "siteId",
                   value !== null ? value.Id : initialValues.siteId
@@ -363,8 +337,8 @@ const submitAttendance = async () => {
         )}
        </Formik>
       </Box>
-    { emplistbylocation && 
-     <>
+      {emplistbylocation && 
+      <>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         {/* <DemoContainer components={["DateCalendar", "DateCalendar"]}>
           <DemoItem>
@@ -458,8 +432,7 @@ const submitAttendance = async () => {
                 },
               }}
             >
-              <TableCell>Employee Id</TableCell>
-              {/* <TableCell>Employee Name</TableCell> */}
+              <TableCell>Employee</TableCell>
               <TableCell>Total Attendance</TableCell>
               {weekDates?.map((day) => (
                 <TableCell key={day}>
@@ -472,7 +445,7 @@ const submitAttendance = async () => {
             {data?.map((item, index) => (
               <StyledTableRow key={index}>
                 <TableCell>{item.emp_id}</TableCell>
-                {/* <TableCell>`${item.emp_id}</TableCell> */}
+
                 <TableCell>
                   <Chip
                     label={getTotal(index, weekDates)}
@@ -509,9 +482,6 @@ const submitAttendance = async () => {
           </TableBody>
         </Table>
       </TableContainer> 
-      <Button type="submit" variant="contained" color="primary" onClick={submitAttendance}>
-      {loading ? <>Loading..</> : <>Submit Attendance</>} 
-        </Button>
       </>}
       {/* <button onClick={handleAddRow}>Add New Project</button> */}
 

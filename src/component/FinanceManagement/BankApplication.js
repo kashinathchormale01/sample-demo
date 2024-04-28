@@ -62,12 +62,12 @@ const [applicationData, setApplicationData] = useState({
 
 
 
-const docdate = '01/01/2010';
-const bankname = 'Bank Of Maharashtra';
-const bankAdress = 'Navi peth Solapur';
-const ChequeNo = 'ds0212125';
-const yourName = 'N.K.Sharma';
-const amount = '204010';
+// const docdate = '01/01/2010';
+// const bankname = 'Bank Of Maharashtra';
+// const bankAdress = 'Navi peth Solapur';
+// const ChequeNo = 'ds0212125';
+// const yourName = 'N.K.Sharma';
+// const amount = '204010';
 
 const generatePDF = () => {    
     let doc = new jsPDF("p", "pt");

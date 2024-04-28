@@ -1,5 +1,5 @@
 import React from 'react';
-import { Page, Document, Image, StyleSheet } from '@react-pdf/renderer';
+import { Page, Document, StyleSheet } from '@react-pdf/renderer';
 
 
 import InvoiceItemsTable from './InvoiceItemsTable'
