@@ -1,4 +1,4 @@
-import { DatePicker, DatePickerProps } from "@mui/x-date-pickers";
+import { DatePicker } from "@mui/x-date-pickers";
 import { useField, useFormikContext } from "formik";
 
 // Add a name property and reuse the date picker props.

@@ -25,7 +25,7 @@ const AddDesignation = () => {
     const[categorylist, setCategorylist] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [age, setAge] = React.useState('');
+    // const [age, setAge] = React.useState('');
 
     const loadCategories = async () => {      
         try {
