@@ -15,9 +15,9 @@ import EmpCommBioForm from './Forms/EmpCommBioForm';
 import EmpFormSuccessUpdate from './EmpFormSuccessUpdate';
 import ReviewForm from './FormReview';
 
-import validationSchema from './../../global/common/FormModel/validationSchema';
-import formInitialValues from './../../global/common/FormModel/formInitialValues';
-import EmpRegisterModel from './../../global/common/FormModel/formModel';
+import validationSchema from './../../../global/common/FormModel/validationSchema';
+import formInitialValues from './../../../global/common/FormModel/formInitialValues';
+import EmpRegisterModel from './../../../global/common/FormModel/formModel';
 
 const steps = ['Profile', 'Bank Details','Work Details','Communication and Bio Details','Review Details'];
 
@@ -43,10 +43,10 @@ function _renderStepContent(step) {
 
 const EmployeeUpdatePage = () => {
     // const { id } = useParams();
-    const [activeStep, setActiveStep] = useState(0);
+    const [activeStep, setActiveStep] = useState(4);
     const currentValidationSchema = validationSchema[activeStep];
     const isLastStep = activeStep === steps.length - 1;
-    const [selectedEmpID, setSelectedEmpID] = useState(8);
+    const [selectedEmpID, setSelectedEmpID] = useState(1);
     const [selectedEmp, setSelectedEmp] = useState();
 
     function loadSelectedEmployee() {
@@ -70,9 +70,14 @@ const EmployeeUpdatePage = () => {
 
     async function _submitForm(values, actions) {
         await _sleep(1000);
-        console.log(JSON.stringify(values))        
+        console.log(JSON.stringify(values))
+        let categoryId = localStorage.getItem('selectedCategoryId');
+        let siteId = localStorage.getItem('selectedsiteId');
+        let roleId = localStorage.getItem('selectedroleId');
+        let sitepageIdsobj ={categoryId:categoryId, siteId:siteId, roleId:roleId};
+        const sendingdata = {values, sitepageIdsobj};        
 
-        axios.put('/UpdateEmp', values)
+        axios.put('/UpdateEmp', sendingdata)
         .then(res=>{
           console.log(res);
           console.log(res.data);

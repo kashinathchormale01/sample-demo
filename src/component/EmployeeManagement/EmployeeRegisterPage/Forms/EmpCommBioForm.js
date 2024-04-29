@@ -1,21 +1,21 @@
 import React from 'react';
 import { Grid, Typography, TextField } from '@mui/material';
-import { InputField, SelectField, TextareaField } from '../../../global/FormFields';
+import { InputField, SelectField, TextareaField } from '../../../../global/FormFields';
 
-const genderlist = [
-    {
-      value: '1',
-      label: 'Male'
-    },
-    {
-      value: '2',
-      label: 'Female'
-    },
-    {
-      value: '3',
-      label: 'Other'
-    }
-  ];
+// const genderlist = [
+//     {
+//       value: '1',
+//       label: 'Male'
+//     },
+//     {
+//       value: '2',
+//       label: 'Female'
+//     },
+//     {
+//       value: '3',
+//       label: 'Other'
+//     }
+//   ];
 
   const cityNamelist = [
     {
@@ -28,24 +28,24 @@ const genderlist = [
     }
   ];
 
-  const educationLevellist = [
-    {
-        value: undefined,
-        label: 'None'
-    },
-    {
-      value: '1',
-      label: 'BA'
-    },
-    {
-        value: '2',
-        label: 'BCOM'
-    },
-    {
-        value: '3',
-        label: 'HSC'
-    }
-  ];
+  // const educationLevellist = [
+  //   {
+  //       value: undefined,
+  //       label: 'None'
+  //   },
+  //   {
+  //     value: '1',
+  //     label: 'BA'
+  //   },
+  //   {
+  //       value: '2',
+  //       label: 'BCOM'
+  //   },
+  //   {
+  //       value: '3',
+  //       label: 'HSC'
+  //   }
+  // ];
 
 export default function EmpCommBioForm(props) {
     // const [countryName, setCountryName] = React.useState("India");

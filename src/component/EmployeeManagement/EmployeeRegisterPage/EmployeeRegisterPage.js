@@ -15,9 +15,9 @@ import EmpCommBioForm from './Forms/EmpCommBioForm';
 import EmpFormSuccess from './EmpFormSuccess';
 import ReviewForm from './FormReview';
 
-import validationSchema from './../../global/common/FormModel/validationSchema';
-import formInitialValues from './../../global/common/FormModel/formInitialValues';
-import EmpRegisterModel from './../../global/common/FormModel/formModel';
+import validationSchema from './../../../global/common/FormModel/validationSchema';
+import formInitialValues from './../../../global/common/FormModel/formInitialValues';
+import EmpRegisterModel from './../../../global/common/FormModel/formModel';
 
 const steps = ['Profile', 'Bank Details','Work Details','Communication and Bio Details','Review Details'];
 

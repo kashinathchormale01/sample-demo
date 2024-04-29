@@ -1,8 +1,8 @@
 import React from 'react';
 import { Grid, Typography, TextField } from '@mui/material';
-import { InputField, SelectField, DatePickerField } from '../../../global/FormFields';
+import { InputField, SelectField, DatePickerField } from '../../../../global/FormFields';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import {genderData} from '../../../global/common/StubData/CommonStubData'
+import {genderData} from '../../../../global/common/StubData/CommonStubData'
 import moment from 'moment';
 
 

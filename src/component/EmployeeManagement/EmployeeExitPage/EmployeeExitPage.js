@@ -1,6 +1,6 @@
 // import React from 'react';
 import { Grid, Typography, TextField,MenuItem,FormControl,Select,InputLabel,Box, Paper, Autocomplete } from '@mui/material';
-import { InputField, SelectField, DatePickerField, TextareaField } from '../../global/FormFields';
+import { InputField, SelectField, DatePickerField, TextareaField } from '../../../global/FormFields';
 import EmployeeList from '../EmployeeList/EmployeeList';
 import axios from "axios";
 import React, { useState, useEffect} from "react";

@@ -34,7 +34,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { sitesloc } from "../../global/common/StubData/CommonStubData";
+// import { sitesloc } from "../../global/common/StubData/CommonStubData";
 import Autocomplete from '@mui/material/Autocomplete';
 import { toast } from "react-toastify";
 import moment from "moment";

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Grid, Typography } from '@mui/material';
-import { InputField, SelectField,TextareaField } from '../../../global/FormFields';
-import {workCategoryData, designationData} from '../../../global/common/StubData/CommonStubData';
+import { InputField, SelectField,TextareaField } from '../../../../global/FormFields';
+import {workCategoryData, designationData} from '../../../../global/common/StubData/CommonStubData';
 import { toast } from "react-toastify";
 
 export default function EmpWorkForm(props) {  
@@ -23,11 +23,13 @@ export default function EmpWorkForm(props) {
             serviceRemark
         }
       } = props;
-
+console.log('props',props);
       const siteLocaionlist = sitelocations.map((value) => ({
         value: value.Id,
         label: value.siteName,
       }));
+
+      console.log('siteLocaionlist',siteLocaionlist);
 
       const designationlist = designations.map((value) => ({
         value: value.Id,
@@ -131,7 +133,7 @@ export default function EmpWorkForm(props) {
           <Grid item xs={12} sm={6}>
                 <SelectField
                     name={siteLocaion.name}
-                    label={siteLocaion.value}
+                    label={siteLocaion.label}
                     data={siteLocaionlist}
                     onChange={handleSitelocationChange}                    
                     fullWidth

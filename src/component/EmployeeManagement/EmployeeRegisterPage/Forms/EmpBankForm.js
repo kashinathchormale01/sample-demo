@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid, Typography } from '@mui/material';
-import { InputField } from '../../../global/FormFields';
+import { InputField } from '../../../../global/FormFields';
 
 
 export default function EmpBankForm(props) {
