@@ -2,8 +2,8 @@ import React,{Fragment} from 'react';
 import { Button } from '@mui/material';
 import { pdf} from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
-import Invoice from './reports/Invoice';
-import invoice from './reports/Data';
+import Invoice from './Reports/Invoice';
+import invoice from './Reports/Data';
 
 // const styles = StyleSheet.create({
 //   page: {
