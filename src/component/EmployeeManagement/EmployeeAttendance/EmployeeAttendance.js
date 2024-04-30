@@ -89,12 +89,10 @@ export const EmployeeTimeSheet = () => {
   const [sitelocationlist, setSitelocationlist] = useState();
   const [error, setError] = useState(null);
   const [selectedSite, setSelectedSite] = React.useState([]);
-
   const [dateValue, setDateValue] = React.useState(dayjs());
-  // const [loading, setLoading] = useState();
   const [loading, setLoading] = useState(false);
   const [emplistbylocation, setEmplistbylocation] = useState();
-  // console.log('selectedSite',selectedSite);
+  const [getAttendanceres, setGetAttendanceres] = useState([]);   
   /**
    * week start date
    */
@@ -119,50 +117,7 @@ export const EmployeeTimeSheet = () => {
   // {emp_id:4,
   //   sheet:{}
   // }
-  // ]);
-  
-//    const [data, setData] = useState();
-
-// const filteredData = data.map(emp => ({
-//   emp_id: emp.emp_id,
-//   sheet: Object.fromEntries(
-//     Object.entries(emp.sheet).filter(([_, value]) => value === true)
-//   )
-// }));
-
-// console.log('filteredData',filteredData);
-
-//    function filterTrueSheets(data) {
-//     const trueSheets = [];
-
-//     data.forEach(employee => {
-//         const emp_id = employee.emp_id;
-//         const sheet = employee.sheet;
-//         const trueDates = Object.keys(sheet).filter(date => sheet[date] === true);
-//         if (trueDates.length > 0) {
-//             trueSheets.push({ emp_id, sheet: Object.fromEntries(trueDates.map(date => [date, true])) });
-//         }
-//     });
-
-//     return trueSheets;
-// }
-
-// const trueSheets = filterTrueSheets(data);
-// console.log('truesheet',trueSheets);
-
-
-  
-
-  // const handleChangeselect = (event) => {
-  //   const {
-  //     target: { value },
-  //   } = event;
-  //   setSelectedSite(
-  //     // On autofill we get a stringified value.
-  //     typeof value === 'string' ? value.split(',') : value,
-  //   );
-  // };
-
+  // ]); 
 
   const handlePreviousWeek = () => {
     setStartDate((currDate) => dateOffset(currDate, -7));
@@ -241,34 +196,38 @@ export const EmployeeTimeSheet = () => {
           console.log('Error anything', err.message);
       }
   }    
-  };
-  
+  }; 
 
-// const handleSiteFormSubmit = () =>{
-//   alert('hancle sites');
-// }
-
-const submit = values => {
-  // let valuestoprint = [];
-  // valuestoprint.push(selectedSite);
-  // payload = {
-  //   valuestoprint: valuestoprint,
-  //   values: values
-  // }
-  // console.log('payload:',values);
+const handleSiteSubmit = (values) => {
   setSelectedSite(values);
-  axios.post('/GetSiteEmp',values)
-        .then(res=>{
-          console.log(res);
-          console.log(res.data);
-          const payloads = res.data.data.map(emp => ({
-            emp_id: emp.Id,
-            sheet: {}
-        }));   
-          setEmplistbylocation(res.data.data)
-          setData(payloads)
-          toast.success(res.data.msg);
-        }) 
+  axios.post("/GetAttendance", values).then((res) => {
+    console.log(res);
+    console.log(res.data);
+    // setGetAttendanceres(res.data.data);
+    const formatDate = (dateString) => {
+      if (!dateString) return null;
+      const [year, month, day] = dateString.split("-");
+      return `${parseInt(month)}/${day}/${year}`;
+    };
+
+    const transformData = res.data.data.map((emp) => {
+      const sheetObject = {};
+      const fullname = emp.firstName + emp.lastName;
+      if (emp.Sheet) {
+        emp.Sheet.split(", ").forEach((date) => {
+          sheetObject[formatDate(date)] = true;
+        });
+      }
+      return {
+        name: fullname,
+        emp_id: emp.Id,
+        sheet: sheetObject,
+      };
+    });
+    console.log(transformData);
+    setData(transformData);
+    toast.success(res.data.msg);
+  });
 };
 
 const submitAttendance = async () => {
@@ -299,19 +258,12 @@ const submitAttendance = async () => {
     setLoading(true); // Set loading before sending API request
     const res = await axios.post("/Attendance", makeAttendancePayload);
     const response = res; // Response received
+    toast.success(res.data.msg);
     setLoading(false); // Stop loading
   } catch (err) {
     setLoading(false); // Stop loading in case of error
     console.error(error);
-  }
-  // post api call for attendance with required payload
-  // axios.post('/Attendance',makeAttendancePayload)
-  // .then(res=>{
-  //   console.log(res);
-  //   console.log(res.data);
-  //   setLoading(true);
-  //   toast.success(res.data.msg);
-  // })
+  }  
 };
 
   useEffect(() => {
@@ -320,13 +272,14 @@ const submitAttendance = async () => {
 
   console.log('emplistbylocation',emplistbylocation);
   if (loading) return <>Loading...<CircularProgress /></>;
+  if (!sitelocationlist) return 'No Sites available';
 
   return (
    
     <>
       <Box sx={{display:'flex', flexDirection:'row', alignItems:'center'}}>
 
-      <Formik initialValues={initialValues} onSubmit={submit}>
+      <Formik initialValues={initialValues} onSubmit={handleSiteSubmit}>
         {({ handleChange,  isValid,dirty, isSubmitting, values, setFieldValue }) => (
           <Form>
 
@@ -363,7 +316,7 @@ const submitAttendance = async () => {
         )}
        </Formik>
       </Box>
-    { emplistbylocation && 
+    { data && 
      <>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         {/* <DemoContainer components={["DateCalendar", "DateCalendar"]}>
@@ -459,7 +412,7 @@ const submitAttendance = async () => {
               }}
             >
               <TableCell>Employee Id</TableCell>
-              {/* <TableCell>Employee Name</TableCell> */}
+              <TableCell>Employee Name</TableCell>
               <TableCell>Total Attendance</TableCell>
               {weekDates?.map((day) => (
                 <TableCell key={day}>
@@ -472,7 +425,7 @@ const submitAttendance = async () => {
             {data?.map((item, index) => (
               <StyledTableRow key={index}>
                 <TableCell>{item.emp_id}</TableCell>
-                {/* <TableCell>`${item.emp_id}</TableCell> */}
+                <TableCell>{item.name}</TableCell>
                 <TableCell>
                   <Chip
                     label={getTotal(index, weekDates)}
@@ -512,9 +465,8 @@ const submitAttendance = async () => {
       <Button type="submit" variant="contained" color="primary" onClick={submitAttendance}>
       {loading ? <>Loading..</> : <>Submit Attendance</>} 
         </Button>
-      </>}
-      {/* <button onClick={handleAddRow}>Add New Project</button> */}
-
+      </>}     
+      {error && <Typography color="error">{error}</Typography>}
       {/* Just for visualization purposes */}
       <pre>{JSON.stringify(data, null, 4)}</pre>
     </>
