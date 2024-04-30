@@ -20,6 +20,7 @@ import AddDesignation from '../../component/App Management/DesignationManagement
 import DesignationManagement from '../../component/App Management/DesignationManagement/DesignationManagement';
 import EditDesignation from '../../component/App Management/DesignationManagement/EditDesignation';
 import WageSlip from '../../component/FinanceManagement/Wageslip';
+import EmployeeDetails from '../../component/EmployeeManagement/EmployeeDetails/EmployeeDetails';
 
 
 
@@ -34,6 +35,7 @@ const Routing = () => {
         <Route path="/employee-register" exact element={<EmployeeRegister />} />
         <Route path="/employee-update" exact element={<EmployeeUpdatePage />} />
         <Route path="/employee-exit" exact element={<EmpExitForm />} />
+        <Route path="/employee-details" exact element={<EmployeeDetails />} />
 
         {/* Employee Wage Register */}
         <Route path="/generate-wage-reports" exact element={<BasicTable />} />

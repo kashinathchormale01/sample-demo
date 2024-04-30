@@ -120,6 +120,10 @@ export const menuItemsData = [
         url: "generate-wage-reports",
       },
       {
+        menu: "Generate Wage Slips",
+        url: "generate-wage-slip",
+      },
+      {
         menu: "Contractor Assignment",
         url: "contractor-assignment",
       },

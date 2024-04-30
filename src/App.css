@@ -47,3 +47,5 @@
   color: red;
   font-weight: bold;
 }
+.details-page-wrapper label{font-style: normal !important ;}
+.details-page-wrapper label,.details-page-wrapper h6{color: '#808080'; font-style: italic;}
