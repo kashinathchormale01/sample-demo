@@ -92,7 +92,9 @@ export const EmployeeTimeSheet = () => {
   const [dateValue, setDateValue] = React.useState(dayjs());
   const [loading, setLoading] = useState(false);
   const [emplistbylocation, setEmplistbylocation] = useState();
-  const [getAttendanceres, setGetAttendanceres] = useState([]);   
+  const [getAttendanceres, setGetAttendanceres] = useState([]);
+  const [weekoffday, setWeekoffday] = useState([]);   
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   /**
    * week start date
    */
@@ -118,7 +120,7 @@ export const EmployeeTimeSheet = () => {
   //   sheet:{}
   // }
   // ]); 
-
+ 
   const handlePreviousWeek = () => {
     setStartDate((currDate) => dateOffset(currDate, -7));
   };
@@ -139,6 +141,15 @@ export const EmployeeTimeSheet = () => {
       // remove key if empty
       if (value === "") delete newData[index].sheet[key];
       else newData[index].sheet[key] = value;
+      return newData;
+    });
+  };
+
+  const setWeekOff = (index, day) => {
+    setData((prevData) => {
+      const newData = [...prevData];
+      newData[index].weekOff = day;
+      setWeekoffday(newData[0].weekOff)
       return newData;
     });
   };
@@ -200,6 +211,7 @@ export const EmployeeTimeSheet = () => {
 
 const handleSiteSubmit = (values) => {
   setSelectedSite(values);
+  setIsButtonDisabled(true);
   axios.post("/GetAttendance", values).then((res) => {
     console.log(res);
     console.log(res.data);
@@ -212,7 +224,8 @@ const handleSiteSubmit = (values) => {
 
     const transformData = res.data.data.map((emp) => {
       const sheetObject = {};
-      const fullname = emp.firstName + emp.lastName;
+      const weekOff = "";
+      const fullname = emp.firstName + ' ' + emp.lastName;
       if (emp.Sheet) {
         emp.Sheet.split(", ").forEach((date) => {
           sheetObject[formatDate(date)] = true;
@@ -222,11 +235,13 @@ const handleSiteSubmit = (values) => {
         name: fullname,
         emp_id: emp.Id,
         sheet: sheetObject,
+        weekOff:""
       };
     });
     console.log(transformData);
     setData(transformData);
     toast.success(res.data.msg);
+    setIsButtonDisabled(false);
   });
 };
 
@@ -275,51 +290,60 @@ const submitAttendance = async () => {
   if (!sitelocationlist) return 'No Sites available';
 
   return (
-   
     <>
-      <Box sx={{display:'flex', flexDirection:'row', alignItems:'center'}}>
+      <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+        <Formik initialValues={initialValues} onSubmit={handleSiteSubmit}>
+          {({
+            handleChange,
+            isValid,
+            dirty,
+            isSubmitting,
+            values,
+            setFieldValue,
+          }) => (
+            <Form>
+              <Autocomplete
+                id="userroles"
+                name="userroles"
+                options={sitelocationlist}
+                getOptionLabel={(option) => option.siteName}
+                style={{ width: 300 }}
+                onChange={(e, value) => {
+                  //console.log(value);
+                  isSubmitting = false;
+                  setIsButtonDisabled(false);
+                  setFieldValue(
+                    "siteId",
+                    value !== null ? value.Id : initialValues.siteId
+                  );
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    margin="normal"
+                    label="Select Site Location"
+                    fullWidth
+                    name="role"
+                    {...params}
+                  />
+                )}
+              />
 
-      <Formik initialValues={initialValues} onSubmit={handleSiteSubmit}>
-        {({ handleChange,  isValid,dirty, isSubmitting, values, setFieldValue }) => (
-          <Form>
-
-        <Autocomplete
-              id="userroles"
-              name="userroles"
-              options={sitelocationlist}
-              getOptionLabel={(option) => option.siteName}
-              style={{ width: 300 }}
-              onChange={(e, value) => {
-                //console.log(value);
-                isSubmitting = false;
-                setFieldValue(
-                  "siteId",
-                  value !== null ? value.Id : initialValues.siteId
-                );
-              }}
-              renderInput={(params) => (
-                <TextField
-                  margin="normal"
-                  label="Select Site Location"
-                  fullWidth
-                  name="role"
-                  {...params}
-                />
-              )}
-            />
-
-       
-        <Button type="submit" variant="contained" color="primary" disabled={isSubmitting || !dirty}>
-          Go
-        </Button>
-        </Form>
-        )}
-       </Formik>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                disabled={isButtonDisabled}
+              >
+                Go
+              </Button>
+            </Form>
+          )}
+        </Formik>
       </Box>
-    { data && 
-     <>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        {/* <DemoContainer components={["DateCalendar", "DateCalendar"]}>
+      {data.length && (
+        <>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            {/* <DemoContainer components={["DateCalendar", "DateCalendar"]}>
           <DemoItem>
             <DateCalendar
               value={dateValue}
@@ -327,146 +351,187 @@ const submitAttendance = async () => {
             />
             </DemoItem>
         </DemoContainer> */}
-        <DemoContainer sx={{ margin: "20px 0" }} components={["DatePicker"]}>
-          <DatePicker
-            label="Select a Date"
-            value={dateValue}
-            onChange={handleDateChange}
-          />
-        </DemoContainer>
-      </LocalizationProvider>
-
-      <Box sx={{ display: "flex", flexDirection: "row" }}>
-        <Stack direction="row" spacing={2} alignItems={"center"}>
-          <Button
-            size="medium"
-            onClick={handlePreviousWeek}
-            variant="outlined"
-            startIcon={<ArrowBackIosOutlinedIcon />}
-          >
-            Previous Week
-          </Button>
-          {monthly ? (
-            <Typography>
-              {` ${weekDates[0].toLocaleDateString(
-                "en-US"
-              )} - ${weekDates[31].toLocaleDateString("en-US")} `}
-            </Typography>
-          ) : (
-            <Typography>
-              {` ${weekDates[0].toLocaleDateString(
-                "en-US"
-              )} - ${weekDates[6].toLocaleDateString("en-US")} `}
-            </Typography>
-          )}
-
-          <Button
-            size="medium"
-            onClick={handleNextWeek}
-            variant="outlined"
-            endIcon={<ArrowForwardIosOutlinedIcon />}
-          >
-            Next Week
-          </Button>
-        </Stack>
-
-        <Stack
-          direction="row"
-          spacing={2}
-          alignItems={"center"}
-          marginLeft={"100px"}
-        >
-          <Button
-            variant="outlined"
-            color="warning"
-            size="medium"
-            endIcon={<ViewWeekIcon />}
-            onClick={handleCalendarTableWeekly}
-          >
-            Weekly view
-          </Button>
-          <Button
-            variant="outlined"
-            color="success"
-            size="medium"
-            endIcon={<CalendarMonthIcon />}
-            onClick={handleCalendarTableMonthly}
-          >
-            Monthly view
-          </Button>
-        </Stack>
-      </Box>
-      <TableContainer
-        sx={{ maxWidth: "100%", marginTop: "20px" }}
-        component={Paper}
-      >
-        <Table aria-label="customized table">
-          <TableHead>
-            <TableRow
-              sx={{
-                "& th": {
-                  fontSize: "1rem",
-                  color: "rgba(96, 96, 96)",
-                  backgroundColor: "#b1dbdf",
-                },
-              }}
+            <DemoContainer
+              sx={{ margin: "20px 0" }}
+              components={["DatePicker"]}
             >
-              <TableCell>Employee Id</TableCell>
-              <TableCell>Employee Name</TableCell>
-              <TableCell>Total Attendance</TableCell>
-              {weekDates?.map((day) => (
-                <TableCell key={day}>
-                  {day.toLocaleDateString("en-US", weekDayFormat)}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data?.map((item, index) => (
-              <StyledTableRow key={index}>
-                <TableCell>{item.emp_id}</TableCell>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>
-                  <Chip
-                    label={getTotal(index, weekDates)}
-                    color="success"
-                    variant="filled"
-                  />
-                </TableCell>
-                {weekDates.map((date) => (
-                  <TableCell key={date}>
-                    <Checkbox
-                      id={`epds-${index}`}
-                      type="checkbox"
-                      name={getValue(index, date).toString()}
-                      checked={Boolean(getValue(index, date))}
-                      onChange={(e) => setValue(index, date, e.target.checked)}
-                      disabled={isFutureStartDate}
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 48 } }}
-                      checkedIcon={<ToggleOn />}
-                      icon={<ToggleOff />}
-                    />
-                  </TableCell>
+              <DatePicker
+                label="Select a Date"
+                value={dateValue}
+                onChange={handleDateChange}
+              />
+            </DemoContainer>
+          </LocalizationProvider>
+
+          <Box sx={{ display: "flex", flexDirection: "row" }}>
+            <Stack direction="row" spacing={2} alignItems={"center"}>
+              <Button
+                size="medium"
+                onClick={handlePreviousWeek}
+                variant="outlined"
+                startIcon={<ArrowBackIosOutlinedIcon />}
+              >
+                Previous Week
+              </Button>
+              {monthly ? (
+                <Typography>
+                  {` ${weekDates[0].toLocaleDateString(
+                    "en-US"
+                  )} - ${weekDates[31].toLocaleDateString("en-US")} `}
+                </Typography>
+              ) : (
+                <Typography>
+                  {` ${weekDates[0].toLocaleDateString(
+                    "en-US"
+                  )} - ${weekDates[6].toLocaleDateString("en-US")} `}
+                </Typography>
+              )}
+
+              <Button
+                size="medium"
+                onClick={handleNextWeek}
+                variant="outlined"
+                endIcon={<ArrowForwardIosOutlinedIcon />}
+              >
+                Next Week
+              </Button>
+            </Stack>
+
+            <Stack
+              direction="row"
+              spacing={2}
+              alignItems={"center"}
+              marginLeft={"100px"}
+            >
+              <Button
+                variant="outlined"
+                color="warning"
+                size="medium"
+                endIcon={<ViewWeekIcon />}
+                onClick={handleCalendarTableWeekly}
+              >
+                Weekly view
+              </Button>
+              <Button
+                variant="outlined"
+                color="success"
+                size="medium"
+                endIcon={<CalendarMonthIcon />}
+                onClick={handleCalendarTableMonthly}
+              >
+                Monthly view
+              </Button>
+            </Stack>
+          </Box>
+          <TableContainer
+            sx={{ maxWidth: "100%", marginTop: "20px" }}
+            component={Paper}
+          >
+            <Table aria-label="customized table">
+              <TableHead>
+                <TableRow
+                  sx={{
+                    "& th": {
+                      fontSize: "1rem",
+                      color: "rgba(96, 96, 96)",
+                      backgroundColor: "#b1dbdf",
+                    },
+                  }}
+                >
+                  <TableCell>Employee Id</TableCell>
+                  <TableCell>Employee Name</TableCell>
+                  <TableCell>Total Attendance</TableCell>
+                  <TableCell>WeekOff</TableCell>
+                  {weekDates?.map((day) => (
+                    <TableCell key={day}>
+                      {day.toLocaleDateString("en-US", weekDayFormat)}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {data.sort((a,b)=>a.emp_id > b.emp_id ? 1 : -1)?.map((item, index) => (
+                  <StyledTableRow key={index}>
+                    <TableCell>{item.emp_id}</TableCell>
+                    <TableCell>{item.name}</TableCell>
+                    <TableCell>
+                      <Chip
+                        label={getTotal(index, weekDates)}
+                        color="success"
+                        variant="filled"
+                      />
+                    </TableCell>
+                    <TableCell>
+                      {/* Week-off selection UI */}
+                      <FormControl>
+                        <InputLabel id={`week-off-label-${index}`}>
+                          Week Off
+                        </InputLabel>
+                        <Select
+                          labelId={`week-off-label-${index}`}
+                          id={`week-off-select-${index}`}
+                          value={item.weekOff}
+                          onChange={(e) => setWeekOff(index, e.target.value)}
+                        >
+                          <MenuItem value="">None</MenuItem>
+                          <MenuItem value="Mon">Mon</MenuItem>
+                          <MenuItem value="Tue">Tue</MenuItem>
+                          <MenuItem value="Wed">Wed</MenuItem>
+                          <MenuItem value="Thu">Thu</MenuItem>
+                          <MenuItem value="Fri">Fri</MenuItem>
+                          <MenuItem value="Sat">Sat</MenuItem>
+                          <MenuItem value="Sun">Sun</MenuItem>
+                          {/* Add more days as needed */}
+                        </Select>
+                      </FormControl>
+                    </TableCell>
+
+                    {weekDates.map((date) => (
+                      <TableCell key={date}>
+                        <Checkbox
+                          id={`epds-${index}`}
+                          type="checkbox"
+                          name={getValue(index, date).toString()}
+                          checked={Boolean(getValue(index, date))}
+                          onChange={(e) =>
+                            setValue(index, date, e.target.checked)
+                          }
+                          disabled={isFutureStartDate || (weekoffday === item.weekOff && date.getDay() === weekoffday)}
+                          sx={{ "& .MuiSvgIcon-root": { fontSize: 48 } }}
+                          checkedIcon={<ToggleOn />}
+                          icon={<ToggleOff />}
+                        />
+                      </TableCell>
+                    ))}
+                  </StyledTableRow>
                 ))}
-              </StyledTableRow>
-            ))}
-            <TableRow>
-              <TableCell></TableCell>
-              <TableCell></TableCell>
-              {weekDates.map((day) => (
-                <TableCell key={day}>
-                  {day.toLocaleDateString("en-US", weekDayFormat)}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer> 
-      <Button type="submit" variant="contained" color="primary" onClick={submitAttendance}>
-      {loading ? <>Loading..</> : <>Submit Attendance</>} 
-        </Button>
-      </>}     
-      {error && <Typography color="error">{error}</Typography>}
+                <TableRow>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
+                  {weekDates.map((day) => (
+                    <TableCell key={day}>
+                      {day.toLocaleDateString("en-US", weekDayFormat)}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            onClick={submitAttendance}
+            sx={{ marginTop: "20pt" }}
+          >
+            {loading ? <>Loading..</> : <>Submit Attendance</>}
+          </Button>
+        </>
+      )}
+      {data.length == 0 && <Typography color="error">Employee's not assigned with this site</Typography>}
+      {/* {data.length && <Typography color="error">{data.length}</Typography>} */}
       {/* Just for visualization purposes */}
       <pre>{JSON.stringify(data, null, 4)}</pre>
     </>

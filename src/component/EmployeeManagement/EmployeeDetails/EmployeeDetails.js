@@ -63,7 +63,7 @@ const EmployeeDetails = (props) => {
     loadSelectedEmployee();
   }, []);
 
-  if (!error) return <Typography color="error">Something went wrong !</Typography>
+  if (error) return <Typography color="error">Something went wrong !</Typography>
   if (!selectedEmp) return <Typography color="error"> No data available for selected employee!</Typography>
 
   return (

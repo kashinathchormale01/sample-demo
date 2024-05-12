@@ -1,16 +1,20 @@
 import axios from "axios";
 import React, { useState, useEffect} from "react";
-import { Grid, Typography,Checkbox,TextField,Button,FormControl,InputLabel,Select,OutlinedInput,MenuItem,ListItemText,Box,Chip    } from "@mui/material";
+import { Grid, Typography,Checkbox,TextField,Button,FormControl,InputLabel,Select,OutlinedInput,MenuItem,ListItemText,Box,Chip,ButtonGroup    } from "@mui/material";
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Autocomplete from '@mui/material/Autocomplete';
 import { Formik, Form } from "formik";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const initialValues = {
   //city_id: { RoleName: "", Id: null,firstName:""},
-  emp:{Id:null, firstName:""},
-  role:{Id:null, RoleName:""},
-  location: {siteId:"", siteName:""},
+  // empId:{Id:null, firstName:""},
+  // roleId:{Id:null, RoleName:""},
 
+};
+const SendSiteSchema = {
+  siteId: "",
 };
 
 const cities = [{
@@ -102,24 +106,25 @@ const emps = [
   }]
 
   const sitesloc = [
-    { siteId:121,
+    { Id:121,
       siteName: "SaRasta",
     siteArea: "Solapur",
     creationDate: "0002121"},
-    { siteId:22,
+    { Id:22,
       siteName: "Pune naka",
     siteArea: "Solapur",
     creationDate: "0002121"},
-    { siteId:354,
+    { Id:354,
       siteName: "Awanti nagar",
     siteArea: "Solapur",
     creationDate: "0002121"},
-    { siteId:44,
+    { Id:44,
       siteName: "bijapur ves",
     siteArea: "Solapur",
     creationDate: "0002121"}
   ]
 
+  console.log('sitesloc',sitesloc)
   
   const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -134,16 +139,23 @@ const MenuProps = {
 
 
 const UserPromote = () => {
+  const navigate = useNavigate();
     const [empList, setEmpList] = useState([]);
   const [userRoles, setUserRoles] = useState([]);
   const [sitelocationlist, setSitelocationlist] = useState([]);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [selectedSite, setSelectedSite] = React.useState([]);
-     console.log('selectedSite',selectedSite)
+  const [selectedEmps, setSelectedEmps] = React.useState();
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true); // Initially disabled
+
+  const [siteIdError, setSiteIdError] = useState(false); // State for siteId validation
+     console.log('selectedSite',selectedSite);
+     console.log('sitelocationlist',sitelocationlist)
 
     const getEmployeeList = ()=>{
       axios
-      .get('/GetEmp')
+      .get('/GetEmpAdmin')
       .then((response) => {
         console.log(JSON.stringify(response.data.data));
        // setEmplist(response.data.data);
@@ -160,7 +172,7 @@ const UserPromote = () => {
 
   const getRole = ()=>{
     axios
-    .get('/GetRole')
+    .get('/GetRoleIdAdmin')
     .then((response) => {
       console.log(JSON.stringify(response.data.data));
      // setEmplist(response.data.data);
@@ -208,99 +220,149 @@ const UserPromote = () => {
     );
   };
 
-    const submit = values => {
-      alert(`Value for aceess is: ${JSON.stringify(values)}`);
+    const submit = async(values) => {
+
+      let valuestoprint;
+      valuestoprint = selectedSite;
+      console.log('Value for aceess is:',selectedSite);
+      console.log('Value for aceess is:',values);
+      console.log('valuestoprint:',valuestoprint);
+      let userPromotePayload = {};
+      userPromotePayload = {
+        userName: `NKS-${selectedEmps?.Id || ''}`,
+        empId: `${values.selectedEmpId}`,
+        sitelist: valuestoprint,
+        roleId: `${values.empRoleId}`
+      }
+      console.log('payload:',JSON.stringify(userPromotePayload));
+       // post api call for attendance with required payload
+  try {
+    setLoading(true); // Set loading before sending API request
+    const res = await axios.post("/PramoteUser", userPromotePayload);
+    const response = res; // Response received
+    toast.success(res.data.msg);
+    setLoading(false); // Stop loading
+    navigate('/access-management');
+  } catch (err) {
+    setLoading(false); // Stop loading in case of error
+    console.error(error);
+  }  
+
+    //  alert(`Value for aceess is: ${JSON.stringify(values)}`+`${(selectedSite)}`);
     };
+
+    if (!empList) return <Typography color="error"> No data available please contact with admin.</Typography>
+
   return (
-    <> 
+    <>
       <Formik initialValues={initialValues} onSubmit={submit}>
-      {({ handleChange, values, setFieldValue }) => (
-        <Form>
-          
+        {({ handleChange, values, setFieldValue }) => (
+          <Form>
+            <Autocomplete
+              id="empList"
+              name="empList"
+              options={empList}
+              getOptionLabel={(option) => option.firstName}
+              style={{ width: 300 }}
+              onChange={(e, value) => {
+                console.log(value);
+                setSelectedEmps(value);
+                setFieldValue(
+                  "selectedEmpId",
+                  value.Id !== null ? value.Id : initialValues.emp.Id
+                );
+              }}
+              renderInput={(params) => (
+                <TextField
+                  margin="normal"
+                  label="Select Employee"
+                  fullWidth
+                  name="selectedEmpId"
+                  {...params}
+                />
+              )}
+            />
 
-<Autocomplete
-            id="empList"
-            name="empList"
-            options={empList}
-            getOptionLabel={option => option.firstName}
-            style={{ width: 300 }}
-            onChange={(e, value) => {
-              console.log(value);
-              setFieldValue(
-                "emp",
-                value !== null ? value : initialValues.emp
-              );
-            }}
-            renderInput={params => (
+            {selectedEmps && (
               <TextField
-                margin="normal"
-                label="empList"
-                fullWidth
-                name="emp"
-                {...params}
+                Id="SelectedEmpId"
+                label="Selected Employee Id"
+                value={`NKS-${selectedEmps?.Id || ''}`}
               />
             )}
-          />
 
-<Autocomplete
-            id="city_id"
-            name="city_id"
-            options={userRoles}
-            getOptionLabel={option => option.RoleName}
-            style={{ width: 300 }}
-            onChange={(e, value) => {
-              //console.log(value);
-              setFieldValue(
-                "role",
-                value !== null ? value : initialValues.role
-              );
-            }}
-            renderInput={params => (
-              <TextField
-                margin="normal"
-                label="userRoles"
-                fullWidth
-                name="role"
-                {...params}
-              />
-            )}
-          />
+            <Autocomplete
+              id="userroles"
+              name="userroles"
+              options={userRoles}
+              getOptionLabel={(option) => option.RoleName}
+              style={{ width: 300 }}
+              onChange={(e, value) => {
+                //console.log(value);
+                setFieldValue(
+                  "empRoleId",
+                  value.Id !== null ? value.Id : initialValues.role.Id
+                );
+              }}
+              renderInput={(params) => (
+                <TextField
+                  margin="normal"
+                  label="Select Employee Role"
+                  fullWidth
+                  name="role"
+                  {...params}
+                />
+              )}
+            />
 
-<FormControl sx={{ m: 1, width: 300 }}>
-        <InputLabel id="demo-multiple-checkbox-label">Location</InputLabel>
-        <Select
-          labelId="demo-multiple-checkbox-label"
-          id="demo-multiple-checkbox"
-          name="demo-multiple-checkbox"
-          multiple
-          value={selectedSite}
-          onChange={handleChangeselect}
-          input={<OutlinedInput label="Tag" />}
-          renderValue={(selected) => (
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-          {selected.map((siteId) => (
-          <Chip key={siteId} label={sitesloc?.find(e => e.siteId === siteId).siteName} />
-          ))}
-      </Box>)}
-          MenuProps={MenuProps}
-        >
-          {sitesloc.map((site) => (
-            <MenuItem key={site.siteId} value={site.siteId}>
-              <Checkbox checked={selectedSite.includes(site.siteId)} />
-              <ListItemText primary={site.siteName} />
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+            <FormControl sx={{ marginTop: "10px", width: 300 }}>
+              <InputLabel id="multiple-location-label">
+                Select Location
+              </InputLabel>
+              <Select
+                labelId="multiple-location-label"
+                id="multiple-location"
+                name="multiple-location"
+                multiple
+                value={selectedSite}
+                onChange={handleChangeselect}
+                input={<OutlinedInput label="Tag" />}
+                renderValue={(selected) => (
+                  <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                    {selected.map((item) => (
+                      <Chip
+                        key={item.Id}
+                        label={
+                          sitelocationlist?.find((e) => e.Id === item).siteName
+                        }
+                      />
+                    ))}
+                  </Box>
+                )}
+                MenuProps={MenuProps}
+              >
+                {sitelocationlist.map((site) => (
+                  <MenuItem key={site.Id} value={site.Id}>
+                    <Checkbox checked={selectedSite.includes(site.Id)} />
+                    <ListItemText primary={site.siteName} />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
 
-          <Button variant="contained" color="primary" type="submit">
-            Submit
-          </Button>
-        </Form>
-      )}
-    </Formik>
-        </>
-  )
+            <Button
+              className="buttonMain"
+              variant="contained"
+              color="primary"
+              type="submit"
+            >
+              Submit
+            </Button>
+          </Form>
+        )}
+      </Formik>
+    </>
+  );
 }
 
 export default UserPromote

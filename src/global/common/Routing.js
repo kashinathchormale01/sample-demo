@@ -21,6 +21,9 @@ import DesignationManagement from '../../component/App Management/DesignationMan
 import EditDesignation from '../../component/App Management/DesignationManagement/EditDesignation';
 import WageSlip from '../../component/FinanceManagement/Wageslip';
 import EmployeeDetails from '../../component/EmployeeManagement/EmployeeDetails/EmployeeDetails';
+import UserPromotedList from '../../component/App Management/UserPromote/UserPromotedList';
+import PasswordReset from '../../component/App Management/UserPromote/UserPasswordReset';
+import UserPasswordReset from '../../component/App Management/UserPromote/UserPasswordReset';
 
 
 
@@ -49,6 +52,8 @@ const Routing = () => {
         <Route path='/user-management' exact element={<UserManagement />} />
         <Route path='/my-profile' exact element={<MyProfile />} />
         <Route path='/user-promote' exact element={<UserPromote />} />
+        <Route path='/user-promoted-list' exact element={<UserPromotedList />} />
+        <Route path='/user-password-reset' exact element={<UserPasswordReset />} />
 
         {/* Site Location Managament Routes */}
 
