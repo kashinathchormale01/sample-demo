@@ -1,7 +1,7 @@
 import React, { useState, useEffect,useMemo} from "react";
 import axios from "axios";
 import * as moment from 'moment';
-import { Grid, Typography,FormControlLabel,Checkbox } from "@mui/material";
+import { Grid, Typography,FormControlLabel,Checkbox,Chip } from "@mui/material";
 import {
   MaterialReactTable,
   useMaterialReactTable,  
@@ -12,10 +12,10 @@ import { Link } from "react-router-dom";
 
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { jsPDF } from 'jspdf'; //or use your library of choice here
-import autoTable from 'jspdf-autotable';
+import autoTable, { Row } from 'jspdf-autotable';
 
 
-const UserPromotedList = () => {
+const UserPromotedList = ({ sendempid }) => {
     const [promotedemplist, setPromotedemplist] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null)
@@ -92,8 +92,9 @@ const UserPromotedList = () => {
         header: 'Password Reset',
         accessorFn: (row) => `PassWord Reset`,         
         //Add a link in a cell render
-        Cell: ({ renderedCellValue, cell }) => {
-          return(<Link style={{color:'#1976d2'}} to={`/user-password-reset/${cell.empid}`}>
+        Cell: ({ renderedCellValue, cell,row }) => {
+         //console.log(row.original)
+          return(<Link style={{color:'#1976d2'}} to={`/user-password-reset`} state={{ id:row.original }}>
           {renderedCellValue}
         </Link>   )                 
         },
@@ -107,7 +108,14 @@ const UserPromotedList = () => {
       {
         accessorKey: 'SiteId',
         header: 'Work Locaion',
-        size:50         
+        size:50,
+        Cell: ({ renderedCellValue }) => {
+          // Check if the cell value contains a comma
+          const hasComma = renderedCellValue.split(',');
+          return (
+            hasComma.map((item,index)=>(<Chip key={index} label={item.trim()} color='warning' variant="outlined" sx={{ marginRight: "5px" }} />))
+          );
+        }         
       }       
     ],
     [],

@@ -156,7 +156,7 @@ export const menuItemsData = [
       },
       {
         menu:"User Password Reset",
-        url:"user-password-reset"
+        url:"user-promoted-list"
       },
       {
         menu: "User Management",
