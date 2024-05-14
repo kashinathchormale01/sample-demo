@@ -7,7 +7,7 @@ import WrongLocationIcon from '@mui/icons-material/WrongLocation';
 import AddLocationIcon from '@mui/icons-material/AddLocation';
 import { toast } from "react-toastify";
 import ConfirmBox from "../../../global/common/confirmDialog/ConfirmDialog";
-
+import moment from "moment/moment";
 
 const SiteLocationManagement = (props) => {
     const [sitelocations, setSitelocations] = useState([]);
@@ -117,7 +117,7 @@ Add New Site Location
               </TableCell>
               <TableCell>{site.siteName}</TableCell>
               <TableCell>{site.siteArea}</TableCell>
-              <TableCell>{site.creationDate}</TableCell>
+              <TableCell>{moment(site.creationDate).format('DD/MM/YYYY')}</TableCell>
               <TableCell>
               <Stack direction="row" spacing={2}>
               <Button

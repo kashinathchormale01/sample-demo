@@ -24,25 +24,37 @@ const initialValues = {
 
 const AddSiteLocation = () => {   
   const navigate = useNavigate();
+  const [isDirty, setIsDirty] = useState(false);
+
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      if (isDirty) {
+        event.preventDefault();
+        event.returnValue = '';
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [isDirty]);
 
   function handleFormSubmit (values){
     console.log(values);
-    // fetch("http://192.168.1.121:8089/api/SaveProj_Site", {
-    //       method: "POST",
-    //       headers: {
-    //         Accept: "application/json",
-    //         "Content-Type": "application/json",
-    //       },
-    //       body: JSON.stringify(values),
-    //     });   
-
     axios.post('/SaveProj_Site', values)
       .then(res=>{
         console.log(res);
         console.log(res.data);
         toast.success(res.data.msg);  
-      })      
-      navigate('/work-location-management');
+        setIsDirty(false); // Reset dirty state after form submission
+        navigate('/work-location-management');
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        toast.error('Failed to submit form. Please try again.');
+      });
   };
    
   return (
@@ -63,6 +75,7 @@ const AddSiteLocation = () => {
           handleChange,
           handleSubmit,
           resetForm,
+          dirty, // New field indicating whether the form is dirty
         }) => (
           <Form>
             <Box
@@ -73,7 +86,10 @@ const AddSiteLocation = () => {
               <TextField
                 label="Site Name"
                 onBlur={handleBlur}
-                onChange={handleChange}
+                onChange={(e) => {
+                  handleChange(e);
+                  setIsDirty(true); // Set dirty state when form values change
+                }}
                 value={values.siteName}
                 name="siteName"
                 error={Boolean(touched.siteName) && Boolean(errors.siteName)}
@@ -83,7 +99,10 @@ const AddSiteLocation = () => {
               <TextField
                 label="Site Area"
                 onBlur={handleBlur}
-                onChange={handleChange}
+                onChange={(e) => {
+                  handleChange(e);
+                  setIsDirty(true); // Set dirty state when form values change
+                }}
                 value={values.siteArea}
                 name="siteArea"
                 error={Boolean(touched.siteArea) && Boolean(errors.siteArea)}
@@ -96,7 +115,10 @@ const AddSiteLocation = () => {
                   label="Creation Date"
                   disableFuture
                   onBlur={handleBlur}
-                  onChange={handleChange}
+                  onChange={(date) => {
+                    handleChange(date);
+                    setIsDirty(true); // Set dirty state when form values change
+                  }}
                   value={values.creationDate}
                   slotProps={{ field: { shouldRespectLeadingZeros: true } }}
                   error={Boolean(touched.creationDate) && Boolean(errors.creationDate)}
@@ -108,7 +130,7 @@ const AddSiteLocation = () => {
             </Box>
             {/* BUTTONS */}
             <Box sx={{ marginTop: "20px" }}>
-              <Button type="submit" variant="contained" color="primary">
+              <Button type="submit" variant="contained" color="primary" disabled={!dirty}>
                 Add Site Location
               </Button>
             </Box>
