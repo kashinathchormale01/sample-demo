@@ -168,5 +168,4 @@ export const menuItemsData = [
       },
     ],
   },
-  // ...
 ];

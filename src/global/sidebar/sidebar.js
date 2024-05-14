@@ -97,7 +97,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-export default function MiniDrawer() {
+export default function MiniDrawer({ userRole='Super Admin' }) {
   const userCode='1';
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -108,6 +108,18 @@ export default function MiniDrawer() {
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const filteredMenuItems = () => {
+    switch (userRole) {
+      case 'Super Admin':
+      case 'Admin':
+        return menuItemsData;
+      case 'Supervisor':
+        return menuItemsData.filter(item => item.sectionId === 1 || item.sectionId === 2);
+      default:
+        return [];
+    }
   };
 
   return (
@@ -141,8 +153,8 @@ export default function MiniDrawer() {
           </IconButton>
         </DrawerHeader>
         <Divider />
-
-        {menuItemsData.map((text, index) => (
+   
+        {filteredMenuItems().map((text, index) => (
           <>
             
             <Accordion
@@ -178,7 +190,7 @@ export default function MiniDrawer() {
         ))}
 
         <List sx={{ display: open ? "none" : "block" }}>
-          {menuItemsData.map((text, index) => (
+          {filteredMenuItems().map((text, index) => (
             <ListItem key={text.id} disableGutters={true}>
               <ListItemButton
                 onClick={handleDrawerOpen}
