@@ -76,14 +76,14 @@ import {
               >
                 Cancel
               </Button>
-              {/* <Button
+              <Button
                 onClick={deleteFunction}
                 size="medium"
                 variant="contained"
                 color="error"
               >
                 Delete
-              </Button>{" "} */}
+              </Button>{" "}
             </Grid>
           </Grid>
         </DialogContent>
