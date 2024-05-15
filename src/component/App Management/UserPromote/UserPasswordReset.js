@@ -27,7 +27,7 @@ const UserPasswordReset = () => {
     console.log(userResetPayload)
     try {
       setLoading(true); // Set loading before sending API request
-      const res = await axios.post("/PramoteUser1", userResetPayload);
+      const res = await axios.get(`/ResetEmpPass/${userResetPayload.empid}`);
       const response = res; // Response received
       toast.success(res.data.msg);
       setLoading(false); // Stop loading
