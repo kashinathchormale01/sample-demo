@@ -23,13 +23,13 @@ const EmployeeDetails = (props) => {
   const [selectedEmp, setSelectedEmp] = useState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null)
-  const [value, setValue] = React.useState(0);
+  // const [value, setValue] = React.useState(0);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  // const handleChange = (event, newValue) => {
+  //   setValue(newValue);
+  // };
 
-  console.log(selectedEmp);
+  // console.log(selectedEmp);
 
   const loadSelectedEmployee = async () => {      
     try {

@@ -371,7 +371,7 @@ const submitAttendance = async () => {
                 variant="outlined"
                 startIcon={<ArrowBackIosOutlinedIcon />}
               >
-                Previous Week
+               {monthly ? ( 'Previous Month') : ('Previous Week')}
               </Button>
               {monthly ? (
                 <Typography>
@@ -393,7 +393,7 @@ const submitAttendance = async () => {
                 variant="outlined"
                 endIcon={<ArrowForwardIosOutlinedIcon />}
               >
-                Next Week
+               {monthly ? ( 'Next Month') : ('Next Week')}
               </Button>
             </Stack>
 
@@ -441,7 +441,7 @@ const submitAttendance = async () => {
                   <TableCell>Employee Id</TableCell>
                   <TableCell>Employee Name</TableCell>
                   <TableCell>Total Attendance</TableCell>
-                  <TableCell>WeekOff</TableCell>
+                  {/* <TableCell>WeekOff</TableCell> */}
                   {weekDates?.map((day) => (
                     <TableCell key={day}>
                       {day.toLocaleDateString("en-US", weekDayFormat)}
@@ -461,8 +461,7 @@ const submitAttendance = async () => {
                         variant="filled"
                       />
                     </TableCell>
-                    <TableCell>
-                      {/* Week-off selection UI */}
+                    {/* <TableCell>
                       <FormControl>
                         <InputLabel id={`week-off-label-${index}`}>
                           Week Off
@@ -481,10 +480,10 @@ const submitAttendance = async () => {
                           <MenuItem value="Fri">Fri</MenuItem>
                           <MenuItem value="Sat">Sat</MenuItem>
                           <MenuItem value="Sun">Sun</MenuItem>
-                          {/* Add more days as needed */}
+                          
                         </Select>
                       </FormControl>
-                    </TableCell>
+                    </TableCell> */}
 
                     {weekDates.map((date) => (
                       <TableCell key={date}>

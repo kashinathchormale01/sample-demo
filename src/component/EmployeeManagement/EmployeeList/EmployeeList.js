@@ -84,8 +84,8 @@ const loadEmployees = async () => {
         header: 'Full Name',
         accessorFn: (row) => `${row.firstName} ${row.lastName}`,         
         //Add a link in a cell render
-        Cell: ({ renderedCellValue, cell }) => {
-          return(<Link style={{color:'#1976d2'}} to={{pathname:`/employee-details`}}>
+        Cell: ({ renderedCellValue, cell, row }) => {
+          return(<Link style={{color:'#1976d2'}} to={{pathname:`/employee-details`}} state={{ id:row.original }}>
           {renderedCellValue}
         </Link>   )                 
         },

@@ -24,6 +24,9 @@ import EmployeeDetails from '../../component/EmployeeManagement/EmployeeDetails/
 import UserPromotedList from '../../component/App Management/UserPromote/UserPromotedList';
 import PasswordReset from '../../component/App Management/UserPromote/UserPasswordReset';
 import UserPasswordReset from '../../component/App Management/UserPromote/UserPasswordReset';
+import BillGenerationStepper from '../../component/ReportManagement/BillGeneration/BillGenerationStepper';
+import MyAttendance from '../../component/MyDetails/MyAttendance';
+import MyPayslip from '../../component/MyDetails/MyPayslip';
 
 
 
@@ -43,6 +46,7 @@ const Routing = () => {
         {/* Employee Wage Register */}
         <Route path="/generate-wage-reports" exact element={<BasicTable />} />
         <Route path="/generate-wage-slip" exact element={<WageSlip />} />
+        <Route path='/generate-employee-bill' exact element={<BillGenerationStepper />} />
 
         {/* Employee attendance */}
         <Route path='/employee-attendance' exact element={<EmployeeTimeSheet />} />
@@ -51,6 +55,8 @@ const Routing = () => {
         <Route path='/add-user' exact element={<AddUser />} />
         <Route path='/user-management' exact element={<UserManagement />} />
         <Route path='/my-profile' exact element={<MyProfile />} />
+        <Route path='/my-attendance' exact element={<MyAttendance />} />
+        <Route path='/my-payslip' exact element={<MyPayslip />} />        
         <Route path='/user-promote' exact element={<UserPromote />} />
         <Route path='/user-promoted-list' exact element={<UserPromotedList />} />
         <Route path='/user-password-reset' exact element={<UserPasswordReset />} />

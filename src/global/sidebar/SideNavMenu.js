@@ -57,10 +57,10 @@ export const menuItemsData = [
     section: "Team Management",
     url: "/team-manage",
     submenu: [
-      {
-        menu: "Employee Details",
-        url: "employee-details",
-      },
+      // {
+      //   menu: "Employee Details",
+      //   url: "employee-details",
+      // },
       {
         menu: "Employee Payslip",
         url: "employee-payslip",
@@ -91,6 +91,10 @@ export const menuItemsData = [
       {
         menu: "Bank Application",
         url: "bank-application",
+      },
+      {
+        menu: "Generate Employee Bill",
+        url: "generate-employee-bill",
       },
       {
         menu: "Employee PF validation",
