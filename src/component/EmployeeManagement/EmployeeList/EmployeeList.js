@@ -120,6 +120,11 @@ const loadEmployees = async () => {
         accessorKey: 'siteName',
         header: 'Work Locaion',
         size:50         
+      },
+      {
+       accessorKey:'empstatus',
+       header:'Employee Status',
+       size:40 
       }       
     ],
     [],

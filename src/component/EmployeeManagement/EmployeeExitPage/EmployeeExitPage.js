@@ -1,232 +1,158 @@
-// import React from 'react';
-import { Grid, Typography, TextField,MenuItem,FormControl,Select,InputLabel,Box, Paper, Autocomplete } from '@mui/material';
-import { InputField, SelectField, DatePickerField, TextareaField } from '../../../global/FormFields';
-import EmployeeList from '../EmployeeList/EmployeeList';
+import React, { useState, useEffect,useMemo} from "react";
 import axios from "axios";
-import React, { useState, useEffect} from "react";
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import Divider from '@mui/material/Divider';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Avatar from '@mui/material/Avatar';
-import { LocalizationProvider } from "@mui/x-date-pickers";
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography
+} from "@mui/material";
+import dayjs from "dayjs";
+import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import MuiForm from './MuiForm';
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { Controller, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
-const genderlist = [
-    {
-      value: '1',
-      label: 'Male'
-    },
-    {
-      value: '2',
-      label: 'Female'
-    },
-    {
-      value: '3',
-      label: 'Other'
-    }
-  ];
+const FCWidth = {
+  width: "20rem"
+};
 
-  const nationalitylist = [
-    {
-      value: '0',
-      label: 'India'
-    },
-    {
-        value: '1',
-        label: 'USA'
-    }
-  ];
 
-  const educationLevellist = [
-    {
-        value: undefined,
-        label: 'None'
-    },
-    {
-      value: '1',
-      label: 'BA'
-    },
-    {
-        value: '2',
-        label: 'BCOM'
-    },
-    {
-        value: '3',
-        label: 'HSC'
-    }
-  ];
+const EmployeeExitPage = () => {
+const navigate = useNavigate();
+  const [emplist, setEmplist] = useState([]);
+  const [dateValue, setDateValue] = useState(dayjs());
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null)
 
-export default function EmpExitForm(props) {
-  const [users, setUsers] = React.useState();
-  const [error, setError] = useState(null);
-  const [age, setAge] = React.useState('');
-  console.log('age',age);
-  const [selectedUser, setSelectedUser] = useState();
-  const [loading, setLoading] = useState(false);
-  const handleChange = (event) => {
-    const selectedUserId = event.target.value;
-    const selectedUser = users.find(user=> user.id === parseInt(selectedUserId));
-    setAge(event.target.value);
-    console.log('current user',selectedUser);
-    setSelectedUser(selectedUser);
-  };
-    
- const baseUrl = 'https://jsonplaceholder.typicode.com/users';
+  const { register, control, handleSubmit, formState: { errors } } = useForm();
 
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(baseUrl);
-        setUsers(response.data);
-        // console.log(response.data);
-        // console.log(response.status);
-        // console.log(response.statusText);
-        // console.log(response.headers);
-        // console.log(response.config);
-        setLoading(true);
-      } catch (error) {
-        // Handle error
-        setError(error);
-        console.error(error);
+
+  const loadEmployees = async () => {      
+    try {
+      let result = await axios.get('/GetEmp');
+      setEmplist(result.data.data);     
+      setLoading(false);    
+  } catch (err) {
+      if (err.response) {
+        setLoading(false);    
+        setError(err.message);       
+      } else if (err.request) {
+        setLoading(false);
+        setError(err.message);      
+      } else {
+          // Anything else
+          setLoading(false);
+          setError(err.message);     
       }
-    };
+  }
     
-    // fetchData();
-
+  };
+  
     useEffect(() => {
-      fetchData();
+      loadEmployees();
     }, []);
 
-
-    if (error) return `Error: ${error.message}`;
-  if (!users) return "No users!"
-
-  const countries = [
-    { code: "AD", name: "Andorra", phone: "376" },
-    { code: "AI", name: "Anguilla", phone: "1-264" },
-    { code: "AL", name: "Albania", phone: "355" },
-    { code: "AM", name: "Armenia", phone: "374" },
-    { code: "AO", name: "Angola", phone: "244" },
-    { code: "AQ", name: "Antarctica", phone: "672" },
-    { code: "AR", name: "Argentina", phone: "54" },
-    { code: "AS", name: "American Samoa", phone: "1-684" },
-    { code: "AT", name: "Austria", phone: "43" }
-    ];
-
-      return (
-        <>
-
-<Box container 
-    sx={{minWidth: "50%",
-      
-      '& > :not(style)': {
-        m: 1,  
-        p:4     
+    // console.log(emplist)
+    const handleDateChange = (date) => {
+      setDateValue(date);
+      console.log('Onchange',date)      
+    };
+// console.log(dateValue)
+  const formSubmitHandler = async (formData) => {
+    console.log('Onchange',dayjs(dateValue).format('YYYY/MM/DD')) 
+    console.log('Onsubmit',formData);
+    const makePayload = {     
+      doe:dayjs(dateValue).format('YYYY/MM/DD'),
+      empId:formData.empid,
+    }
+    console.log(makePayload)
+    try {
+      let result = await axios.post('/DeleteEmp',makePayload);
+      toast.error(result.data.msg)
+      navigate('/employee-list');
+      setLoading(false);    
+  } catch (err) {
+      if (err.response) {
+        setLoading(false);    
+        setError(err.message);       
+      } else if (err.request) {
+        setLoading(false);
+        setError(err.message);      
+      } else {
+          // Anything else
+          setLoading(false);
+          setError(err.message);     
       }
-    }}
-  >   
-    <Paper elevation={3} >
+  }
 
-          <Grid
-            mt={5}
-            container>
-            <Grid item xs={6} md={4}>
-              {/* <FormControl fullWidth sx={{minWidth:'300px'}}>
-                <InputLabel id="demo-simple-select-label">Users</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={age}
-                  label="Users"
-                  onChange={handleChange}
-                >
-                  {users.map((user, index) => (
-                    <MenuItem key={user.id} value={user.id}>
-                      {user.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl> */}
-               
-              {/* <Autocomplete
-      disablePortal
-      id="combo-box-demo"
-      options={users.map((option) => option.name)}
-      sx={{ width: 300 }}
-      value={age}
-      renderInput={(params) => <TextField {...params} label="Users" />}
-    /> */}
+  };
 
-<Autocomplete
-id="country-select-demo"
-sx={{ width: 300 }}
-options={countries}
-getOptionLabel={(option) => option.name}
-isOptionEqualToValue={(option) => option.name}
-value={countries[0]}
-renderInput={(params) => (
-    <TextField {...params}
-      label="Choose a country"
+  // const emps = [{id:1,label:'Kash'},{id:2,label:'MD'}];
+  return (
+   <>
+    <div className="App">
+      <form onSubmit={handleSubmit(formSubmitHandler)}>
+        <Controller
+          name="empid"
+          control={control}
+          type="text"
+          defaultValue={''}
+          {...register("empid", { required: true})}
+          render={({ field }) => (
+            <FormControl sx={FCWidth}>
+              <InputLabel id="emp">Select Employee</InputLabel>
+              <Select
+                {...field}
+                labelId="emp"
+                label="emp"                
+                defaultValue={''}
+              >
+                {emplist.map((emp) => (
+                  <MenuItem value={emp.Id} key={emp.Id}>
+                    {emp.firstName + ' ' + emp.lastName}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          )}
+        /> <br/>
+        {errors?.empid?.type === "required" && <Typography color="error">Select employee for the exit or to make inactive</Typography>} 
 
-/>
-)}
-/>
-
-   
-   
-            </Grid>
-          </Grid>
-
-          
-            {selectedUser && (
-              <>
-                <Grid container>
-                      <TextField
-                        id="outlined-helperText"
-                        label="ID"
-                        value={selectedUser.id}
-                        variant="outlined"
-                        InputProps={{
-                          readOnly: true,
-                        }}
-                        
-                      />
-                    </Grid>
-                    <Grid container>
-                      <TextField
-                        id="outlined-helperText"
-                        label="Name"
-                        value={selectedUser.name}
-                        variant="outlined"
-                        InputProps={{
-                          readOnly: true,
-                        }}
-                       
-                      />
-                    </Grid>
-                 
-                  <Grid container>
-                    <TextField
-                      id="outlined-helperText"
-                      label="phone"
-                      value={selectedUser.phone}
-                      variant="outlined"
-                      InputProps={{
-                        readOnly: true,
-                      }}
-                      
-                    />
-                  </Grid>   
-                  
-              </>
-            )}
-          </Paper>
-  </Box>
-  <LocalizationProvider dateAdapter={AdapterDayjs}>
-  <MuiForm />
-  </LocalizationProvider>
-        </>
-      );
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DemoContainer
+              sx={{ margin: "20px 0" }}
+              components={["DatePicker"]}
+            >
+              <DatePicker
+                label="Select a Date"
+                name="doe"
+                value={dateValue}
+                control={control}
+                onChange={(newValue) =>(handleDateChange(newValue))}
+              />
+            </DemoContainer>
+          </LocalizationProvider>
+          {errors?.doe?.type === "required" && <Typography color="error">Select date of exit</Typography>} 
+        <FormControl>
+          <Button
+            type="submit"
+            variant="contained"
+            fullWidth
+            sx={{ marginTop: ".75rem", fontWeight: "bold" }}
+          >
+            Submit
+          </Button>
+        </FormControl>
+      </form>
+    </div>
+   </>
+  )
 }
+
+export default EmployeeExitPage
