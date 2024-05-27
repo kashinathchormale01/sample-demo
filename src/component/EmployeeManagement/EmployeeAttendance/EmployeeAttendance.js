@@ -211,6 +211,11 @@ export const EmployeeTimeSheet = () => {
 
 const handleSiteSubmit = (values) => {
   setSelectedSite(values);
+  if (!values.siteId || values.siteId.length === 0) {
+    // Show an error message or handle the case where required fields are missing
+    toast.error("Please select site to mark an attendance.");
+    return;
+  }
   setIsButtonDisabled(true);
   axios.post("/GetAttendance", values).then((res) => {
     console.log(res);
@@ -221,6 +226,13 @@ const handleSiteSubmit = (values) => {
       const [year, month, day] = dateString.split("-");
       return `${parseInt(month)}/${day}/${year}`;
     };
+
+    if (!res.data.data || res.data.data.length === 0) {
+      setIsButtonDisabled(false);
+      setData([]);
+      toast.error("Data Not exists.");      
+      return;
+    }
 
     const transformData = res.data.data.map((emp) => {
       const sheetObject = {};
@@ -238,7 +250,7 @@ const handleSiteSubmit = (values) => {
         weekOff:""
       };
     });
-    console.log(transformData);
+    console.log(transformData);  
     setData(transformData);
     toast.success(res.data.msg);
     setIsButtonDisabled(false);
@@ -343,14 +355,6 @@ const submitAttendance = async () => {
       {data.length && (
         <>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            {/* <DemoContainer components={["DateCalendar", "DateCalendar"]}>
-          <DemoItem>
-            <DateCalendar
-              value={dateValue}
-              onChange={handleDateChange}
-            />
-            </DemoItem>
-        </DemoContainer> */}
             <DemoContainer
               sx={{ margin: "20px 0" }}
               components={["DatePicker"]}
@@ -529,7 +533,7 @@ const submitAttendance = async () => {
           </Button>
         </>
       )}
-      {data.length == 0 && <Typography color="error">Employee's not assigned with this site</Typography>}
+      {/* {data.length <= 0 && <Typography color="error">Employee's not assigned with this site</Typography>} */}
       {/* {data.length && <Typography color="error">{data.length}</Typography>} */}
       {/* Just for visualization purposes */}
       <pre>{JSON.stringify(data, null, 4)}</pre>

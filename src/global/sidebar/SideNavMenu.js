@@ -99,19 +99,7 @@ export const menuItemsData = [
       {
         menu: "Employee PF validation",
         url: "emp-pf-validation",
-      },
-      {
-        menu: "Contractor Billing",
-        url: "contractor-billing",
-      },
-      {
-        menu: "Loan/Recovery",
-        url: "loan",
-      },
-      {
-        menu: "Damage/Loss",
-        url: "damage-loss",
-      },
+      },      
     ],
   },
   {
@@ -126,15 +114,7 @@ export const menuItemsData = [
       {
         menu: "Generate Wage Slips",
         url: "generate-wage-slip",
-      },
-      {
-        menu: "Contractor Assignment",
-        url: "contractor-assignment",
-      },
-      {
-        menu: "SEO",
-        url: "seo",
-      },
+      }
     ],
   },
   {
@@ -153,19 +133,11 @@ export const menuItemsData = [
       {
         menu: "User Promote",
         url: "user-promote",
-      },
-      {
-        menu:"User Promoted List",
-        url:"user-promoted-list"
-      },
+      },      
       {
         menu:"User Password Reset",
         url:"user-promoted-list"
-      },
-      {
-        menu: "User Management",
-        url: "user-management",
-      },
+      },      
       {
         menu: "Role Management",
         url: "designation-management",

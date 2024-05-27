@@ -27,6 +27,7 @@ import UserPasswordReset from '../../component/App Management/UserPromote/UserPa
 import BillGenerationStepper from '../../component/ReportManagement/BillGeneration/BillGenerationStepper';
 import MyAttendance from '../../component/MyDetails/MyAttendance';
 import MyPayslip from '../../component/MyDetails/MyPayslip';
+import AccessManagement from '../../component/App Management/AccessManagement/AccessManagement';
 
 
 
@@ -60,6 +61,8 @@ const Routing = () => {
         <Route path='/user-promote' exact element={<UserPromote />} />
         <Route path='/user-promoted-list' exact element={<UserPromotedList />} />
         <Route path='/user-password-reset' exact element={<UserPasswordReset />} />
+        <Route path='/access-management' exact element={<AccessManagement />} />
+
 
         {/* Site Location Managament Routes */}
 
