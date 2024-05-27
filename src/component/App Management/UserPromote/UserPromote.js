@@ -17,115 +17,6 @@ const SendSiteSchema = {
   siteId: "",
 };
 
-const cities = [{
-  state: "Illinois",
-  name: "Chicago",
-  id: 3,
-}, {
-  state: "Texas",
-  name: "Houston",
-  id: 2
-}, {
-  state: "California",
-  name: "Los Angeles",
-  id: 1
-}, {
-  state: "New York",
-  name: "New York City",
-  id: 4
-}];
-
-const Roles = [
-  { Id: 1, RoleName: "Admin" },
-  { Id: 2, RoleName: "Super" },
-  { Id: 3, RoleName: "Supervisor" },
-  { Id: 4, RoleName: "HR" },
-  { Id: 5, RoleName: "Accountant" },
-];
-
-const emps = [
-  {
-    "Id": 1,
-    "Emp_ID": null,
-    "firstName": "Ashish",
-    "lastName": "Wangi",
-    "gender": "Male",
-    "dateOfBirth": "2005-12-30T18:30:00.000Z",
-    "aadharNumber": 534534555555,
-    "fatherSpouseName": "Ashok",
-    "nationality": "",
-    "panNumber": "aswef3332f",
-    "esicIP": "4234234",
-    "pfNumber": "4234234",
-    "bankName": "Vyapari Bank",
-    "bankAccountNumber": "2121215445",
-    "ifscCode": "VP000025",
-    "siteLocaion": "Sat Rasta",
-    "categoryWork": "High Skilled",
-    "designation": "Packer Operator",
-    "serviceBookNumber": "5435345",
-    "serviceRemark": "Very Good",
-    "dateOfJoning": "2024-04-02T18:30:00.000Z",
-    "lwf": "xvxcvxcv",
-    "presentAddress": "Murarji Peth, Sidhajin Hos, Solapur, Maharashtra 413001",
-    "permanentAddress": "Murarji Peth, Sidhajin Hos, Solapur, Maharashtra 413001",
-    "cityName": "Solapur",
-    "markOfIdentification": "Mule on right hand",
-    "mobileNumber": 9766474875,
-    "alternateMobileNumber": 976647422
-  },
-  {
-    "Id": 2,
-    "Emp_ID": null,
-    "firstName": "Angad",
-    "lastName": "Mane",
-    "gender": "Male",
-    "dateOfBirth": "2005-12-30T18:30:00.000Z",
-    "aadharNumber": 534534555555,
-    "fatherSpouseName": "Deepak",
-    "nationality": "",
-    "panNumber": "angad0015m",
-    "esicIP": "3243",
-    "pfNumber": "443424",
-    "bankName": "HDFC bank",
-    "bankAccountNumber": "021214545",
-    "ifscCode": "HDFC01245",
-    "siteLocaion": "Navi Peth",
-    "categoryWork": "Semi Skilled",
-    "designation": "Loader",
-    "serviceBookNumber": "3545345",
-    "serviceRemark": "xdsfdsf",
-    "dateOfJoning": "2024-04-01T18:30:00.000Z",
-    "lwf": "zczx",
-    "presentAddress": "Hiraj Naka",
-    "permanentAddress": "Hiraj Naka",
-    "cityName": "Solapur",
-    "markOfIdentification": "Giddu",
-    "mobileNumber": 3424343444,
-    "alternateMobileNumber": 5345
-  }]
-
-  const sitesloc = [
-    { Id:121,
-      siteName: "SaRasta",
-    siteArea: "Solapur",
-    creationDate: "0002121"},
-    { Id:22,
-      siteName: "Pune naka",
-    siteArea: "Solapur",
-    creationDate: "0002121"},
-    { Id:354,
-      siteName: "Awanti nagar",
-    siteArea: "Solapur",
-    creationDate: "0002121"},
-    { Id:44,
-      siteName: "bijapur ves",
-    siteArea: "Solapur",
-    creationDate: "0002121"}
-  ]
-
-  console.log('sitesloc',sitesloc)
-  
   const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -175,12 +66,7 @@ const UserPromote = () => {
     .get('/GetRoleIdAdmin')
     .then((response) => {
       console.log(JSON.stringify(response.data.data));
-     // setEmplist(response.data.data);
-     
-    //  empNames = response.data.data;
-    //  console.log('empNames',empNames);
-    setUserRoles(response.data.data); 
-  // console.log('emplist',emplist);
+     setUserRoles(response.data.data); 
     })
     .catch((error) => {
       setError(error);
@@ -192,12 +78,7 @@ const UserPromote = () => {
     .get('/GetProj_Site')
     .then((response) => {
       console.log(JSON.stringify(response.data.data));
-     // setEmplist(response.data.data);
-     
-    //  empNames = response.data.data;
-    //  console.log('empNames',empNames);
     setSitelocationlist(response.data.data); 
-  // console.log('emplist',emplist);
     })
     .catch((error) => {
       setError(error);
@@ -224,10 +105,14 @@ const UserPromote = () => {
 
       let valuestoprint;
       valuestoprint = selectedSite;
-      console.log('Value for aceess is:',selectedSite);
-      console.log('Value for aceess is:',values);
-      console.log('valuestoprint:',valuestoprint);
       let userPromotePayload = {};
+
+      if (!selectedEmps || !values.selectedEmpId || !values.empRoleId || selectedSite.length === 0) {
+        // Show an error message or handle the case where required fields are missing
+        toast.error("Please fill in all required fields.");
+        return;
+      }
+
       userPromotePayload = {
         userName: `NKS-${selectedEmps?.Id || ''}`,
         empId: `${values.selectedEmpId}`,
@@ -248,7 +133,6 @@ const UserPromote = () => {
     console.error(error);
   }  
 
-    //  alert(`Value for aceess is: ${JSON.stringify(values)}`+`${(selectedSite)}`);
     };
 
     if (!empList) return <Typography color="error"> No data available please contact with admin.</Typography>
