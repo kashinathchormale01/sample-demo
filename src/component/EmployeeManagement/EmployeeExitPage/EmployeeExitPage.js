@@ -92,11 +92,16 @@ const navigate = useNavigate();
   }
 
   };
+ // Filter only active employees
+const activeEmployees = emplist.filter(emp => emp.empstatus === 'Active');
 
   // const emps = [{id:1,label:'Kash'},{id:2,label:'MD'}];
   return (
    <>
     <div className="App">
+    {activeEmployees.length === 0 ? (
+        <Typography color="error">No active employees found.</Typography>
+      ) : (
       <form onSubmit={handleSubmit(formSubmitHandler)}>
         <Controller
           name="empid"
@@ -105,7 +110,7 @@ const navigate = useNavigate();
           defaultValue={''}
           {...register("empid", { required: true})}
           render={({ field }) => (
-            <FormControl sx={FCWidth}>
+            <FormControl sx={FCWidth} error={errors?.empid?.type === "required"}>
               <InputLabel id="emp">Select Employee</InputLabel>
               <Select
                 {...field}
@@ -113,7 +118,7 @@ const navigate = useNavigate();
                 label="emp"                
                 defaultValue={''}
               >
-                {emplist.map((emp) => (
+                {activeEmployees.map((emp) => (
                   <MenuItem value={emp.Id} key={emp.Id}>
                     {emp.firstName + ' ' + emp.lastName}
                   </MenuItem>
@@ -124,7 +129,7 @@ const navigate = useNavigate();
         /> <br/>
         {errors?.empid?.type === "required" && <Typography color="error">Select employee for the exit or to make inactive</Typography>} 
 
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <LocalizationProvider dateAdapter={AdapterDayjs} error={errors?.doe?.type === "required"}>
             <DemoContainer
               sx={{ margin: "20px 0" }}
               components={["DatePicker"]}
@@ -150,6 +155,7 @@ const navigate = useNavigate();
           </Button>
         </FormControl>
       </form>
+       )}
     </div>
    </>
   )
