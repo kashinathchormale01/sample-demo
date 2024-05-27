@@ -49,3 +49,20 @@
 }
 .details-page-wrapper label{font-style: normal !important ;}
 .details-page-wrapper label,.details-page-wrapper h6{color: '#808080'; font-style: italic;}
+.sitemap-container{
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  align-content: baseline;
+  justify-content: center;
+  column-gap: 20pt;
+}
+.sitemap-container .MuiPaper-elevation{
+  min-height: 230pt;
+}
+.sitemap-container .topLabel:hover{
+  color: black;
+}
+.sitemap-container .MuiMenuItem-root:hover{
+  cursor:default;
+}
