@@ -185,7 +185,7 @@ const UserPromotedList = ({ sendempid }) => {
   // console.log(table.getRowModel().rows)
 
   if (error) return `Error: ${error.message}`;
-  if (!empData.length) return "No Employees available!";
+  if (!empData.length) return <Typography color="error">No Employees available!</Typography>;
 
   return (
     <>      

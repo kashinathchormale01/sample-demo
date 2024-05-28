@@ -509,7 +509,7 @@ const submitAttendance = async () => {
                   </StyledTableRow>
                 ))}
                 <TableRow>
-                <TableCell></TableCell>
+                {/* <TableCell></TableCell> */}
                 <TableCell></TableCell>
                   <TableCell></TableCell>
                   <TableCell></TableCell>

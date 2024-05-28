@@ -28,6 +28,7 @@ import BillGenerationStepper from '../../component/ReportManagement/BillGenerati
 import MyAttendance from '../../component/MyDetails/MyAttendance';
 import MyPayslip from '../../component/MyDetails/MyPayslip';
 import AccessManagement from '../../component/App Management/AccessManagement/AccessManagement';
+import LoginForm from '../../component/LoginManagement/LoginForm';
 
 
 
@@ -79,7 +80,8 @@ const Routing = () => {
         <Route path='/bank-application' exact element={<BankApplication />} />
 
         {/* Redirect for login page */}
-        <Route path="/login" exact element={<LoginPage />} />
+        {/* <Route path="/login" exact element={<LoginPage />} /> */}
+        <Route path='/login' exact element={<LoginForm />} />
         <Route path="/" exact element={<Dashboard />} />
       </Routes>
     </>
