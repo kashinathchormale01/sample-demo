@@ -29,6 +29,7 @@ import MyAttendance from '../../component/MyDetails/MyAttendance';
 import MyPayslip from '../../component/MyDetails/MyPayslip';
 import AccessManagement from '../../component/App Management/AccessManagement/AccessManagement';
 import LoginForm from '../../component/LoginManagement/LoginForm';
+import EmployeeEnroll from '../../component/EmployeeManagement/EmployeeEnrollment/EmployeeRegister';
 
 
 
@@ -40,7 +41,8 @@ const Routing = () => {
 
        {/* Employee Managament Routes */}
         <Route path='/employee-list' exact element={<EmployeeList /> } /> 
-        <Route path="/employee-register" exact element={<EmployeeRegister />} />
+        {/* <Route path="/employee-register" exact element={<EmployeeRegister />} /> */}
+        <Route path='/employee-register' exact element={<EmployeeEnroll />} />
         <Route path="/employee-update" exact element={<EmployeeUpdatePage />} />
         <Route path="/employee-exit" exact element={<EmpExitForm />} />
         <Route path="/employee-details" exact element={<EmployeeDetails />} />

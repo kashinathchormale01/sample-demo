@@ -13,12 +13,15 @@ import { Link } from "react-router-dom";
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { jsPDF } from 'jspdf'; //or use your library of choice here
 import autoTable from 'jspdf-autotable';
+import { useNavigate } from "react-router-dom";
 
 // const baseURL = "http://192.168.1.121:8089/api/GetEmp";
 
 
 
 const EmployeeList = () => {
+  const [data, setData] = useState([]);
+  const navigate = useNavigate();
   const [emplist, setEmplist] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null)
@@ -132,63 +135,72 @@ const loadEmployees = async () => {
 
   const table = useMaterialReactTable({
     columns,
-    data:empData,
+    data: empData,
     enableRowSelection: true,
     enableEditing: false,
-    columnFilterDisplayMode: 'popover',
-    paginationDisplayMode: 'pages',
-    positionToolbarAlertBanner: 'bottom',    
-    renderTopToolbarCustomActions: ({ table }) => (  
+    columnFilterDisplayMode: "popover",
+    paginationDisplayMode: "pages",
+    positionToolbarAlertBanner: "bottom",
+    muiTableBodyRowProps: ({ row }) => ({
+      onDoubleClick: (event) => {
+        navigate("/employee-register", { state: row.original });
+
+        console.log("clicked", row.original);
+      },
+      sx: {
+        textDecoration: "none",
+      },
+    }),
+    renderTopToolbarCustomActions: ({ table }) => (
       <Box
-      sx={{
-        display: 'flex',
-        gap: '16px',
-        padding: '8px',
-        flexWrap: 'wrap',
-      }}
-    >
-      <Typography>Employee List</Typography>
-      <Button
-        disabled={table.getPrePaginationRowModel().rows.length === 0}
-        //export all rows, including from the next page, (still respects filtering and sorting)
-        onClick={() =>
-          handleExportRows(table.getPrePaginationRowModel().rows)
-        }
-        startIcon={<FileDownloadIcon />}
+        sx={{
+          display: "flex",
+          gap: "16px",
+          padding: "8px",
+          flexWrap: "wrap",
+        }}
       >
-        Export All Rows
-      </Button>
-      <Button
-        disabled={table.getRowModel().rows.length === 0}
-        //export all rows as seen on the screen (respects pagination, sorting, filtering, etc.)
-        onClick={() => handleExportRows(table.getRowModel().rows)}
-        startIcon={<FileDownloadIcon />}
-      >
-        Export Page Rows
-      </Button>
-      <Button
-        disabled={
-          !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
-        }
-        //only export selected rows
-        onClick={() => handleExportRows(table.getSelectedRowModel().rows)}
-        startIcon={<FileDownloadIcon />}
-      >
-        Export Selected Rows
-      </Button>
-      <Button
-        disabled={
-          !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
-        }
-        //only export selected rows
-        onClick={() => handleDownloadRows(table.getSelectedRowModel().rows)}
-        startIcon={<FileDownloadIcon />}
-      >
-        Download Selected Rows
-      </Button>
-    </Box>
+        <Typography>Employee List</Typography>
+        <Button
+          disabled={table.getPrePaginationRowModel().rows.length === 0}
+          //export all rows, including from the next page, (still respects filtering and sorting)
+          onClick={() =>
+            handleExportRows(table.getPrePaginationRowModel().rows)
+          }
+          startIcon={<FileDownloadIcon />}
+        >
+          Export All Rows
+        </Button>
+        <Button
+          disabled={table.getRowModel().rows.length === 0}
+          //export all rows as seen on the screen (respects pagination, sorting, filtering, etc.)
+          onClick={() => handleExportRows(table.getRowModel().rows)}
+          startIcon={<FileDownloadIcon />}
+        >
+          Export Page Rows
+        </Button>
+        <Button
+          disabled={
+            !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
+          }
+          //only export selected rows
+          onClick={() => handleExportRows(table.getSelectedRowModel().rows)}
+          startIcon={<FileDownloadIcon />}
+        >
+          Export Selected Rows
+        </Button>
+        <Button
+          disabled={
+            !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
+          }
+          //only export selected rows
+          onClick={() => handleDownloadRows(table.getSelectedRowModel().rows)}
+          startIcon={<FileDownloadIcon />}
+        >
+          Download Selected Rows
+        </Button>
+      </Box>
     ),
-    
   });
 
   // console.log(table.getRowModel().rows)
