@@ -146,7 +146,7 @@ const UserPromote = () => {
               id="empList"
               name="empList"
               options={empList}
-              getOptionLabel={(option) => option.firstName}
+              getOptionLabel={(option) => option.firstName + ' ' + option.lastName}
               style={{ width: 300 }}
               onChange={(e, value) => {
                 console.log(value);
