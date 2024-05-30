@@ -20,6 +20,7 @@
   border-radius: 10px;
   padding: 10px;
   color: #838383;
+  margin-bottom: 15pt;
 }
 
 .stepFormButtonGroup{
@@ -65,4 +66,11 @@
 }
 .sitemap-container .MuiMenuItem-root:hover{
   cursor:default;
+}
+
+.reviewWrapper:nth-child(odd){
+  background-color: #f1f1f1;
+}
+.MuiFormHelperText-root {
+  font-size: 9pt !important;
 }
