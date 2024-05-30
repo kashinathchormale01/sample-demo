@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Stepper, Step, StepLabel, Button, Typography } from "@mui/material";
+import { Stepper, Step, StepLabel, Button, Typography,ButtonGroup,CircularProgress } from "@mui/material";
 import EmployeeProfile from "./Layout/EmployeeProfile";
 import BankDetails from "./Layout/BankDetail";
 import WorkDetails from "./Layout/WorkDetails";
@@ -12,7 +12,8 @@ import {
   FormProvider,
 
 } from "react-hook-form";
-
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 
 
@@ -31,11 +32,10 @@ let values={};
 
 
 const Steper = (selectedid) => {
-  
+  const navigate = useNavigate();
   const [activeStep, setActiveStep] = useState(0);
   const [lastMessage, setLastMessage] = useState("Pending");
   const [savelabel, setSavelabel] = useState("Finish");
-//console.log("First load",selectedid.sentid.Id);
   const [defaultdates, setDefaultdates] = useState({
     dob:dayjs(selectedid.sentid.dateOfBirth),
     doj:dayjs(selectedid.sentid.dateOfJoning),
@@ -43,13 +43,9 @@ const Steper = (selectedid) => {
 
   const steps = getSteps();
   const methods = useForm();
-
+  const isLastStep = activeStep === steps.length - 1;
  
-  // const defaultdates={
-  //   dob:dayjs('01/01/2010'),
-  //   doj:dayjs('01/01/2024'),
-  // }
-
+  
   const predefincevalues=()=>{
     // console.log("valueinitiated as :",selectedid.sentid);
      if(selectedid.sentid.Id==="-1")
@@ -65,12 +61,8 @@ const Steper = (selectedid) => {
  axios
  .get(`/GetEmp/${selectedid.sentid.Id}`)
  .then((res) => {
-   //console.log(res?.data.data);
-   //   if (res.msg === "Data Milala Ka") {
    
-   let responsedata=res.data.data[0];
-  // console.log("SentValue :",dayjs( responsedata.dateOfBirth).format("DD/MM/YYYY"),"and values are",values);
-  // console.log("double click emp datat1",res.data.data[0]);
+   let responsedata=res.data.data[0];  
 methods.register("Id", { required: false });
 methods.setValue("Id", selectedid.sentid.Id);
    methods.setValue("firstName",responsedata.firstName);
@@ -82,12 +74,7 @@ methods.setValue("Id", selectedid.sentid.Id);
    methods.setValue("nationality",responsedata.nationality);
    methods.setValue("educationLevel",responsedata.educationLevel);
    methods.setValue("dateOfBirth",dayjs( responsedata.dateOfBirth).format("YYYY/MM/DD"));
-  //  defaultdates.dob = dayjs( responsedata.dateOfBirth).format("YYYY/MM/DD");
-  // setDefaultdates({
-  //   dob:dayjs( responsedata.dateOfBirth).format("YYYY/MM/DD"),
-  //   doj:dayjs( responsedata.dateOfJoning).format("YYYY/MM/DD"),
-  // })
- 
+   
    methods.setValue("bankName",responsedata.bankName);
    methods.setValue("bankAccountNumber",responsedata.bankAccountNumber);
    methods.setValue("ifscCode",responsedata.ifscCode);
@@ -114,20 +101,14 @@ methods.setValue("Id", selectedid.sentid.Id);
  
  
  
- 
-   //console.log("represent",data);
-   //   }
+    
  })
  .catch((error) => {
    console.log(error);
  });
  
  
- // methods.setValue("firstName","lalala");
- // methods.setValue("lastName","gagaga");
- // register("firstname");
- // setValue("firstname","lalalala");
- 
+  
  }
    }
  
@@ -178,14 +159,16 @@ methods.setValue("Id", selectedid.sentid.Id);
          {
          console.log("success");
          setLastMessage("Employe Saved Successfully");
- 
-        //  sessionStorage.setItem("token",res.data.Key);
- 
-          //navigate("/Afterlogin");
+         toast.success("Employe Saved Successfully");
+         setTimeout(()=> {
+          navigate("/employee-list");
+         }, 2000);
+         
          }
          else
          {
            alert(res.data.msg);
+           toast.error("Employe Can not be Saved");
            setLastMessage("Employe Can not be Saved");
            console.log("Session Invalid");
          }
@@ -193,6 +176,7 @@ methods.setValue("Id", selectedid.sentid.Id);
        .catch((error) => {
          console.log(error);
          setLastMessage("Technical Error please contact Administrator");
+         toast.error("Technical Error please contact Administrator");
        });
       }
       if(activeStep===steps.length-1&&savelabel==="Update")
@@ -207,21 +191,23 @@ methods.setValue("Id", selectedid.sentid.Id);
             {
             console.log("success");
             setLastMessage("Employe Updated Successfully");
-    
-           //  sessionStorage.setItem("token",res.data.Key);
-    
-             //navigate("/Afterlogin");
+            toast.success("Employe Updated Successfully");
+            setTimeout(()=> {
+              navigate("/employee-list");
+             }, 2000);          
             }
             else
             {
               alert(res.data.msg);
               setLastMessage("Employe Can not be Updated");
+              toast.error("Employe Can not be Updated");
               console.log("Session Invalid");
             }
           })
           .catch((error) => {
             console.log(error);
             setLastMessage("Technical Error please contact Administrator");
+            toast.error("Technical Error please contact Administrator");
           });
         }
     setActiveStep(activeStep + 1); 
@@ -232,11 +218,7 @@ methods.setValue("Id", selectedid.sentid.Id);
     setActiveStep(0);
   else
     setActiveStep(activeStep - 1);
-  };
-
-  // const onSubmit = (data) => {
-  //   console.log(data);
-  // };
+  }; 
 
   return (
     <>
@@ -265,23 +247,25 @@ methods.setValue("Id", selectedid.sentid.Id);
           <div
             style={{
               width: "100%",
-              backgroundColor: "green",
               margin: "10",
               display: "block",
             }}
           >
             <FormProvider {...methods}>
               <form
-                // onSubmit={methods.handleSubmit(handleNext)}
                 onSubmit={methods.handleSubmit(handleNext)}
                 style={{ alignContent: "center" }}
               >
                 {getActiveStepContent(activeStep)}
 
                 <div style={{ flexDirection: "row", flexFlow: "row" }}>
-            <div style={{ backgroundColor: "red" }}>
+                <ButtonGroup 
+                    variant="contained"
+                    aria-label="Basic button group" 
+                    className='stepFormButtonGroup'             
+                  >
               <Button
-                sx={{ marginRight: 5 }}
+                sx={{ marginLeft: 3 }}
                 variant="contained"
                 disabled={activeStep === 0}
                 onClick={handleBack}
@@ -290,22 +274,20 @@ methods.setValue("Id", selectedid.sentid.Id);
               </Button>
 
               <Button
-                sx={{ marginRight: 5 }}
+              sx={{ marginRight: 3 }}
                 variant="contained"
                 color="primary"
-               // onClick={handleNext}
                 type="submit"
                 
               >
                 {activeStep === steps.length - 1 ? "Finish" : "Next"}
               </Button>
-            </div>
+            </ButtonGroup>
+            
           </div>
               </form>
             </FormProvider>
-          </div>
-
-         
+          </div>         
         </>
       )}
     </>

@@ -24,7 +24,7 @@ const BankDetail = () => {
     <Box sx={{ width: '100%' ,padding:2}}>
     <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
       <Grid item xs={6}>
-        <Item>    
+        <Item elevation={0}>    
           <Controller 
           control={control}
           name='bankName'
@@ -40,15 +40,15 @@ const BankDetail = () => {
             label="BankName"
             variant="outlined"
             {...field}
-            error={Boolean( errors.banktName)}
-            helperText={errors.banktName?.message}
+            error={Boolean( errors.bankName)}
+            helperText={errors.bankName?.message}
           />
           )}
           />      
            </Item>
       </Grid>
       <Grid item xs={6}>
-        <Item>    
+        <Item elevation={0}>    
         <Controller 
           control={control}
           name='bankAccountNumber'
@@ -72,7 +72,7 @@ const BankDetail = () => {
           </Item>
       </Grid>
       <Grid item xs={6}>
-        <Item>      
+        <Item elevation={0}>      
         <Controller 
           control={control}
           name='ifscCode'
@@ -96,7 +96,7 @@ const BankDetail = () => {
            </Item>
       </Grid>
       <Grid item xs={6}>
-        <Item>  
+        <Item elevation={0}>  
         <Controller 
           control={control}
           name='panNumber'
@@ -124,7 +124,7 @@ const BankDetail = () => {
             </Item>
       </Grid>
       <Grid item xs={6}>
-        <Item> 
+        <Item elevation={0}> 
         <Controller 
           control={control}
           name='UAN'
@@ -155,15 +155,15 @@ const BankDetail = () => {
               required:"Bank Name is required"
             }}
             {...field}
-            error={Boolean(errors.uan)}
-            helperText={errors.uan?.message}
+            error={Boolean(errors.UAN)}
+            helperText={errors.UAN?.message}
           />
           )}
           />            
            </Item>
       </Grid>
       <Grid item xs={6}>
-        <Item>   
+        <Item elevation={0}>   
         <Controller 
           control={control}
           name='pfNumber'
@@ -187,7 +187,7 @@ const BankDetail = () => {
             </Item>
       </Grid>
       <Grid item xs={6}>
-        <Item>    
+        <Item elevation={0}>    
         <Controller 
           control={control}
           name='esicIP'
@@ -211,11 +211,14 @@ const BankDetail = () => {
            </Item>
       </Grid>
       <Grid item xs={6}>
-        <Item>      
+        <Item elevation={0}>      
         <Controller 
           control={control}
           name='lwf'
           defaultValue={""}
+          rules={{
+            required:"Labour Welfair Fund Name is required"
+          }}
           render={({field})=>(
             <TextField
            
@@ -224,6 +227,8 @@ const BankDetail = () => {
             label="Labour Welfair Fund Name"
             variant="outlined"
             {...field}
+            error={Boolean( errors.lwf)}
+              helperText={errors.lwf?.message}
           />
           )}
           />      

@@ -39,7 +39,7 @@ const LoginForm = () => {
 
     console.log("Started");
    
-
+   
     let sendingdata = {
      
         userId: userId,
@@ -58,9 +58,8 @@ const LoginForm = () => {
         toast.success('User LoggedIn '+res.data.msg);
         sessionStorage.setItem("user", true);
          sessionStorage.setItem("token",res.data.Key);
-
         //  navigate("/my-profile");
-         window.location.replace("/my-profile");
+          window.location.replace("/my-profile");
         }
         else
         {
@@ -130,16 +129,6 @@ const LoginForm = () => {
                   </Box>
                 </Grid>
                 <Grid item xs={12}>
-                  {/* <TextField 
-                    fullWidth
-
-                  size="large"
-                  id="standard-password-input"
-                  label="Password"
-                  type="password"
-                  autoComplete="current-password"
-                  variant="standard"
-                /> */}
                   <Box sx={{ display: "flex", alignItems: "flex-end" }}>
                     <PasswordRoundedIcon
                       sx={{ color: "action.active", mr: 1, my: 0.5 }}
