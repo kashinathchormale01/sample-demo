@@ -5,6 +5,7 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import { Typography,Container } from "@mui/material";
 import { useParams } from "react-router-dom";
+import axiosHttp from "../../../AxiosInstance";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -33,7 +34,7 @@ const EmployeeDetails = (props) => {
 
   const loadSelectedEmployee = async () => {      
     try {
-      let result = await axios.get(`/GetEmp/1`);
+      let result = await axiosHttp.get(`/GetEmp/1`);
       setSelectedEmp(result?.data?.data[0]);          
       setLoading(false);
       // Work with the response...

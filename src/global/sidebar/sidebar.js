@@ -155,10 +155,9 @@ export default function MiniDrawer({ userRole='Super Admin' }) {
         <Divider />
    
         {filteredMenuItems().map((text, index) => (
-          <>
-            
+          <>            
             <Accordion
-              key={text.id}
+              key={index}
               defaultExpanded={index === 0}
               sx={{
                 margin: "20px 15px 0 15px",
@@ -167,7 +166,6 @@ export default function MiniDrawer({ userRole='Super Admin' }) {
               }}
             >
               <AccordionSummary
-                key={text.section}
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1-content"
                 id="panel1-header"
@@ -182,7 +180,7 @@ export default function MiniDrawer({ userRole='Super Admin' }) {
                 </Typography>
               </AccordionSummary>
               <AccordionDetails sx={{ padding: "8px 0px 16px 10px" }}>
-                <MenuItems items={text} key={index} />
+                <MenuItems items={text} />
               </AccordionDetails>
             </Accordion>
 
@@ -191,7 +189,7 @@ export default function MiniDrawer({ userRole='Super Admin' }) {
 
         <List sx={{ display: open ? "none" : "block" }}>
           {filteredMenuItems().map((text, index) => (
-            <ListItem key={text.id} disableGutters={true}>
+            <ListItem key={index} disableGutters={true}>
               <ListItemButton
                 onClick={handleDrawerOpen}
                 sx={{

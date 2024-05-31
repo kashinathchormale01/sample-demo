@@ -12,6 +12,7 @@ const Dropdown = ({ submenus }) => {
         {submenus.map((submenu, index) => (
           <List key={index} sx={{
             // selected and (selected + hover) states
+            padding:'0',
             '&& .Mui-selected, && .Mui-selected:hover': {
               bgcolor: 'red',
               '&, & .MuiListItemIcon-root': {
@@ -25,11 +26,11 @@ const Dropdown = ({ submenus }) => {
               },
             },             
             
-          }} disablePadding>
+          }}>
             <Divider />      
-           <ListItem disablePadding>
-           <ListItemButton key={index} component={Link} to={"/" + submenu.url} selected={useLocation.pathname === submenu.url} disablePadding>
-             <ListItemText primaryTypographyProps={{fontSize: '14px'}} primary={submenu.menu} />
+           <ListItem sx={{padding:'0'}}>
+           <ListItemButton key={index} component={Link} to={"/" + submenu.url} selected={useLocation.pathname === submenu.url} sx={{padding:'0'}}>
+             <ListItemText primaryTypographyProps={{fontSize: '14px', padding:'10px'}} primary={submenu.menu} />
            </ListItemButton>
          </ListItem>
          </List>

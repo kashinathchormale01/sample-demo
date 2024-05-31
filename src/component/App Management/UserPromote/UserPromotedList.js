@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { jsPDF } from 'jspdf'; //or use your library of choice here
 import autoTable, { Row } from 'jspdf-autotable';
+import axiosHttp from "../../../AxiosInstance";
 
 
 const UserPromotedList = ({ sendempid }) => {
@@ -25,7 +26,7 @@ const UserPromotedList = ({ sendempid }) => {
 
   const loadpromotedEmployees = async () => {      
     try {
-      let result = await axios.get('/GetEmpWorkData');
+      let result = await axiosHttp.get('/GetEmpWorkData');
       setPromotedemplist(result.data.data);     
       setLoading(false);    
   } catch (err) {

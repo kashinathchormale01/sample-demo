@@ -1,11 +1,11 @@
 import axios from "axios";
 import React, { useState, useEffect} from "react";
-import { Grid, Typography,Checkbox,TextField,Button,FormControl,InputLabel,Select,OutlinedInput,MenuItem,ListItemText,Box,Chip,ButtonGroup    } from "@mui/material";
-import FormControlLabel from '@mui/material/FormControlLabel';
+import { Grid, Typography,Checkbox,TextField,Button,FormControl,InputLabel,Select,OutlinedInput,MenuItem,ListItemText,Box,Chip,CircularProgress } from "@mui/material";
 import Autocomplete from '@mui/material/Autocomplete';
 import { Formik, Form } from "formik";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import axiosHttp from "../../../AxiosInstance";
 
 const initialValues = {
   //city_id: { RoleName: "", Id: null,firstName:""},
@@ -45,42 +45,51 @@ const UserPromote = () => {
      console.log('sitelocationlist',sitelocationlist)
 
     const getEmployeeList = ()=>{
-      axios
+      setLoading(true);
+      axiosHttp
       .get('/GetEmpAdmin')
       .then((response) => {
         console.log(JSON.stringify(response.data.data));
        // setEmplist(response.data.data);
-       
+       setLoading(false);
       //  empNames = response.data.data;
       //  console.log('empNames',empNames);
       setEmpList(response.data.data); 
     // console.log('emplist',emplist);
       })
       .catch((error) => {
+        setLoading(false);
         setError(error);
+        console.log('eerrrr',error.message)
       });
      } 
 
   const getRole = ()=>{
-    axios
+    setLoading(true);
+    axiosHttp
     .get('/GetRoleIdAdmin')
     .then((response) => {
       console.log(JSON.stringify(response.data.data));
+      setLoading(false);
      setUserRoles(response.data.data); 
     })
     .catch((error) => {
+      setLoading(false);
       setError(error);
     });
    } 
 
    const getLocation = ()=>{
-    axios
+    setLoading(true);
+    axiosHttp
     .get('/GetProj_Site')
     .then((response) => {
+      setLoading(false);
       console.log(JSON.stringify(response.data.data));
     setSitelocationlist(response.data.data); 
     })
     .catch((error) => {
+      setLoading(false);
       setError(error);
     });
    } 
@@ -123,7 +132,7 @@ const UserPromote = () => {
        // post api call for attendance with required payload
   try {
     setLoading(true); // Set loading before sending API request
-    const res = await axios.post("/PramoteUser", userPromotePayload);
+    const res = await axiosHttp.post("/PramoteUser", userPromotePayload);
     const response = res; // Response received
     toast.success(res.data.msg);
     setLoading(false); // Stop loading
@@ -135,7 +144,9 @@ const UserPromote = () => {
 
     };
 
+    if (loading) return <>Loading...<CircularProgress /></>;
     if (!empList) return <Typography color="error"> No data available please contact with admin.</Typography>
+    if (error) return <Typography color="error">{error.message}</Typography> && toast.error(error.message)
 
   return (
     <>

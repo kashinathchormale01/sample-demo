@@ -17,6 +17,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import axiosHttp from "../../../AxiosInstance";
 
 const FCWidth = {
   width: "20rem"
@@ -35,7 +36,7 @@ const navigate = useNavigate();
 
   const loadEmployees = async () => {      
     try {
-      let result = await axios.get('/GetEmp');
+      let result = await axiosHttp.get('/GetEmp');
       setEmplist(result.data.data);     
       setLoading(false);    
   } catch (err) {
@@ -73,7 +74,7 @@ const navigate = useNavigate();
     }
     console.log(makePayload)
     try {
-      let result = await axios.post('/DeleteEmp',makePayload);
+      let result = await axiosHttp.post('/DeleteEmp',makePayload);
       toast.error(result.data.msg)
       navigate('/employee-list');
       setLoading(false);    

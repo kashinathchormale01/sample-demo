@@ -9,6 +9,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { toast } from "react-toastify";
 import ConfirmBox from "../../../global/common/confirmDialog/ConfirmDialog";
 import moment from "moment/moment";
+import axiosHttp from "../../../AxiosInstance";
 
 const SiteLocationManagement = (props) => {
   const [sitelocations, setSitelocations] = useState([]);
@@ -20,7 +21,7 @@ const SiteLocationManagement = (props) => {
 
   const loadSiteLocation = async () => {
     try {
-      let result = await axios.get('/GetProj_Site');
+      let result = await axiosHttp.get('/GetProj_Site');
       setSitelocations(result.data.data);
       setLoading(false);
     } catch (err) {
@@ -42,7 +43,7 @@ const SiteLocationManagement = (props) => {
   }, []);
 
   const deleteSiteLocation = async () => {
-    await axios.delete(
+    await axiosHttp.delete(
       `/DeleteProj_Site/${deleteData?.Id}`
     ).then(res => {
       toast.error(res.data.msg);
@@ -59,7 +60,7 @@ const SiteLocationManagement = (props) => {
   const activateSite = async (site) => {
     console.log(site.Id);
     try {
-      let result = await axios.get(`/ActivateProj_Site/${site.Id}`);
+      let result = await axiosHttp.get(`/ActivateProj_Site/${site.Id}`);
       toast.success(result.data.msg);
       loadSiteLocation();
       setLoading(false);

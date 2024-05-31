@@ -7,6 +7,7 @@ import { useNavigate} from 'react-router-dom';
 import MenuItem from '@mui/material/MenuItem';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import { toast } from "react-toastify";
+import axiosHttp from '../../../AxiosInstance';
 
 
 const DesignationRegisterSchema = yup.object().shape({
@@ -29,7 +30,7 @@ const AddDesignation = () => {
 
     const loadCategories = async () => {      
         try {
-          let result = await axios.get('/GetCategory');
+          let result = await axiosHttp.get('/GetCategory');
           setCategorylist(result.data.data);          
           setLoading(false);
           // Work with the response...
@@ -60,7 +61,7 @@ const AddDesignation = () => {
       }, []);      
 
     function handleFormSubmit (values){
-        axios.post('/AddRole', values)
+      axiosHttp.post('/AddRole', values)
           .then(res=>{
             toast.success(res.data.msg);  
           })      

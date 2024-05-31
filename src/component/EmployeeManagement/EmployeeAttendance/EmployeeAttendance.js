@@ -38,6 +38,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Autocomplete from '@mui/material/Autocomplete';
 import { toast } from "react-toastify";
 import moment from "moment";
+import axiosHttp from "../../../AxiosInstance";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -184,7 +185,7 @@ export const EmployeeTimeSheet = () => {
   const loadSiteLocation = async () => {  
     try {
       setLoading(true);
-      let result = await axios.get('/GetProj_Site');
+      let result = await axiosHttp.get('/GetProj_Site');
       setSitelocationlist(result.data.data);          
       setLoading(false);
       // Work with the response...
@@ -217,7 +218,7 @@ const handleSiteSubmit = (values) => {
     return;
   }
   setIsButtonDisabled(true);
-  axios.post("/GetAttendance", values).then((res) => {
+  axiosHttp.post("/GetAttendance", values).then((res) => {
     console.log(res);
     console.log(res.data);
     // setGetAttendanceres(res.data.data);
@@ -283,7 +284,7 @@ const submitAttendance = async () => {
   // post api call for attendance with required payload
   try {
     setLoading(true); // Set loading before sending API request
-    const res = await axios.post("/Attendance", makeAttendancePayload);
+    const res = await axiosHttp.post("/Attendance", makeAttendancePayload);
     const response = res; // Response received
     toast.success(res.data.msg);
     setLoading(false); // Stop loading

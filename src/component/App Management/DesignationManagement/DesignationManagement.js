@@ -5,6 +5,7 @@ import axios from "axios";
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import { toast } from "react-toastify";
 import ConfirmBox from "../../../global/common/confirmDialog/ConfirmDialog";
+import axiosHttp from "../../../AxiosInstance";
 
 const DesignationManagement = () => {
     const [designationlist, setDesignationlist] = useState([]);
@@ -16,7 +17,7 @@ const DesignationManagement = () => {
   
       const loadDesignations = async () => {      
         try {
-          let result = await axios.get('/GetRole');
+          let result = await axiosHttp.get('/GetRole');
         setDesignationlist(result.data.data);          
           setLoading(false);
           // Work with the response...
@@ -47,7 +48,7 @@ const DesignationManagement = () => {
       }, []);
 
       const deleteDesignations = async () => {
-        await axios.delete(
+        await axiosHttp.delete(
           `/DeleteProj_Site/${deleteDesignationData?.Id}`
         ).then(res=>{
           toast.error(res.data.msg);

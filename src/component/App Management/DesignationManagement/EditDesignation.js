@@ -7,6 +7,7 @@ import { useNavigate, useParams} from 'react-router-dom';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import MenuItem from '@mui/material/MenuItem';
 import { toast } from "react-toastify";
+import axiosHttp from '../../../AxiosInstance';
 
 const DesignationRegisterSchema = yup.object().shape({
     CatagoryId: yup.string().required("required"),
@@ -28,7 +29,7 @@ const EditDesignation = () => {
    
       const loadCategories = async () => {      
         try {
-          let result = await axios.get('/GetCategory');
+          let result = await axiosHttp.get('/GetCategory');
           setCategorylist(result.data.data);          
           setLoading(false);
           // Work with the response...
@@ -55,7 +56,7 @@ const EditDesignation = () => {
       };
 
     function loadSelectedRole() {
-        axios
+      axiosHttp
           .get(`/GetRole/${id}`)
           .then((res) => {           
             setSavedRoles(res.data.data[0]);
@@ -69,7 +70,7 @@ const EditDesignation = () => {
 
     function handleFormSubmit (values){
         console.log(values);
-        axios.put('/UpdateRole', values)
+        axiosHttp.put('/UpdateRole', values)
           .then(res=>{
             toast.success(res.data.msg);  
           })      

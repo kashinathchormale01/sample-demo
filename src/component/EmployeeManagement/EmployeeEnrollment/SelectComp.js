@@ -20,7 +20,9 @@ const SelectComp = ({
   const objects = sendvalues;
   const inputRef = React.useRef(null);
   function setdefaultvalue() {
+    console.log("in select setdefaultvalue")
     if (sentdefaultvalue !== undefined && objects.length > 0) {
+      console.log("in select setdefaultvalue in if", controlname)
       setAge(sentdefaultvalue);
       register(controlname, { required: false });
       setValue(controlname, sentdefaultvalue);

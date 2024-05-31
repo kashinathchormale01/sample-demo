@@ -4,19 +4,21 @@
 import MiniDrawer from './sidebar/sidebar';
 import LoginForm from '../component/LoginManagement/LoginForm';
 
-const Layout = () => {
-     const [userLoggedIn, setUserLoggedIn] = useState(sessionStorage.getItem('user'));
-     console.log(userLoggedIn)
-
-     useEffect(() => {
-      sessionStorage.setItem('user', userLoggedIn);
-  }, [userLoggedIn]);
+const Layout =  () => {
+    // const [userLoggedIn, setUserLoggedIn] = useState();
+     //console.log(userLoggedIn)
+  const userLoggedIn = sessionStorage.getItem('token');
+    //   function setUserLoggedIn(){
+    //   return 
+    //  }
+    
 
   return (
     <>
     {/* <MiniDrawer /> */}
-    {userLoggedIn ? <MiniDrawer /> : <LoginForm />}
+    {userLoggedIn?.length>4 ? <MiniDrawer /> : <LoginForm />}
     {/* {userLoggedIn === 'true' ? <MiniDrawer /> : <LoginForm />} */}
+    
     </>
   )
 }

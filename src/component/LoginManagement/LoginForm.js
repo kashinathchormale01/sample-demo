@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
 import { toast } from "react-toastify";
+const CryptoJS = require("crypto-js");
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -37,13 +38,27 @@ const LoginForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if (!userId || !userPassword) {
+      // Handle null or empty values
+      console.log('User ID or password is missing');
+      return;
+    }
+
     console.log("Started");
    
-   
+    //encrypt
+    const hashedPassword = CryptoJS.AES.encrypt(userPassword, 'nks').toString();
+    console.log("hashedPassword",hashedPassword);
+
+    //Decrypt
+var bytes  = CryptoJS.AES.decrypt(hashedPassword, 'nks');
+var originalPassword = bytes.toString(CryptoJS.enc.Utf8);
+console.log("originalPassword",originalPassword);
+
     let sendingdata = {
      
         userId: userId,
-        userPassword: userPassword,
+        userPassword: hashedPassword,
         roleID: "0",
       
     };
@@ -55,11 +70,20 @@ const LoginForm = () => {
         {
         console.log("success");
       
-        toast.success('User LoggedIn '+res.data.msg);
-        sessionStorage.setItem("user", true);
+        //toast.success('User LoggedIn '+res.data.msg);
+        // sessionStorage.setItem("user", true);
+        sessionStorage.removeItem("token");
          sessionStorage.setItem("token",res.data.Key);
-        //  navigate("/my-profile");
-          window.location.replace("/my-profile");
+         console.log('response data',res.data.data[0])
+
+         const hashedEmpId = CryptoJS.AES.encrypt(res.data.data[0].empId, 'nks').toString();
+         console.log("hashedEmpId",hashedEmpId);
+         sessionStorage.removeItem('Id');     
+         sessionStorage.setItem('Id',hashedEmpId);
+        //  navigate(0)
+          // navigate("/my-profile");
+         // navigate("/Afterlogin");
+         window.location.replace("/my-profile");
         }
         else
         {

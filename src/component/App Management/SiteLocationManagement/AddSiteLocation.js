@@ -9,6 +9,7 @@ import { Grid, Typography,TextField,Box,Button } from '@mui/material'
 import { Formik, Form, } from 'formik';
 import { useNavigate} from 'react-router-dom';
 import { toast } from "react-toastify";
+import axiosHttp from '../../../AxiosInstance';
 
 const SiteRegisterSchema = yup.object().shape({
   siteName: yup.string().required("required"),
@@ -43,7 +44,7 @@ const AddSiteLocation = () => {
 
   function handleFormSubmit (values){
     console.log(values);
-    axios.post('/SaveProj_Site', values)
+    axiosHttp.post('/SaveProj_Site', values)
       .then(res=>{
         console.log(res);
         console.log(res.data);

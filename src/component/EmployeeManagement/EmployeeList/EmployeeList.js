@@ -14,6 +14,7 @@ import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { jsPDF } from 'jspdf'; //or use your library of choice here
 import autoTable from 'jspdf-autotable';
 import { useNavigate } from "react-router-dom";
+import axiosHttp from "../../../AxiosInstance";
 
 // const baseURL = "http://192.168.1.121:8089/api/GetEmp";
 
@@ -31,7 +32,7 @@ const EmployeeList = () => {
 
 const loadEmployees = async () => {      
   try {
-    let result = await axios.get('/GetEmp');
+    let result = await axiosHttp.get('/GetEmp');
     setEmplist(result.data.data);     
     setLoading(false);    
 } catch (err) {

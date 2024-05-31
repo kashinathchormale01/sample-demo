@@ -23,6 +23,7 @@ import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import BillInitialValues from "../BillGeneration/FormModel/BillInitialValues";
 import validationSchema from "../BillGeneration/FormModel/validationSchema";
+import axiosHttp from "../../../AxiosInstance";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -58,7 +59,7 @@ const BillSitePage = () => {
   const loadSiteLocation = async () => {
     try {
       setLoading(true);
-      let result = await axios.get("/GetProj_Site");
+      let result = await axiosHttp.get("/GetProj_Site");
       setSitelocationlist(result.data.data);
       setLoading(false);
     } catch (err) {

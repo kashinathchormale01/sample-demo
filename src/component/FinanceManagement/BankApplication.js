@@ -8,7 +8,8 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { Grid, Typography,TextField,Box,Button } from '@mui/material'
 import { Formik, Form, } from 'formik';
-
+import moment from 'moment';
+import BankApp from './BankApp';
 
 const bankApplicationSchema = yup.object().shape({
     applicationDate: yup.date().nullable(),
@@ -22,12 +23,12 @@ const bankApplicationSchema = yup.object().shape({
   });
   
   const initialValues = {
-    applicationDate: "",
+    applicationDate: new Date(),
     bnkNameApp: "State Bank Of India",
     bnkBranchApp: "Navi Peth",
     bankAdress: "Solapur",
     chequenumApp: "",   
-    chequeDateApp: "",
+    chequeDateApp: new Date(),
     AmountbnkApp: "",
     chequeBy: "N.K.Sharma"
   };
@@ -49,16 +50,16 @@ const BankApplication = () => {
 //     doc.text("Hello world!", 10, 10);
 // doc.save("a4.pdf");
 
-const [applicationData, setApplicationData] = useState({
-    applicationDate: "01/01/2001",
+const [applicationData, setApplicationData] = useState([{
+    applicationDate: new Date(),
     bnkNameApp: "State Bank Of India",
     bnkBranchApp: "Navi Peth",
     bankAdress: "Solapur",
     chequenumApp: "555665",   
-    chequeDateApp: "10/10/2001",
+    chequeDateApp: new Date(),
     AmountbnkApp: "500056",
     chequeBy: "N.K.Sharma"
-})
+}])
 
 
 
@@ -81,7 +82,10 @@ const generatePDF = () => {
   };
 
   function handleFormSubmit (values){
-    console.log(values);
+   
+    const makePayload = [values];
+    console.log(makePayload);
+    setApplicationData(makePayload)
   }
 
   useEffect(()=>{
@@ -121,7 +125,7 @@ const generatePDF = () => {
                   slotProps={{ field: { shouldRespectLeadingZeros: true } }}
                   error={Boolean(touched.applicationDate) && Boolean(errors.applicationDate)}
                   helperText={touched.applicationDate && errors.applicationDate}
-                  sx={{ gridColumn: "span 4" }}
+                  sx={{ gridColumn: "span 2" }}
                 />
               </LocalizationProvider>
 
@@ -194,7 +198,7 @@ const generatePDF = () => {
                   slotProps={{ field: { shouldRespectLeadingZeros: true } }}
                   error={Boolean(touched.chequeDateApp) && Boolean(errors.creationDate)}
                   helperText={touched.chequeDateApp && errors.chequeDateApp}
-                  sx={{ gridColumn: "span 4" }}
+                  sx={{ gridColumn: "span 2" }}
                 />
               </LocalizationProvider>
 
@@ -209,40 +213,10 @@ const generatePDF = () => {
           </Form>
         )}
       </Formik>
-    <a href = {pdf} target = "_blank">Bank Application</a>
-    <a onClick={generatePDF}>Bank Application</a>
-    <div id="converts">
-    <div className="card border-0 shadow overflow-hidden p-2 rounded-0">
-        <div className="row align-items-center no-gutters">
-            <div className="col-md-12 order-2 order-md-1">
-                <div className="card-body content">
+    <a href = {pdf} target = "_blank">Bank Application</a><br/>
 
-                    <div className="row">                      
+    <BankApp data={applicationData} />
 
-                        <div className="col-12 mb-4">
-                            <p className="mb-0">To,</p>
-                            <p className="mb-0"><b>{applicationData.bnkNameApp}</b></p>
-                            <p className="mb-0"><b>{applicationData.bnkBranchApp}</b></p>                           
-                        </div>
-
-                        <div className="col-12">
-                            <p>Dear Sir/Madam,</p>
-
-                            <p>Enclosed please find a list of our workman and Cheque Number. <b>{applicationData.chequenumApp}</b></p>
-                            <p>Dated on. <b>{applicationData.chequeDateApp}</b> draw in faviour of you, for Rs. <b>{applicationData.AmountbnkApp}</b> /- and arrange to credit the amount mentioned against each Workman to their respective saving  Bank A/C. No. held by you and conform having Done so.</p>
-
-                            <p>Thanking You,</p>
-
-                            <p><b>{applicationData.chequeBy}</b></p>
-                        </div>                       
-                    </div>
-
-                </div>
-            </div>
-        </div> 
-    </div>
-    </div>
-    <button onClick={clickhandle}> Generate Bank Application in PDF</button>
     </>    
   )
 }

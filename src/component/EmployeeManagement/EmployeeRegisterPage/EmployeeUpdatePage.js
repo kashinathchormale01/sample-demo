@@ -18,6 +18,7 @@ import ReviewForm from './FormReview';
 import validationSchema from './../../../global/common/FormModel/validationSchema';
 import formInitialValues from './../../../global/common/FormModel/formInitialValues';
 import EmpRegisterModel from './../../../global/common/FormModel/formModel';
+import axiosHttp from '../../../AxiosInstance';
 
 const steps = ['Profile', 'Bank Details','Work Details','Communication and Bio Details','Review Details'];
 
@@ -77,7 +78,7 @@ const EmployeeUpdatePage = () => {
         let sitepageIdsobj ={categoryId:categoryId, siteId:siteId, roleId:roleId};
         const sendingdata = {values, sitepageIdsobj};        
 
-        axios.put('/UpdateEmp', sendingdata)
+        axiosHttp.put('/UpdateEmp', sendingdata)
         .then(res=>{
           console.log(res);
           console.log(res.data);

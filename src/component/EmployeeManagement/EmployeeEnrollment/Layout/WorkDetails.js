@@ -8,6 +8,7 @@ import SelectCompdep from "./../SelectCompdep";
 import axios from "axios";
 import TextField from "@mui/material/TextField";
 import { useFormContext, Controller } from "react-hook-form";
+import axiosHttp from "../../../../AxiosInstance";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -47,7 +48,7 @@ const WorkDetails = (data) => {
 
   const isRequired = () => {
     if (selectecatvalue !== undefined) {
-      axios.get("/GetRoleCat/" + selectecatvalue).then((res) => {
+      axiosHttp.get("/GetRoleCat/" + selectecatvalue).then((res) => {
         setDesignationList(
           res.data.data.map((value) => ({
             valueitem: value.Id,
@@ -66,7 +67,7 @@ const WorkDetails = (data) => {
   };
 
   const getsitedata = () => {
-    axios.get("/GetProj_Site").then((res) => {
+    axiosHttp.get("/GetProj_Site").then((res) => {
       setSiteLocaionlist(
         res.data.data.map((value) => ({
           valueitem: value.Id,
@@ -77,7 +78,7 @@ const WorkDetails = (data) => {
   };
 
   const getWorkCategory = () => {
-    axios.get("/GetCategory").then((res) => {
+    axiosHttp.get("/GetCategory").then((res) => {
       setWorkCategoryList(
         res.data.data.map((value) => ({
           valueitem: value.Id,

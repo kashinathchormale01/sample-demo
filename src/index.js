@@ -4,12 +4,6 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from "react-router-dom";
-import axios from 'axios';
-
-// axios.defaults.baseURL="http://localhost:8089/api";
-axios.defaults.baseURL="http://192.168.1.121:8089/api";
-axios.defaults.headers.common = {'Authorization': `Bearer ${sessionStorage.getItem('token')}`}
-export default axios;
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

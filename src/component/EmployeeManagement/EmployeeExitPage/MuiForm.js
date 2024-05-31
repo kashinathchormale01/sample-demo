@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import { Formik, Form } from "formik";
 import { object, date } from "yup";
 import FormikMuiDatePicker from "./MuiDatePicker";
+import moment from "moment/moment";
 
 const MuiForm = () => {
   const eighteen_years_ago = dayjs().subtract(18, "year");
@@ -17,7 +18,7 @@ const MuiForm = () => {
       <Formik
         initialValues={{ birthdate: eighteen_years_ago }}
         onSubmit={(values) => {
-          console.log(values.birthdate.$y);
+          console.log(values.birthdate.$d);
         }}
         validationSchema={schema}
       >

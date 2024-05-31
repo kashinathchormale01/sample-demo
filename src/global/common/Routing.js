@@ -31,7 +31,8 @@ import AccessManagement from '../../component/App Management/AccessManagement/Ac
 import LoginForm from '../../component/LoginManagement/LoginForm';
 import EmployeeEnroll from '../../component/EmployeeManagement/EmployeeEnrollment/EmployeeRegister';
 import EmployeeEnrollMain from '../../component/EmployeeManagement/EmployeeEnrollment/EmployeeEnrollMain';
-
+import AfterLogin from '../../component/Afterlogin';
+import LoginError from '../../component/LoginError';
 
 
 
@@ -85,6 +86,8 @@ const Routing = () => {
         {/* Redirect for login page */}
         {/* <Route path="/login" exact element={<LoginPage />} /> */}
         <Route path='/login' exact element={<LoginForm />} />
+        <Route path="Afterlogin" element={<AfterLogin />}></Route>
+        <Route path="LoginError" element={<LoginError />}></Route>
         <Route path="/" exact element={<Dashboard />} />
       </Routes>
     </>

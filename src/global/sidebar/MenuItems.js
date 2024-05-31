@@ -4,7 +4,7 @@ import Dropdown from "./SubmenuItem";
 const MenuItems = ({ items }) => {
     return (
       <>
-      <List disablePadding>
+      <List sx={{padding:'0'}}>
         {items.submenu ? (         
             <Dropdown submenus={items.submenu} />         
         ) : (

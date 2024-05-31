@@ -8,6 +8,7 @@ import TextField from "@mui/material/TextField";
 import SelectComp from "./../SelectComp";
 import axios from "axios";
 import { useFormContext, Controller } from "react-hook-form";
+import axiosHttp from "../../../../AxiosInstance";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -33,7 +34,7 @@ const CommunicationBio = (data) => {
   };
 
   const getTalukaData = async () => {
-    await axios.get("/GetTalukaList").then((res) => {
+    await axiosHttp.get("/GetTalukaList").then((res) => {
       setTalukaList(
         res.data.data.map((value) => ({
           valueitem: value.TalukaId,

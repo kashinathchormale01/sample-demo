@@ -52,10 +52,10 @@ const Header = () => {
             John Due
           </Typography>
           <Tooltip title="Open settings">
-            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+            <Link onClick={handleOpenUserMenu} sx={{ p: 0 }}>
               {/* <Avatar></Avatar> */}
               <AccountCircleIcon fontSize='large' sx={{ color: "#ffffff" }} />
-            </IconButton>
+            </Link>
           </Tooltip>
         </>
         <Menu
@@ -74,8 +74,8 @@ const Header = () => {
           open={Boolean(anchorElUser)}
           onClose={handleCloseUserMenu}
         >
-          {settings.map((setting) => (
-            <MenuItem key={setting.code} onClick={handleCloseUserMenu}>
+          {settings.map((setting, index) => (
+            <MenuItem key={index} onClick={handleCloseUserMenu}>
               <Typography textAlign="center" sx={{color:'#1976d2'}}>
                 <Link underline="none" key={setting.code} color='inherit' href={setting.link}> {setting.name}</Link>
               </Typography>

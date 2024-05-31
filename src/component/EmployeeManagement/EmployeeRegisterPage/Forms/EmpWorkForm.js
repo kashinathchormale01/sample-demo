@@ -4,6 +4,7 @@ import { Grid, Typography } from '@mui/material';
 import { InputField, SelectField,TextareaField } from '../../../../global/FormFields';
 import {workCategoryData, designationData} from '../../../../global/common/StubData/CommonStubData';
 import { toast } from "react-toastify";
+import axiosHttp from "../../../../AxiosInstance";
 
 export default function EmpWorkForm(props) {  
   const [sitelocations, setSitelocations] = useState([]);
@@ -43,7 +44,7 @@ console.log('props',props);
       
       const loadSiteLocation = async () => {      
         try {
-          let result = await axios.get('/GetProj_Site');
+          let result = await axiosHttp.get('/GetProj_Site');
           setSitelocations(result.data.data);          
           setLoading(false);
           // Work with the response...
@@ -71,7 +72,7 @@ console.log('props',props);
 
       const loadCategories = async () => {      
         try {
-          let result = await axios.get('/GetCategory');
+          let result = await axiosHttp.get('/GetCategory');
           setCategories(result.data.data);          
           setLoading(false);
           // Work with the response...
@@ -111,7 +112,7 @@ console.log('props',props);
         setSelectedCategory({selectedCategoryId}); // Update the state with the selected category
         localStorage.setItem('selectedCategoryId', JSON.stringify(selectedCategoryId));
         // You can perform additional actions here if needed
-        axios.get(`/GetRoleCat/${selectedCategoryId}`)
+        axiosHttp.get(`/GetRoleCat/${selectedCategoryId}`)
         .then(res=>{
           console.log(res);
           console.log(res.data);

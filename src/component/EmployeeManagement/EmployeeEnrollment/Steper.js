@@ -14,6 +14,7 @@ import {
 } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import axiosHttp from "../../../AxiosInstance";
 
 
 
@@ -58,7 +59,7 @@ const Steper = (selectedid) => {
    
  setSavelabel("Update");
  console.log('date in stepp',selectedid.sentid.Id)
- axios
+ axiosHttp
  .get(`/GetEmp/${selectedid.sentid.Id}`)
  .then((res) => {
    

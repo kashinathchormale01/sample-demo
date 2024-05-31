@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Typography,Container,Paper, Grid, Button,Chip } from "@mui/material";
 import axios from "axios";
 import { toast } from "react-toastify";
+import axiosHttp from '../../../AxiosInstance';
 
 const UserPasswordReset = () => {
   const [selectedadminemp, setSelectedadminemp] = useState([]);
@@ -27,7 +28,7 @@ const UserPasswordReset = () => {
     console.log(userResetPayload)
     try {
       setLoading(true); // Set loading before sending API request
-      const res = await axios.get(`/ResetEmpPass/${userResetPayload.empid}`);
+      const res = await axiosHttp.get(`/ResetEmpPass/${userResetPayload.empid}`);
       const response = res; // Response received
       toast.success(res.data.msg);
       setLoading(false); // Stop loading

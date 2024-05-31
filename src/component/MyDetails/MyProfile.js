@@ -5,33 +5,58 @@ import { Gauge, gaugeClasses } from '@mui/x-charts/Gauge';
 import { green } from '@mui/material/colors';
 import { BarChart } from '@mui/x-charts/BarChart';
 import { PieChart } from '@mui/x-charts/PieChart';
-
-// const pieParams = { height: 500, margin: { right: 5 } };
+import { useLocation, useNavigate } from 'react-router-dom';
+import axiosHttp from '../../AxiosInstance';
+import { set } from 'react-hook-form';
+const CryptoJS = require("crypto-js");
 
 const MyProfile = () => {
-  const [selectedEmpID, setSelectedEmpID] = useState(8);
+
+  // const [selectedEmpID, setSelectedEmpID] = useState();
   const [selectedEmp, setSelectedEmp] = useState();
   const [error, setError] = useState(null);
 
-  function loadSelectedEmployee() {
-    axios
-      .get(`/GetEmp/${selectedEmpID}`)
-      .then((res) => {
-        console.log(res);
-        console.log(JSON.stringify(res.data.data[0]));
-        //setSavedsites(res.data.data[0]);
-        setSelectedEmp(res.data.data[0]);
-      }).catch((error) => {
-        setError(error);
-      });
-    // console.log('savedSiteDataonload',savedSiteData);
-  }
   useEffect(() => {
     loadSelectedEmployee();
   }, []);  
+ 
+  const loadSelectedEmployee = async () => {      
+    try {
+      let encryptedId = sessionStorage.getItem('Id');
+      if (!encryptedId) {
+        console.log("No encrypted ID found in sessionStorage");
+        window.location.href = "/login";
+        return;
+      }else{
+        let bytes  = await CryptoJS.AES.decrypt(sessionStorage.getItem('Id'), 'nks');
+    let originalPassword = await bytes.toString(CryptoJS.enc.Utf8);      
+      let result = await axiosHttp.get(`/GetEmp/${originalPassword}`);
+      setSelectedEmp(result.data.data[0]);    
+    }
+  } catch (err) {
+    console.log('profile',err);    
+      if (err.response) {
+        setError(err.message);
+        console.log('profile',error);   
+      } else if (err.request) {
+        setError(err.message);
+        console.log('profile',error); 
+      } else {
+          // Anything else
+          setError(err.message);
+          console.log('profile',error);    
+      }
+  }
+    
+  };
+
+ 
 
   if (error) return `Error: ${error.message}`;
+  // if (error) return useNavigate('/login');
   if (!selectedEmp) return "No Data!"
+
+
 
   return (
     <>
@@ -53,7 +78,7 @@ const MyProfile = () => {
           spacing={2}
         >
           <Typography>Designation</Typography>
-          <Typography className='summaryData'>{selectedEmp.designation}</Typography>
+          <Typography className='summaryData'>{selectedEmp.designation1}</Typography>
         </Stack>
         <Stack
           direction="row"
@@ -62,7 +87,7 @@ const MyProfile = () => {
           spacing={2}
         >
           <Typography>Site Locaion</Typography>
-          <Typography className='summaryData'>{selectedEmp.siteLocaion}</Typography>
+          <Typography className='summaryData'>{selectedEmp.siteName}</Typography>
         </Stack>
         <Stack
           direction="row"
