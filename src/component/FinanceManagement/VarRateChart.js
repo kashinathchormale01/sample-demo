@@ -10,7 +10,14 @@ const VarRateChart = () => {
   const [vrates, setVrates] = useState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [initialValues, setInitialValues] = useState(null); // Store initial values
+  const [initialValues, setInitialValues] = useState({
+    DArate: null,
+    HRARate: null,
+    PFRate: null,
+    ESICRate: null,
+    incomeTax: null,
+    Id: 1
+  }); // Store initial values
 
   const loadVratesvalues = async () => {
     try {
@@ -33,7 +40,7 @@ const VarRateChart = () => {
   };
 
   useEffect(() => {
-    loadVratesvalues();
+    loadVratesvalues();    
   }, []);
 
   const { register, onBlur, handleSubmit, formState: { errors }, watch } = useForm();
@@ -44,29 +51,38 @@ const VarRateChart = () => {
   }
 
   const handleChange = (value) => {
-    console.log('Hi onchange called',value);
+    //console.log('Hi onchange called',value);
    // const { name, value } = e.target;
     const floatValue = parseFloat(value);
     if (!isNaN(floatValue)) {
-      console.log(`${value} is a valid float value: ${floatValue}`);
+   //   console.log(`${value} is a valid float value: ${floatValue}`);
       // Do something if it's a valid float value
     } else {
-      console.log(`${value} is not a valid float value`);
+  //    console.log(`${value} is not a valid float value`);
       // Do something if it's not a valid float value
     }
   };
-  
-
+   
   const onSubmit = async (data) => {
-  onChange(data);
-//   const e= data['DArate'].toFixed(1);
-
-// const e = data.keys(['DArates']).toFixed(1);
- //  console.log(e);
   
+const initialnullvalues = { DArate: null, HRARate: null, PFRate: null, ESICRate: null, incomeTax: null, Id: 1 };
+const newval = Object.values(data);
+    console.log('newval',newval);
+    const plainval = newval.map((item, index)=>{
+     return parseFloat(item);
+    });
+    console.log('plainval',plainval);
 
+    const updatedInitialValues = { ...initialnullvalues };    
+    // Map array values to initialValues object keys excluding 'Id'
+    Object.keys(initialnullvalues).forEach((key, index) => {
+      if (key !== 'Id') {
+        updatedInitialValues[key] = plainval[index];
+      }
+    }); 
+ console.log('updatedInitialValues',updatedInitialValues);
     try {
-      let result = await axiosHttp.put('/UpdateFixRates', data);
+      let result = await axiosHttp.put('/UpdateFixRates', updatedInitialValues);
       toast.success(result.data.msg);
       setLoading(false);
       loadVratesvalues();
@@ -141,7 +157,7 @@ const VarRateChart = () => {
                     <TextField defaultValue={vrates.incomeTax} {...register("incomeTax", { required: true })} />
                   </TableCell>
                   <TableCell>
-                    <Button type="submit" variant='contained' color='primary' disabled={!watchAllFields.every(Boolean) || !isFormChanged()}>Update</Button>
+                    <Button type="submit" variant='contained' color='primary' disabled={!watchAllFields.every(Boolean)}>Update</Button>
                   </TableCell>                 
                 </TableRow>
               </TableBody>

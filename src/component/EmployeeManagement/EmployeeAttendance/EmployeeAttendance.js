@@ -39,6 +39,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { toast } from "react-toastify";
 import moment from "moment";
 import axiosHttp from "../../../AxiosInstance";
+import { useNavigate } from "react-router-dom";
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -96,6 +97,7 @@ export const EmployeeTimeSheet = () => {
   const [getAttendanceres, setGetAttendanceres] = useState([]);
   const [weekoffday, setWeekoffday] = useState([]);   
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const navigate = useNavigate();
   /**
    * week start date
    */
@@ -288,6 +290,7 @@ const submitAttendance = async () => {
     const response = res; // Response received
     toast.success(res.data.msg);
     setLoading(false); // Stop loading
+    navigate('/employee-attendance');
   } catch (err) {
     setLoading(false); // Stop loading in case of error
     console.error(error);
