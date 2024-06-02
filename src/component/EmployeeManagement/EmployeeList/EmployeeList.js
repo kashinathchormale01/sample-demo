@@ -79,8 +79,7 @@ const loadEmployees = async () => {
     () => [
       {
         id: 'Emp ID',
-        header: 'Emp Id/S.B.N.',
-        size:50,
+        header: 'Emp Id',
         accessorFn: (row) => `NKS-${row.Id}`,        
       },
       {
@@ -97,38 +96,31 @@ const loadEmployees = async () => {
       {
         accessorKey: 'gender',
         header: 'Gender',
-        size:50         
       },
       {
         accessorKey: 'dateOfBirth',
         header: 'Date Of Birth',
         accessorFn: (row) => `${moment(row.dateOfBirth).format('DD/MM/YYYY')}`,
-        size:50         
       },  
       {
         accessorKey: 'mobileNumber',
         header: 'Mobile Number',
-        size:50         
       },   
       {
         accessorKey: 'RoleName',
         header: 'Designation',
-        size:50         
       },
       {
         accessorKey: 'CategoryWork',
         header: 'Work Category',
-        size:50         
       },    
       {
         accessorKey: 'siteName',
         header: 'Work Locaion',
-        size:50         
       },
       {
        accessorKey:'empstatus',
        header:'Employee Status',
-       size:40 
       }       
     ],
     [],
@@ -142,6 +134,11 @@ const loadEmployees = async () => {
     columnFilterDisplayMode: "popover",
     paginationDisplayMode: "pages",
     positionToolbarAlertBanner: "bottom",
+    defaultColumn: {
+      minSize: 20, //allow columns to get smaller than default
+      maxSize: 9001, //allow columns to get larger than default
+      size: 20, //make columns wider by default
+    },
     muiTableBodyRowProps: ({ row }) => ({
       onDoubleClick: (event) => {
         navigate("/employee-register", { state: row.original });

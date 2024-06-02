@@ -40,13 +40,15 @@ axiosHttp.interceptors.request.use(
       return response;
     },
     (error) => {
-        console.log('error in axios',error)
+        console.log('error in axios',error.message)
       if (error.response.status === 401) {
         //(`unauthorized :)`);
         //localStorage.removeItem("persist:root");
         //removeLocalStorageToken
         console.log('unauthorized error',error.response.status)
         sessionStorage.removeItem('token');
+        window.location.href = "/login";
+      }else if (error.response.status === 404) {
         window.location.href = "/login";
       }
       return Promise.reject(error);

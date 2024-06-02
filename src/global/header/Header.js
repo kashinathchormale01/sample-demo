@@ -11,7 +11,7 @@ import { styled } from '@mui/material/styles';
 import logoimg from '../../images/logo.png';
 
 const Header = () => {
-    // const theme = useTheme();
+    
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const handleOpenUserMenu = (event) => {
       setAnchorElUser(event.currentTarget);
@@ -19,6 +19,13 @@ const Header = () => {
     const handleCloseUserMenu = () => {
       setAnchorElUser(null);
     };
+    const handleLogout = () => {
+      console.log('Logout called');
+      sessionStorage.clear();
+      setAnchorElUser(null);
+      window.location.href = "/login";
+    };
+    
     const useStyles = styled('img')(({ theme }) => ({
         logo: {
             maxWidth: 60,
@@ -74,13 +81,23 @@ const Header = () => {
           open={Boolean(anchorElUser)}
           onClose={handleCloseUserMenu}
         >
-          {settings.map((setting, index) => (
+          {/* {settings.map((setting, index) => (
             <MenuItem key={index} onClick={handleCloseUserMenu}>
               <Typography textAlign="center" sx={{color:'#1976d2'}}>
                 <Link underline="none" key={setting.code} color='inherit' href={setting.link}> {setting.name}</Link>
               </Typography>
             </MenuItem>
-          ))}
+          ))} */}
+          <MenuItem onClick={handleCloseUserMenu}>
+              <Typography textAlign="center" sx={{color:'#1976d2'}}>
+                <Link underline="none" color='inherit' href="/my-profile">Profile</Link>
+              </Typography>
+         </MenuItem>
+         <MenuItem onClick={handleLogout}>
+              <Typography textAlign="center" sx={{color:'#1976d2'}}>
+                <Link underline="none" color='inherit'>Logout</Link>
+              </Typography>
+         </MenuItem>
         </Menu>
       </IconButton>
     </>

@@ -33,6 +33,7 @@ import EmployeeEnroll from '../../component/EmployeeManagement/EmployeeEnrollmen
 import EmployeeEnrollMain from '../../component/EmployeeManagement/EmployeeEnrollment/EmployeeEnrollMain';
 import AfterLogin from '../../component/Afterlogin';
 import LoginError from '../../component/LoginError';
+import VarRateChart from '../../component/FinanceManagement/VarRateChart';
 
 
 
@@ -53,6 +54,7 @@ const Routing = () => {
         <Route path="/generate-wage-reports" exact element={<BasicTable />} />
         <Route path="/generate-wage-slip" exact element={<WageSlip />} />
         <Route path='/generate-employee-bill' exact element={<BillGenerationStepper />} />
+        <Route path='/rate-chart' exact element={<VarRateChart />} />
 
         {/* Employee attendance */}
         <Route path='/employee-attendance' exact element={<EmployeeTimeSheet />} />

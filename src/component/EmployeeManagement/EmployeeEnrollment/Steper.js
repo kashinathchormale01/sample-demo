@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Stepper, Step, StepLabel, Button, Typography,ButtonGroup,CircularProgress } from "@mui/material";
+import { Stepper, Step, StepLabel, Button, Typography,ButtonGroup,CircularProgress, IconButton } from "@mui/material";
 import EmployeeProfile from "./Layout/EmployeeProfile";
 import BankDetails from "./Layout/BankDetail";
 import WorkDetails from "./Layout/WorkDetails";
@@ -152,7 +152,7 @@ methods.setValue("Id", selectedid.sentid.Id);
     if(activeStep===steps.length-1&&savelabel==="Finish")
       {
        console.log(values);
-       axios
+       axiosHttp
        .post("/SaveEmp", values)
        .then((res) => {
         console.log(res);
@@ -182,9 +182,10 @@ methods.setValue("Id", selectedid.sentid.Id);
       }
       if(activeStep===steps.length-1&&savelabel==="Update")
         {
-          alert("This is Triggered");
+          //alert("This is Triggered");
           console.log("update values",values);
-          axios
+          if (window.confirm("Update the employee details?")) {
+          axiosHttp
           .put("/UpdateEmp", values)
           .then((res) => {
            console.log(res);
@@ -210,6 +211,7 @@ methods.setValue("Id", selectedid.sentid.Id);
             setLastMessage("Technical Error please contact Administrator");
             toast.error("Technical Error please contact Administrator");
           });
+        }
         }
     setActiveStep(activeStep + 1); 
   }
@@ -240,7 +242,7 @@ methods.setValue("Id", selectedid.sentid.Id);
       </Stepper>
 
       {activeStep === steps.length ? (
-        <Typography variant="h3" align="center">
+        <Typography variant="h3" align="center">          
           {lastMessage}
         </Typography>
       ) : (

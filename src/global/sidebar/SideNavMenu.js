@@ -114,6 +114,10 @@ export const menuItemsData = [
       {
         menu: "Generate Wage Slips",
         url: "generate-wage-slip",
+      },
+      {
+        menu:"Update Rate Chart",
+        url:"rate-chart"
       }
     ],
   },

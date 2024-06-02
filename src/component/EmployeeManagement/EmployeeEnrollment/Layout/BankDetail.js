@@ -152,7 +152,7 @@ const BankDetail = () => {
             label="UAN Number"
             variant="outlined"
             rules={{
-              required:"Bank Name is required"
+              required:Boolean("Bank Name is required")
             }}
             {...field}
             error={Boolean(errors.UAN)}
