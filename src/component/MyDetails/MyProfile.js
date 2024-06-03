@@ -14,10 +14,42 @@ const MyProfile = () => {
 
   // const [selectedEmpID, setSelectedEmpID] = useState();
   const [selectedEmp, setSelectedEmp] = useState();
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [sitelocationlist, setSitelocationlist] = useState();
+
+  const loadSiteLocation = async () => {  
+    try {
+      setLoading(true);
+      let result = await axiosHttp.get('/GetProj_Site');
+      console.log(result.data.data)
+      setSitelocationlist(result.data.data);          
+      setLoading(false);
+      // Work with the response...
+  } catch (err) {
+      if (err.response) {
+        setLoading(false);
+        console.log('Status', err.response.status);
+        setError(err.message);
+          // The client was given an error response (5xx, 4xx)
+          console.log('Error response', err.message);
+      } else if (err.request) {
+        setLoading(false);
+        setError(err.message);
+          // The client never received a response, and the request was never left
+          console.log('Error Request', err.message);
+      } else {
+          // Anything else
+          setLoading(false);
+          setError(err.message);
+          console.log('Error anything', err.message);
+      }
+  }    
+  }; 
 
   useEffect(() => {
     loadSelectedEmployee();
+    loadSiteLocation();
   }, []);  
  
   const loadSelectedEmployee = async () => {      
@@ -60,82 +92,136 @@ const MyProfile = () => {
 
   return (
     <>
-    
-    <Box className="wrapper-main">
-    <Typography variant='h4' sx={{color:'#808080', fontSize:'28px', fontWeight:'500', marginBottom:'20px'}}>Good Morning!!..{selectedEmp.firstName}</Typography>
-    
-      <Paper sx={{ marginTop:'20px', padding: "10px" }}>
-      <Stack
-          direction="row"
-          justifyContent="center"
-          alignItems="flex-start"
-          spacing={2}
-        > <Typography sx={{color:'#1f93ce'}}>Employee Information summary</Typography></Stack>
-        <Stack
-          direction="row"
-          justifyContent="center"
-          alignItems="flex-start"
-          spacing={2}
+      <Box className="wrapper-main">
+        <Typography
+          variant="h4"
+          sx={{
+            color: "#808080",
+            fontSize: "28px",
+            fontWeight: "500",
+            marginBottom: "20px",
+          }}
         >
-          <Typography>Designation</Typography>
-          <Typography className='summaryData'>{selectedEmp.designation1}</Typography>
-        </Stack>
-        <Stack
-          direction="row"
-          justifyContent="center"
-          alignItems="flex-start"
-          spacing={2}
-        >
-          <Typography>Site Locaion</Typography>
-          <Typography className='summaryData'>{selectedEmp.siteName}</Typography>
-        </Stack>
-        <Stack
-          direction="row"
-          justifyContent="center"
-          alignItems="flex-start"
-          spacing={2}
-        >
-          <Typography>Present Address</Typography>
-          <Typography className='summaryData'>{selectedEmp.presentAddress}</Typography>
-        </Stack>
-        <Stack
-          direction="row"
-          justifyContent="center"
-          alignItems="flex-start"
-          spacing={2}
-        >
-          <Typography>Permanent Address</Typography>
-          <Typography className='summaryData'>{selectedEmp.permanentAddress}</Typography>
-        </Stack>
-        <Stack
-          direction="row"
-          justifyContent="center"
-          alignItems="flex-start"
-          spacing={2}
-        >
-          <Typography>city Name</Typography>
-          <Typography className='summaryData'>{selectedEmp.cityName}</Typography>
-        </Stack>
-        <Stack
-          direction="row"
-          justifyContent="center"
-          alignItems="flex-start"
-          spacing={2}
-        >
-          <Typography>Mobile</Typography>
-          <Typography className='summaryData'>{selectedEmp.mobileNumber}</Typography>
-        </Stack>
-        <Stack
-          direction="row"
-          justifyContent="center"
-          alignItems="flex-start"
-          spacing={2}
-        >
-          <Typography>Alternate Mobile Number</Typography>
-          <Typography className='summaryData'>{selectedEmp.alternateMobileNumber}</Typography>
-        </Stack>
-      </Paper>
-      
+          Hello, {selectedEmp.firstName}
+        </Typography>
+
+        <Paper sx={{ marginTop: "20px", padding: "10px" }}>
+          <Stack
+            direction="row"
+            justifyContent="center"
+            alignItems="flex-start"
+            spacing={2}
+          >
+            {" "}
+            <Typography sx={{ color: "#1f93ce" }}>
+              Employee Information summary
+            </Typography>
+          </Stack>
+          <Stack
+            direction="row"
+            justifyContent="center"
+            alignItems="flex-start"
+            spacing={2}
+          >
+            <Typography>Designation</Typography>
+            <Typography className="summaryData">
+              {selectedEmp.designation1}
+            </Typography>
+          </Stack>
+          <Stack
+            direction="row"
+            justifyContent="center"
+            alignItems="flex-start"
+            spacing={2}
+          >
+            <Typography>Site Locaion</Typography>
+            <Typography className="summaryData">
+              {selectedEmp.siteName}
+            </Typography>
+          </Stack>
+          <Stack
+            direction="row"
+            justifyContent="center"
+            alignItems="flex-start"
+            spacing={2}
+          >
+            <Typography>Present Address</Typography>
+            <Typography className="summaryData">
+              {selectedEmp.presentAddress}
+            </Typography>
+          </Stack>
+          <Stack
+            direction="row"
+            justifyContent="center"
+            alignItems="flex-start"
+            spacing={2}
+          >
+            <Typography>Permanent Address</Typography>
+            <Typography className="summaryData">
+              {selectedEmp.permanentAddress}
+            </Typography>
+          </Stack>
+          <Stack
+            direction="row"
+            justifyContent="center"
+            alignItems="flex-start"
+            spacing={2}
+          >
+            <Typography>city Name</Typography>
+            <Typography className="summaryData">
+              {selectedEmp.cityName}
+            </Typography>
+          </Stack>
+          <Stack
+            direction="row"
+            justifyContent="center"
+            alignItems="flex-start"
+            spacing={2}
+          >
+            <Typography>Mobile</Typography>
+            <Typography className="summaryData">
+              {selectedEmp.mobileNumber}
+            </Typography>
+          </Stack>
+          <Stack
+            direction="row"
+            justifyContent="center"
+            alignItems="flex-start"
+            spacing={2}
+          >
+            <Typography>Alternate Mobile Number</Typography>
+            <Typography className="summaryData">
+              {selectedEmp.alternateMobileNumber}
+            </Typography>
+          </Stack>
+        </Paper>
+
+        <Paper>
+          <BarChart
+            xAxis={[
+              {
+                scaleType: "band",
+                data: [
+                  "Jan",
+                  "Feb",
+                  "March",
+                  "April",
+                  "May",
+                  "June",
+                  "July",
+                  "Aug",
+                  "Sept",
+                  "Oct",
+                  "Nov",
+                  "Dec",
+                ],
+              },
+            ]}
+            series={[{ data: [25, 21, 30, 22, 11, 28, 26, 12, 0, 0, 23, 27] }]}
+            width={700}
+            height={300}
+          />
+        </Paper>
       </Box>
       {/* <Gauge
       height={200}

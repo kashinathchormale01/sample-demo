@@ -15,7 +15,7 @@ import { jsPDF } from 'jspdf'; //or use your library of choice here
 import autoTable from 'jspdf-autotable';
 import { useNavigate } from "react-router-dom";
 import axiosHttp from "../../../AxiosInstance";
-
+let Buffer = require('buffer/').Buffer;
 // const baseURL = "http://192.168.1.121:8089/api/GetEmp";
 
 
@@ -29,6 +29,7 @@ const EmployeeList = () => {
   const empData = emplist;
   const [selectedRowsId, setSelectedRowsId] = React.useState([]);
   const [selectedRowsData, setSelectedRowsData] = React.useState();
+  const [profileimg, setProfileimg] = useState([]);
 
 const loadEmployees = async () => {      
   try {
@@ -50,6 +51,8 @@ const loadEmployees = async () => {
 }
   
 };
+
+
 
   useEffect(() => {
     loadEmployees();
@@ -140,10 +143,40 @@ const loadEmployees = async () => {
       size: 20, //make columns wider by default
     },
     muiTableBodyRowProps: ({ row }) => ({
-      onDoubleClick: (event) => {
-        navigate("/employee-register", { state: row.original });
+      onDoubleClick: async(event) => {
+        console.log('before row data original',row.original)
+        if(row.original.Id){
+          try {
+           console.log('getting', row.original.Id)
+           let result = await axiosHttp.get(`/GetEmpImage/${row.original.Id}`);
+           console.log('profileimg',result.data.data[0].ImageSave);
+           const buffer = Buffer.from(result.data.data[0].ImageSave); // Convert to buffer
+       const imageUrl = `data:image/jpeg;base64,${buffer.toString('base64')}`;
+       console.log('getting imageUrl', imageUrl)
+           row.original.img = imageUrl;
+           
+          // setProfileimg(result.data.data[0].ImageSave);
+          // methods.setValue("img",result.data.data[0].ImageSave);
+           setLoading(false);
+         } catch (err) {
+           if (err.response) {
+             setLoading(false);
+             setError(err.message);
+           } else if (err.request) {
+             setLoading(false);
+             setError(err.message);
+           } else {
+             setLoading(false);
+             setError(err.message);
+           }
+         }
+         }
+         console.log('row data original',row.original)
+       navigate("/employee-register", { state: row.original});
 
-        console.log("clicked", row.original);
+       
+
+       // console.log("clicked", imageUrl);
       },
       sx: {
         textDecoration: "none",

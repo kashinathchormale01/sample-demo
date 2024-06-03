@@ -1,5 +1,5 @@
+import React, { useEffect, useState, useRef } from "react";
 import TextField from "@mui/material/TextField";
-import * as React from "react";
 import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
@@ -14,6 +14,9 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { useFormContext, Controller } from "react-hook-form";
+import CapturePhoto from "./CapturePhoto";
+
+
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -30,23 +33,56 @@ function getgendervalues(data) {
   ];
 }
 
-const EmployeeProfile = (defaultdates, data) => {
+
+const EmployeeProfile = (defaultdates,profileimg, data) => {
   const {
     control,
     formState: { errors },
   } = useFormContext();
-  const { register, setValue } = useFormContext();
+  const { register, setValue, getValues } = useFormContext();
   const inputRef = React.useRef(null);
   const [age, setAge] = React.useState("");
-  const [image, setImage] = React.useState("");
+  const [image, setImage] = React.useState(getValues("img"));
   const gender = getgendervalues();
   const handleChange = (event) => {
     setAge(event.target.value);
   };
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [capturedImage, setCapturedImage] = useState(null);
 
-  register("img", { required: false });
-  setValue("img", defaultimage);
+  const handleOpenDialog = () => {
+    setDialogOpen(true);
+  };
 
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+  };
+
+  const handleCapture = (imageSrc) => {
+    // setCapturedImage(imageSrc);
+    setImage(imageSrc);
+    register("img", { required: false });
+    setValue("img", imageSrc);
+  };
+ console.log("image in profile",defaultdates);
+//  console.log("datavalues",defaultdates?.img);
+//  setImage(window.URL.createObjectURL(defaultdates?.img));
+//  const base64String = btoa(String.fromCharCode(...new Uint8Array(defaultdates?.img)));
+function convertimgblob(){
+  console.log('profile image',defaultdates?.img)
+  if(defaultdates.img){
+ // const base64String = btoa(String.fromCharCode(...new Uint8Array(defaultdates?.img)));
+   console.log('profile image in useefffect',defaultdates?.img)
+  setImage(defaultdates?.img);
+  console.log('after profile image in useefffect',image)
+  }
+}
+
+React.useEffect(()=>{
+convertimgblob()
+},[defaultdates])
+
+ //setImage(URL.createObjectURL(defaultdates?.img))
   const gendepassvalues = {
     sendvalues: gender,
     label: "Gender *",
@@ -84,19 +120,24 @@ const EmployeeProfile = (defaultdates, data) => {
     inputRef.current.click();
   };
 
-  const handleImageChange = async (event) => {
+  const handleImageChange = (event) => {
     const file = event.target.files[0];
      const reader = new FileReader();
     reader.addEventListener("load", () => {
       setImage(reader.result);
+     // console.log('imageinreader',image)
+      register("img", { required: false });
+      setValue("img", reader.result);
     });
     reader.readAsDataURL(file);
-    register("img", { required: false });
-    setValue("img", image);
+  //  console.log('imageafterset',image)
+   
   };
 
   return (
     <Box sx={{ width: "100%", padding: 2 }}>
+      
+
       <div
         onClick={handleImageClick}
         style={{
@@ -108,21 +149,18 @@ const EmployeeProfile = (defaultdates, data) => {
           textAlign: "center",
         }}
       >
-        <Avatar
+      
+   
+     <Avatar 
           sx={{
             bgcolor: "red",
             alignSelf: "center",
             width: "100%",
             height: "100%",
-            objectFit: "cover",
           }}
           variant="rounded"
         >
-          {image ? (
-            <img src={image} alt="" height="100%" width="100%" />
-          ) : (
-            <img src={defaultimage} alt="" height="100%" width="100%" />
-          )}
+         <img src={image} alt="photo" />
         </Avatar>
       </div>
       <div style={{ margin: "10px" }}>
@@ -142,6 +180,14 @@ const EmployeeProfile = (defaultdates, data) => {
             sx={{ display: "none" }}
           />
         </Button>
+        <div className="showimg">
+        <Button onClick={handleOpenDialog}>Capture Photo</Button>
+        {/* {capturedImage && <img src={capturedImage} alt="Profile" />} */}
+        {/* {capturedImage &&  <Avatar alt="Profile Image" src={capturedImage} sx={{ width: 100, height: 100, borderRadius:0 }} />}  */}
+      <CapturePhoto open={dialogOpen} onClose={handleCloseDialog} onCapture={handleCapture} />
+      </div>
+        
+        
       </div>
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
         <Grid item xs={6}>

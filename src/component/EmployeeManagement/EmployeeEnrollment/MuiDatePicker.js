@@ -19,9 +19,9 @@ const MuiDatePicker = ({sentlabel,sentyear,sentname,defaultdate}) => {
 //    const today=dayjs();
 const firstrun=()=>{
 
-  //console.log("sent date",defaultdate,"converted Date",dayjs(defaultdate).$d)
+  //console.log("sent date",defaultdate,"converted Date",dayjs(defaultdate).$d,"SentName",sentname)
   register(sentname,{required:false});
-  setValue(sentname,dayjs(defaultdate).format('YYYY/MM/DD'));
+  setValue(sentname,dayjs(maxDate).format('YYYY/MM/DD'));
 }
    
   // console.log("sent year is",sentyear,"assigned year",dayjs(value).format('DD/MM/YYYY'));

@@ -34,20 +34,24 @@ let values={};
 
 const Steper = (selectedid) => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [profileimg, setProfileimg] = useState(selectedid.sentid.img);
   const [activeStep, setActiveStep] = useState(0);
   const [lastMessage, setLastMessage] = useState("Pending");
   const [savelabel, setSavelabel] = useState("Finish");
   const [defaultdates, setDefaultdates] = useState({
     dob:dayjs(selectedid.sentid.dateOfBirth),
     doj:dayjs(selectedid.sentid.dateOfJoning),
+    img: selectedid.sentid.img
   });
 
   const steps = getSteps();
   const methods = useForm();
   const isLastStep = activeStep === steps.length - 1;
  
-  
-  const predefincevalues=()=>{
+  console.log('profileimg in prfile',profileimg)
+  const predefincevalues=async()=>{
     // console.log("valueinitiated as :",selectedid.sentid);
      if(selectedid.sentid.Id==="-1")
        {
@@ -108,8 +112,6 @@ methods.setValue("Id", selectedid.sentid.Id);
    console.log(error);
  });
  
- 
-  
  }
    }
  
