@@ -1,4 +1,4 @@
-import React,{useEffect} from "react";
+import React from "react";
 import { Box, Grid, Paper } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import loginimg from "../../Asset/Images/Deep1.jpg";
@@ -51,16 +51,14 @@ const LoginForm = () => {
     console.log("hashedPassword",hashedPassword);
 
     //Decrypt
-var bytes  = CryptoJS.AES.decrypt(hashedPassword, 'nks');
-var originalPassword = bytes.toString(CryptoJS.enc.Utf8);
-console.log("originalPassword",originalPassword);
+const defaultOrigionalBytes  = CryptoJS.AES.decrypt(hashedPassword, 'nks');
+const defaultOrigional = defaultOrigionalBytes.toString(CryptoJS.enc.Utf8);
+console.log("defaultOrigional",defaultOrigional);
 
-    let sendingdata = {
-     
+    let sendingdata = {     
         userId: userId,
         userPassword: hashedPassword,
-        roleID: "0",
-      
+        roleID: "0",      
     };
     axios
       .post("http://192.168.1.121:8089/Login", sendingdata)
@@ -83,7 +81,12 @@ console.log("originalPassword",originalPassword);
         //  navigate(0)
           // navigate("/my-profile");
          // navigate("/Afterlogin");
-         window.location.replace("/my-profile");
+         if('1234'===defaultOrigional){
+          navigate("/change-password");
+          window.location.replace("/change-password");
+         }else{
+          window.location.replace("/my-profile");
+         }
         }
         else
         {

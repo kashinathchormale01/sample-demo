@@ -34,6 +34,7 @@ import EmployeeEnrollMain from '../../component/EmployeeManagement/EmployeeEnrol
 import AfterLogin from '../../component/Afterlogin';
 import LoginError from '../../component/LoginError';
 import VarRateChart from '../../component/FinanceManagement/VarRateChart';
+import PasswordChange from '../../component/LoginManagement/ChangePassword/PasswordChange';
 
 
 
@@ -68,6 +69,7 @@ const Routing = () => {
         <Route path='/user-promote' exact element={<UserPromote />} />
         <Route path='/user-promoted-list' exact element={<UserPromotedList />} />
         <Route path='/user-password-reset' exact element={<UserPasswordReset />} />
+        <Route path='/change-password' exact element={<PasswordChange />} />
         <Route path='/access-management' exact element={<AccessManagement />} />
 
 
@@ -91,6 +93,7 @@ const Routing = () => {
         <Route path="Afterlogin" element={<AfterLogin />}></Route>
         <Route path="LoginError" element={<LoginError />}></Route>
         <Route path="/" exact element={<Dashboard />} />
+        <Route path='*' element={<Navigate to='/login' />} />
       </Routes>
     </>
   );
