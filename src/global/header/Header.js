@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
+import axiosHttp from '../../AxiosInstance';
 import Menu from '@mui/material/Menu';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
@@ -9,10 +10,15 @@ import { Link, Toolbar } from '@mui/material';
 import { settings } from '../sidebar/SideNavMenu';
 import { styled } from '@mui/material/styles';
 import logoimg from '../../images/logo.png';
+const CryptoJS = require("crypto-js");
 
 const Header = () => {
     
     const [anchorElUser, setAnchorElUser] = React.useState(null);
+    const [selectedEmp, setSelectedEmp] = useState();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
     const handleOpenUserMenu = (event) => {
       setAnchorElUser(event.currentTarget);
     };
@@ -25,6 +31,40 @@ const Header = () => {
       setAnchorElUser(null);
       window.location.href = "/login";
     };
+
+    const loadSelectedEmployee = async () => {      
+      try {
+        let encryptedId = sessionStorage.getItem('Id');
+        if (!encryptedId) {
+          console.log("No encrypted ID found in sessionStorage");
+          window.location.href = "/login";
+          return;
+        }else{
+          let bytes  = await CryptoJS.AES.decrypt(sessionStorage.getItem('Id'), 'nks');
+      let originalPassword = await bytes.toString(CryptoJS.enc.Utf8);      
+        let result = await axiosHttp.get(`/GetEmp/${originalPassword}`);
+        setSelectedEmp(result.data.data[0]);    
+      }
+    } catch (err) {
+      console.log('profile',err);    
+        if (err.response) {
+          setError(err.message);
+          console.log('profile',error);   
+        } else if (err.request) {
+          setError(err.message);
+          console.log('profile',error); 
+        } else {
+            // Anything else
+            setError(err.message);
+            console.log('profile',error);    
+        }
+    }
+      
+    };
+
+    useEffect(() => {
+      loadSelectedEmployee();
+    }, []);  
     
     const useStyles = styled('img')(({ theme }) => ({
         logo: {
@@ -56,7 +96,7 @@ const Header = () => {
             variant="h6"
             sx={{ color: "#ffe200", marginRight: "10px" }}
           >
-            John Due
+            {selectedEmp?.firstName} {selectedEmp?.lastName}
           </Typography>
           <Tooltip title="Open settings">
             <Link onClick={handleOpenUserMenu} sx={{ p: 0 }}>
