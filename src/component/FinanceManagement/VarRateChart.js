@@ -1,29 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Button, CircularProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, Typography } from '@mui/material';
+import { Button, CircularProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, Typography, Checkbox  } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import axiosHttp from '../../AxiosInstance';
 import { toast } from 'react-toastify';
-import { AddAlert } from '@mui/icons-material';
 
 const VarRateChart = () => {
 
   const [vrates, setVrates] = useState();
   const [loading, setLoading] = useState(true);
+  const [showTable, setShowTable] = useState(false);
   const [error, setError] = useState(null);
-  const [initialValues, setInitialValues] = useState({
-    DArate: null,
-    HRARate: null,
-    PFRate: null,
-    ESICRate: null,
-    incomeTax: null,
-    Id: 1
-  }); // Store initial values
 
   const loadVratesvalues = async () => {
     try {
       let result = await axiosHttp.get('/GetFixRates');
       setVrates(result.data.data[0]);
-      setInitialValues(result.data.data[0]); // Set initial values
+     // setInitialValues(result.data.data[0]); // Set initial values
       setLoading(false);
     } catch (err) {
       if (err.response) {
@@ -43,26 +35,7 @@ const VarRateChart = () => {
     loadVratesvalues();    
   }, []);
 
-  const { register, onBlur, handleSubmit, formState: { errors }, watch } = useForm();
-
-  const onChange =(data) => {
-    console.log('Hi onchange called',data);
-    setInitialValues(data);
-  }
-
-  const handleChange = (value) => {
-    //console.log('Hi onchange called',value);
-   // const { name, value } = e.target;
-    const floatValue = parseFloat(value);
-    if (!isNaN(floatValue)) {
-   //   console.log(`${value} is a valid float value: ${floatValue}`);
-      // Do something if it's a valid float value
-    } else {
-  //    console.log(`${value} is not a valid float value`);
-      // Do something if it's not a valid float value
-    }
-  };
-   
+  const { register, handleSubmit, formState: { errors }, watch } = useForm();
   const onSubmit = async (data) => {
   
 const initialnullvalues = { DArate: null, HRARate: null, PFRate: null, ESICRate: null, incomeTax: null, Id: 1 };
@@ -102,22 +75,22 @@ const newval = Object.values(data);
 
   const watchAllFields = watch(["DArate", "HRARate", "PFRate", "ESICRate", "incomeTax"]);
 
-  // Check if values have changed from initial values
-  const isFormChanged = () => {
-    if (!initialValues) return false;
-    for (let key in initialValues) {
-      if (vrates[key] !== initialValues[key]) return true;
-    }
-    return false;
-  };
-
   return (
     <>
+    <Checkbox 
+        checked={showTable} 
+        onChange={(e) => setShowTable(e.target.checked)} 
+        color="primary"
+      />
+      <label htmlFor="showTable">Are you want to update the rate chart?</label>
+
+      {showTable ? (
+        <>
       {loading ? (
         <CircularProgress />
       ) : error ? (
         <div>Error: {error}</div>
-      ) : vrates && (<>
+      ) : vrates && (
         <TableContainer sx={{ maxWidth: '50%', marginTop: '20px' }} component={Paper}>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Table aria-label="customized table">
@@ -163,11 +136,14 @@ const newval = Object.values(data);
               </TableBody>
             </Table>
           </form>
-        </TableContainer>
-        <div>
+          <div>
                {(errors.DArate || errors.HRARate || errors.PFRate || errors.ESICRate || errors.incomeTax) && <TableRow><TableCell><Typography color="error">This field is required</Typography></TableCell></TableRow>}
-        </div> </>
+        </div>
+        </TableContainer>
+      
       )}
+        </>
+      ) : null}
     </>
   )
 }
