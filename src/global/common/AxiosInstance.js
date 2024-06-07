@@ -9,8 +9,8 @@ axiosClient.defaults.headers = {
   Accept: 'application/json'
 };
 
-//All request will wait 2 seconds before timeout
-axiosClient.defaults.timeout = 2000;
+//All request will wait 3 seconds before timeout
+axiosClient.defaults.timeout = 3000;
 
 axiosClient.defaults.withCredentials = true;
 

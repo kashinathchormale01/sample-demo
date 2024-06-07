@@ -1,94 +1,49 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Grid, Paper,Stack,Typography,Divider } from '@mui/material';
-import axios from 'axios';
-import { Gauge, gaugeClasses } from '@mui/x-charts/Gauge';
-import { green } from '@mui/material/colors';
+import { Box, Paper,Stack,Typography } from '@mui/material';
 import { BarChart } from '@mui/x-charts/BarChart';
-import { PieChart } from '@mui/x-charts/PieChart';
-import { useLocation, useNavigate } from 'react-router-dom';
 import axiosHttp from '../../AxiosInstance';
-import { set } from 'react-hook-form';
 const CryptoJS = require("crypto-js");
 
 const MyProfile = () => {
 
-  // const [selectedEmpID, setSelectedEmpID] = useState();
   const [selectedEmp, setSelectedEmp] = useState();
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [sitelocationlist, setSitelocationlist] = useState();
-
-  const loadSiteLocation = async () => {  
+  
+  const loadSelectedEmployee = async () => {
     try {
-      setLoading(true);
-      let result = await axiosHttp.get('/GetProj_Site');
-      console.log(result.data.data)
-      setSitelocationlist(result.data.data);          
-      setLoading(false);
-      // Work with the response...
-  } catch (err) {
-      if (err.response) {
-        setLoading(false);
-        console.log('Status', err.response.status);
-        setError(err.message);
-          // The client was given an error response (5xx, 4xx)
-          console.log('Error response', err.message);
-      } else if (err.request) {
-        setLoading(false);
-        setError(err.message);
-          // The client never received a response, and the request was never left
-          console.log('Error Request', err.message);
-      } else {
-          // Anything else
-          setLoading(false);
-          setError(err.message);
-          console.log('Error anything', err.message);
-      }
-  }    
-  }; 
-
-  useEffect(() => {
-    loadSelectedEmployee();
-    loadSiteLocation();
-  }, []);  
- 
-  const loadSelectedEmployee = async () => {      
-    try {
-      let encryptedId = sessionStorage.getItem('Id');
+      const encryptedId = sessionStorage.getItem("Id");
       if (!encryptedId) {
         console.log("No encrypted ID found in sessionStorage");
         window.location.href = "/login";
         return;
-      }else{
-        let bytes  = await CryptoJS.AES.decrypt(sessionStorage.getItem('Id'), 'nks');
-    let originalPassword = await bytes.toString(CryptoJS.enc.Utf8);      
-      let result = await axiosHttp.get(`/GetEmp/${originalPassword}`);
-      setSelectedEmp(result.data.data[0]);    
-    }
-  } catch (err) {
-    console.log('profile',err);    
+      } else {
+        const bytes = await CryptoJS.AES.decrypt(sessionStorage.getItem("Id"), "nks");
+        const originalPassword = await bytes.toString(CryptoJS.enc.Utf8);
+        const result = await axiosHttp.get(`/GetEmp/${originalPassword}`);
+        setSelectedEmp(result.data.data[0]);
+      }
+    } catch (err) {
+      console.log("profile", err);
       if (err.response) {
         setError(err.message);
-        console.log('profile',error);   
+        console.log("profile", error);
       } else if (err.request) {
         setError(err.message);
-        console.log('profile',error); 
+        console.log("profile", error);
       } else {
-          // Anything else
-          setError(err.message);
-          console.log('profile',error);    
+        // Anything else
+        setError(err.message);
+        console.log("profile", error);
       }
-  }
-    
+    }
   };
-
- 
+  
+  useEffect(() => {
+    loadSelectedEmployee(); //eslint-disable-next-line
+  }, []);  
 
   if (error) return `Error: ${error.message}`;
-  // if (error) return useNavigate('/login');
   if (!selectedEmp) return "No Data!"
-
-
 
   return (
     <>
@@ -222,44 +177,7 @@ const MyProfile = () => {
             height={300}
           />
         </Paper>
-      </Box>
-      {/* <Gauge
-      height={200}
-  value={75}
-  startAngle={0}
-  endAngle={360}
-  innerRadius="80%"
-  outerRadius="100%"
-  text={
-    ({ value, valueMax }) => `Attendance: ${value} %`
- }
- sx={(theme) => ({
-  [`& .${gaugeClasses.valueText}`]: {
-    fill: green,
-  },
-})}
-  // ...
-/>
-
-<BarChart
-      xAxis={[{ scaleType: 'band', data: ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'] }]}
-      series={[{ data: [25,21,30,22,11,28,26,12,0,0,23,27]}]}
-      width={700}
-      height={300}
-    />
-<PieChart
-colors={['orange', '#02b2af']}
-      series={[
-        {
-          data: [
-            { id: 0, value: 10, color:'#02b2af', label: 'Total Present days' },
-            { id: 1, value: 15, color:'orange', label: 'Total Absent days' },
-          ],
-        },
-      ]}
-      width={500}
-      height={200}
-    /> */}
+      </Box>     
     </>
   );
 }

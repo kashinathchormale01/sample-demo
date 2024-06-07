@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios"; 
 import * as yup from "yup";
 import { useNavigate, useParams } from "react-router-dom";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
-import { TextField,Box,Button } from '@mui/material'
+import { TextField,Box,Button,CircularProgress } from '@mui/material'
 import { Formik, Form, } from 'formik';
 import { toast } from "react-toastify";
+import axiosHttp from "../../../AxiosInstance";
 
 const SiteRegisterSchema = yup.object().shape({
   siteName: yup.string().required("required"),
@@ -25,41 +25,54 @@ const EditSiteLocation = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [savedsites, setSavedsites] = useState();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null)
 
-  function loadSelectedSiteLocation() {
-    axios
-      .get(`/GetProj_Site/${id}`)
-      .then((res) => {
-        console.log(res);
-        console.log(JSON.stringify(res.data.data[0]));
-        setSavedsites(res.data.data[0]);
-      });
-    // console.log('savedSiteDataonload',savedSiteData);
+  const loadSelectedSiteLocation = async() => {
+    try {
+      let result = await axiosHttp.get(`/GetProj_Site/${id}`);
+      setSavedsites(result.data.data[0]);
+      setLoading(false);
+    } catch (err) {
+      if (err.response) {
+        setLoading(false);
+        setError(err.message);
+      } else if (err.request) {
+        setLoading(false);
+        setError(err.message);
+      } else {
+        setLoading(false);
+        setError(err.message);
+      }
+    }   
   }
   useEffect(() => {
     loadSelectedSiteLocation();
   }, []);
 
-  function handleFormSubmit(values) {
-    // fetch("http://192.168.1.121:8089/api/SaveProj_Site", {
-    //       method: "POST",
-    //       headers: {
-    //         Accept: "application/json",
-    //         "Content-Type": "application/json",
-    //       },
-    //       body: JSON.stringify(values),
-    //     });
-
-    axios
-      .put("/UpdateProj_Site", values)
-      .then((res) => {
-       // console.log(res);
-        console.log(res.data.msg);
-        toast.success(res.data.msg);
-      });
-
-    navigate("/work-location-management");
+  const handleFormSubmit = async(values) => {
+    try {
+      let result = await axiosHttp.put("/UpdateProj_Site", values);
+      console.log(result.data.msg);
+      toast.success(result.data.msg);
+      setLoading(false);
+      navigate("/work-location-management");
+    } catch (err) {
+      if (err.response) {
+        setLoading(false);
+        setError(err.message);
+      } else if (err.request) {
+        setLoading(false);
+        setError(err.message);
+      } else {
+        setLoading(false);
+        setError(err.message);
+      }
+    } 
   }
+
+  if (loading) return <>Loading...<CircularProgress /></>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <>

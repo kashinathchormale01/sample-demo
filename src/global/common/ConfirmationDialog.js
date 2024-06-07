@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 
 function ConfirmationDialog(props) {
-  //local states
   const [open, setOpen] = useState(false);
 
   const showDialog = () => {

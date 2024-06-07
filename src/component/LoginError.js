@@ -21,7 +21,6 @@ const Item = styled(Paper)(({ theme }) => ({
 const LoginError = () => {
     const navigate = useNavigate();
     const handleevent =() =>{
-console.log("debug");
         navigate("/Login");
     }
 
@@ -35,7 +34,7 @@ console.log("debug");
         </Grid>
         <Grid xs={6} alignItems="centre" height="100vh" justifyContent="center" alignContent={"center"}>
             <Stack direction={"column"} spacing={2}>
-          <Item ><label> The Credentials Expired </label> <br/>
+          <Item ><label> The Credentials Expired </label><br/>
           <label>Please Login Again </label></Item>
           <Button variant="contained" endIcon={<LoginIcon />} onClick={handleevent}>
       Login

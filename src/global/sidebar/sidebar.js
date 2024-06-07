@@ -1,104 +1,102 @@
-import * as React from 'react';
-import { styled, useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import MuiDrawer from '@mui/material/Drawer';
-import MuiAppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import CssBaseline from '@mui/material/CssBaseline';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import PersonIcon from '@mui/icons-material/Person';
-import GroupIcon from '@mui/icons-material/Group';
-import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
-import SummarizeIcon from '@mui/icons-material/Summarize';
-import SettingsIcon from '@mui/icons-material/Settings';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { menuItemsData } from './SideNavMenu';
-import MenuItems from './MenuItems';
-import Header from '../header/Header';
-import Routing from '../common/Routing';
-import Appbreadcrumbs from '../header/Appbreadcrumbs';
+import * as React from "react";
+import { styled, useTheme } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import MuiDrawer from "@mui/material/Drawer";
+import MuiAppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import List from "@mui/material/List";
+import CssBaseline from "@mui/material/CssBaseline";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import PersonIcon from "@mui/icons-material/Person";
+import GroupIcon from "@mui/icons-material/Group";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import SummarizeIcon from "@mui/icons-material/Summarize";
+import SettingsIcon from "@mui/icons-material/Settings";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { menuItemsData } from "./SideNavMenu";
+import MenuItems from "./MenuItems";
+import Header from "../header/Header";
+import Routing from "../common/Routing";
+import Appbreadcrumbs from "../header/Appbreadcrumbs";
 
 const drawerWidth = 260;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
-  transition: theme.transitions.create('width', {
+  transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
   }),
-  overflowX: 'hidden',
+  overflowX: "hidden",
 });
 
 const closedMixin = (theme) => ({
-  transition: theme.transitions.create('width', {
+  transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  overflowX: 'hidden',
+  overflowX: "hidden",
   width: `calc(${theme.spacing(7)} + 1px)`,
-  [theme.breakpoints.up('sm')]: {
+  [theme.breakpoints.up("sm")]: {
     width: `calc(${theme.spacing(8)} + 1px)`,
   },
 });
 
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-end',
+const DrawerHeader = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "flex-end",
   padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }));
 
 const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
+  shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
   zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(['width', 'margin'], {
+  transition: theme.transitions.create(["width", "margin"], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
   ...(open && {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
+    transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
   }),
 }));
 
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
-    width: drawerWidth,
-    flexShrink: 0,
-    whiteSpace: 'nowrap',
-    boxSizing: 'border-box',
-    ...(open && {
-      ...openedMixin(theme),
-      '& .MuiDrawer-paper': openedMixin(theme),
-    }),
-    ...(!open && {
-      ...closedMixin(theme),
-      '& .MuiDrawer-paper': closedMixin(theme),
-    }),
+const Drawer = styled(MuiDrawer, {
+  shouldForwardProp: (prop) => prop !== "open",
+})(({ theme, open }) => ({
+  width: drawerWidth,
+  flexShrink: 0,
+  whiteSpace: "nowrap",
+  boxSizing: "border-box",
+  ...(open && {
+    ...openedMixin(theme),
+    "& .MuiDrawer-paper": openedMixin(theme),
   }),
-);
+  ...(!open && {
+    ...closedMixin(theme),
+    "& .MuiDrawer-paper": closedMixin(theme),
+  }),
+}));
 
-export default function MiniDrawer({ userRole='Super Admin' }) {
-  const userCode='1';
+export default function MiniDrawer({ userRole = "Super Admin" }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -112,11 +110,13 @@ export default function MiniDrawer({ userRole='Super Admin' }) {
 
   const filteredMenuItems = () => {
     switch (userRole) {
-      case 'Super Admin':
-      case 'Admin':
+      case "Super Admin":
+      case "Admin":
         return menuItemsData;
-      case 'Supervisor':
-        return menuItemsData.filter(item => item.sectionId === 1 || item.sectionId === 2);
+      case "Supervisor":
+        return menuItemsData.filter(
+          (item) => item.sectionId === 1 || item.sectionId === 2
+        );
       default:
         return [];
     }
@@ -153,9 +153,9 @@ export default function MiniDrawer({ userRole='Super Admin' }) {
           </IconButton>
         </DrawerHeader>
         <Divider />
-   
+
         {filteredMenuItems().map((text, index) => (
-          <>            
+          <>
             <Accordion
               key={index}
               defaultExpanded={index === 0}
@@ -170,12 +170,18 @@ export default function MiniDrawer({ userRole='Super Admin' }) {
                 aria-controls="panel1-content"
                 id="panel1-header"
               >
-                {index === 0 && <PersonIcon color='primary' />}
-                {index === 1 && <GroupIcon color='primary' />}
-                {index === 2 && <AccountBalanceIcon color='primary' />}
-                {index === 3 && <SummarizeIcon color='primary' />}
-                {index === 4 && <SettingsIcon color='primary' />}
-                <Typography sx={{ color:'#0000008a', fontWeight: "700", paddingLeft:"10px" }}>
+                {index === 0 && <PersonIcon color="primary" />}
+                {index === 1 && <GroupIcon color="primary" />}
+                {index === 2 && <AccountBalanceIcon color="primary" />}
+                {index === 3 && <SummarizeIcon color="primary" />}
+                {index === 4 && <SettingsIcon color="primary" />}
+                <Typography
+                  sx={{
+                    color: "#0000008a",
+                    fontWeight: "700",
+                    paddingLeft: "10px",
+                  }}
+                >
                   {text.section}
                 </Typography>
               </AccordionSummary>
@@ -183,7 +189,6 @@ export default function MiniDrawer({ userRole='Super Admin' }) {
                 <MenuItems items={text} />
               </AccordionDetails>
             </Accordion>
-
           </>
         ))}
 
@@ -205,7 +210,6 @@ export default function MiniDrawer({ userRole='Super Admin' }) {
                     justifyContent: "center",
                   }}
                 >
-                  {/* {index === 0 ? <InboxIcon /> : <MailIcon />} */}
                   {index === 0 && <PersonIcon />}
                   {index === 1 && <GroupIcon />}
                   {index === 2 && <AccountBalanceIcon />}
@@ -218,7 +222,7 @@ export default function MiniDrawer({ userRole='Super Admin' }) {
         </List>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 2, mt: 8 }}>
-      <Appbreadcrumbs />
+        <Appbreadcrumbs />
         <Routing />
       </Box>
     </Box>

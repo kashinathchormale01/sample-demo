@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import axios from "axios"; 
+import React, { useEffect, useState } from 'react';
 import * as yup from "yup";
-import { InputField } from '../../../global/FormFields'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
-import { Grid, Typography,TextField,Box,Button } from '@mui/material'
+import { TextField,Box,Button } from '@mui/material'
 import { Formik, Form, } from 'formik';
 import { useNavigate} from 'react-router-dom';
 import { toast } from "react-toastify";
@@ -49,7 +47,7 @@ const AddSiteLocation = () => {
         console.log(res);
         console.log(res.data);
         toast.success(res.data.msg);  
-        setIsDirty(false); // Reset dirty state after form submission
+        setIsDirty(false);
         navigate('/work-location-management');
       })
       .catch(error => {
@@ -76,7 +74,7 @@ const AddSiteLocation = () => {
           handleChange,
           handleSubmit,
           resetForm,
-          dirty, // New field indicating whether the form is dirty
+          dirty, 
         }) => (
           <Form>
             <Box
@@ -89,7 +87,7 @@ const AddSiteLocation = () => {
                 onBlur={handleBlur}
                 onChange={(e) => {
                   handleChange(e);
-                  setIsDirty(true); // Set dirty state when form values change
+                  setIsDirty(true); 
                 }}
                 value={values.siteName}
                 name="siteName"
@@ -102,7 +100,7 @@ const AddSiteLocation = () => {
                 onBlur={handleBlur}
                 onChange={(e) => {
                   handleChange(e);
-                  setIsDirty(true); // Set dirty state when form values change
+                  setIsDirty(true); 
                 }}
                 value={values.siteArea}
                 name="siteArea"

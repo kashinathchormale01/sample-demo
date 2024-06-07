@@ -24,7 +24,7 @@ export const fakeData = [
     {
       id: 2,
       firstName: 'Ajay',
-      lastName: 'Y',
+      lastName: 'Yeole',
       wageRate: 700,
       noOfDayswork: 27,
       overtimeHrs:0,

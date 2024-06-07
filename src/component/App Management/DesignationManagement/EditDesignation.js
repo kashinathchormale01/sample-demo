@@ -32,24 +32,17 @@ const EditDesignation = () => {
           let result = await axiosHttp.get('/GetCategory');
           setCategorylist(result.data.data);          
           setLoading(false);
-          // Work with the response...
       } catch (err) {
           if (err.response) {
             setLoading(false);
-           // console.log('Status', err.response.status);
             setError(err.message);
-              // The client was given an error response (5xx, 4xx)
               console.log('Error response', err.message);
           } else if (err.request) {
             setLoading(false);
             setError(err.message);
-              // The client never received a response, and the request was never left
-             // console.log('Error Request', err.message);
           } else {
-              // Anything else
               setLoading(false);
               setError(err.message);
-             // console.log('Error anything', err.message);
           }
       }
         

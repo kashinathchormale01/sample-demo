@@ -7,12 +7,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import axiosHttp from "../../../AxiosInstance";
 
-const initialValues = {
-  //city_id: { RoleName: "", Id: null,firstName:""},
-  // empId:{Id:null, firstName:""},
-  // roleId:{Id:null, RoleName:""},
-
-};
+const initialValues = {};
 const SendSiteSchema = {
   siteId: "",
 };
@@ -30,74 +25,62 @@ const MenuProps = {
 
 
 const UserPromote = () => {
+
   const navigate = useNavigate();
-    const [empList, setEmpList] = useState([]);
+  const [empList, setEmpList] = useState([]);
   const [userRoles, setUserRoles] = useState([]);
   const [sitelocationlist, setSitelocationlist] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [selectedSite, setSelectedSite] = React.useState([]);
   const [selectedEmps, setSelectedEmps] = React.useState();
-  const [isButtonDisabled, setIsButtonDisabled] = useState(true); // Initially disabled
 
-  const [siteIdError, setSiteIdError] = useState(false); // State for siteId validation
-     console.log('selectedSite',selectedSite);
-     console.log('sitelocationlist',sitelocationlist)
-
-    const getEmployeeList = ()=>{
-      setLoading(true);
-      axiosHttp
-      .get('/GetEmpAdmin')
+  const getEmployeeList = async() => {
+    setLoading(true);
+    await axiosHttp
+      .get("/GetEmpAdmin")
       .then((response) => {
-        console.log(JSON.stringify(response.data.data));
-       // setEmplist(response.data.data);
-       setLoading(false);
-      //  empNames = response.data.data;
-      //  console.log('empNames',empNames);
-      setEmpList(response.data.data); 
-    // console.log('emplist',emplist);
+        setLoading(false);        
+        setEmpList(response.data.data);
       })
       .catch((error) => {
         setLoading(false);
         setError(error);
-        console.log('eerrrr',error.message)
       });
-     } 
+  };
 
-  const getRole = ()=>{
+  const getRole = async() => {
     setLoading(true);
-    axiosHttp
-    .get('/GetRoleIdAdmin')
-    .then((response) => {
-      console.log(JSON.stringify(response.data.data));
-      setLoading(false);
-     setUserRoles(response.data.data); 
-    })
-    .catch((error) => {
-      setLoading(false);
-      setError(error);
-    });
-   } 
+    await axiosHttp
+      .get("/GetRoleIdAdmin")
+      .then((response) => {
+        setLoading(false);
+        setUserRoles(response.data.data);
+      })
+      .catch((error) => {
+        setLoading(false);
+        setError(error);
+      });
+  };
 
-   const getLocation = ()=>{
+  const getLocation = async() => {
     setLoading(true);
-    axiosHttp
-    .get('/GetProj_Site')
-    .then((response) => {
-      setLoading(false);
-      console.log(JSON.stringify(response.data.data));
-    setSitelocationlist(response.data.data); 
-    })
-    .catch((error) => {
-      setLoading(false);
-      setError(error);
-    });
-   } 
+    await axiosHttp
+      .get("/GetProj_Site")
+      .then((response) => {
+        setLoading(false);
+        setSitelocationlist(response.data.data);
+      })
+      .catch((error) => {
+        setLoading(false);
+        setError(error);
+      });
+  };
 
-   useEffect(() => {
-     getEmployeeList();
-     getRole();
-     getLocation();
+  useEffect(() => {
+    getEmployeeList();
+    getRole();
+    getLocation();
   }, []);
 
   const handleChangeselect = (event) => {
@@ -105,48 +88,63 @@ const UserPromote = () => {
       target: { value },
     } = event;
     setSelectedSite(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value,
+      typeof value === "string" ? value.split(",") : value
     );
   };
 
-    const submit = async(values) => {
+  const submit = async (values) => {
+    let valuestoprint;
+    valuestoprint = selectedSite;
+    let userPromotePayload = {};
 
-      let valuestoprint;
-      valuestoprint = selectedSite;
-      let userPromotePayload = {};
+    if (
+      !selectedEmps ||
+      !values.selectedEmpId ||
+      !values.empRoleId ||
+      selectedSite.length === 0
+    ) {      
+      toast.error("Please fill in all required fields.");
+      return;
+    }
 
-      if (!selectedEmps || !values.selectedEmpId || !values.empRoleId || selectedSite.length === 0) {
-        // Show an error message or handle the case where required fields are missing
-        toast.error("Please fill in all required fields.");
-        return;
-      }
-
-      userPromotePayload = {
-        userName: `NKS-${selectedEmps?.Id || ''}`,
-        empId: `${values.selectedEmpId}`,
-        sitelist: valuestoprint,
-        roleId: `${values.empRoleId}`
-      }
-      console.log('payload:',JSON.stringify(userPromotePayload));
-       // post api call for attendance with required payload
-  try {
-    setLoading(true); // Set loading before sending API request
-    const res = await axiosHttp.post("/PramoteUser", userPromotePayload);
-    const response = res; // Response received
-    toast.success(res.data.msg);
-    setLoading(false); // Stop loading
-    navigate('/access-management');
-  } catch (err) {
-    setLoading(false); // Stop loading in case of error
-    console.error(error);
-  }  
-
+    userPromotePayload = {
+      userName: `NKS-${selectedEmps?.Id || ""}`,
+      empId: `${values.selectedEmpId}`,
+      sitelist: valuestoprint,
+      roleId: `${values.empRoleId}`,
     };
+   
+    // post api call for attendance with required payload
+    try {
+      setLoading(true); 
+      const res = await axiosHttp.post("/PramoteUser", userPromotePayload);
+      toast.success(res.data.msg);
+      setLoading(false); 
+      navigate("/access-management");
+    } catch (err) {
+      setLoading(false); 
+    }
+  };
 
-    if (loading) return <>Loading...<CircularProgress /></>;
-    if (!empList) return <Typography color="error"> No data available please contact with admin.</Typography>
-    if (error) return <Typography color="error">{error.message}</Typography> && toast.error(error.message)
+  if (loading)
+    return (
+      <>
+        Loading...
+        <CircularProgress />
+      </>
+    );
+  if (!empList)
+    return (
+      <Typography color="error" sx={{color:'red'}}>
+        {" "}
+        No data available please contact with admin.
+      </Typography>
+    );
+  if (error)
+    return (
+      <Typography color="error">{error.message}</Typography> &&
+      toast.error(error.message)
+    );
 
   return (
     <>
@@ -157,7 +155,9 @@ const UserPromote = () => {
               id="empList"
               name="empList"
               options={empList}
-              getOptionLabel={(option) => option.firstName + ' ' + option.lastName}
+              getOptionLabel={(option) =>
+                option.firstName + " " + option.lastName
+              }
               style={{ width: 300 }}
               onChange={(e, value) => {
                 console.log(value);
@@ -182,7 +182,7 @@ const UserPromote = () => {
               <TextField
                 Id="SelectedEmpId"
                 label="Selected Employee Id"
-                value={`NKS-${selectedEmps?.Id || ''}`}
+                value={`NKS-${selectedEmps?.Id || ""}`}
               />
             )}
 
@@ -193,7 +193,6 @@ const UserPromote = () => {
               getOptionLabel={(option) => option.RoleName}
               style={{ width: 300 }}
               onChange={(e, value) => {
-                //console.log(value);
                 setFieldValue(
                   "empRoleId",
                   value.Id !== null ? value.Id : initialValues.role.Id
@@ -244,7 +243,6 @@ const UserPromote = () => {
                 ))}
               </Select>
             </FormControl>
-
             <Button
               className="buttonMain"
               variant="contained"

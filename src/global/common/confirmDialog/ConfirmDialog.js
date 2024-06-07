@@ -38,7 +38,7 @@ import {
             X
           </IconButton>
         </DialogTitle>
-<Divider />
+ <Divider />
         <DialogContent sx={{ px: 8, py: 6, position: "relative" }}>
           <Grid container spacing={6}>
             <Grid item xs={12}>

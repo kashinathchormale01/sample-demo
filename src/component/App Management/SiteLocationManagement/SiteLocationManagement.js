@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Button, Stack, CircularProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
-import axios from "axios";
 import EditLocationAltIcon from '@mui/icons-material/EditLocationAlt';
 import WrongLocationIcon from '@mui/icons-material/WrongLocation';
 import AddLocationIcon from '@mui/icons-material/AddLocation';
@@ -52,13 +51,12 @@ const SiteLocationManagement = (props) => {
     });
   };
 
-  function openDelete(data) {
+  const openDelete = async(data) =>{
     setOpen(true);
     setDeleteData(data);
   }
 
   const activateSite = async (site) => {
-    console.log(site.Id);
     try {
       let result = await axiosHttp.get(`/ActivateProj_Site/${site.Id}`);
       toast.success(result.data.msg);
@@ -76,9 +74,7 @@ const SiteLocationManagement = (props) => {
         setError(err.message);
       }
     }
-  };
-
-  console.log(deleteData);
+  };  
 
   if (loading) return <>Loading...<CircularProgress /></>;
   if (error) return <p>Error: {error}</p>;

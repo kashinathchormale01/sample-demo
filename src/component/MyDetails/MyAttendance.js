@@ -21,8 +21,7 @@ const MyAttendance = () => {
   [`& .${gaugeClasses.valueText}`]: {
     fill: green,
   },
-})}
-  // ...
+})} 
 />
 
 <BarChart
@@ -31,6 +30,7 @@ const MyAttendance = () => {
       width={700}
       height={300}
     />
+    
 <PieChart
 colors={['orange', '#02b2af']}
       series={[
