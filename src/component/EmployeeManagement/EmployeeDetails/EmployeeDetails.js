@@ -1,36 +1,14 @@
 import React, { useState,useEffect} from "react";
-import axios from "axios"; 
 import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import { Typography,Container } from "@mui/material";
-import { useParams } from "react-router-dom";
 import axiosHttp from "../../../AxiosInstance";
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-}));
-
-
-
 const EmployeeDetails = (props) => {
-  // const { children, value, index, ...other } = props;
-  const { id } = useParams();
-  const [emplist, setEmplist] = useState([]);
   const [selectedEmp, setSelectedEmp] = useState();
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null)
-  // const [value, setValue] = React.useState(0);
-
-  // const handleChange = (event, newValue) => {
-  //   setValue(newValue);
-  // };
-
-  // console.log(selectedEmp);
+  const [error, setError] = useState(null);
 
   const loadSelectedEmployee = async () => {      
     try {
@@ -41,20 +19,14 @@ const EmployeeDetails = (props) => {
   } catch (err) {
       if (err.response) {
         setLoading(false);
-        console.log('Status', err.response.status);
         setError(err.message);
-          // The client was given an error response (5xx, 4xx)
-          console.log('Error response', err.message);
       } else if (err.request) {
         setLoading(false);
         setError(err.message);
-          // The client never received a response, and the request was never left
-          console.log('Error Request', err.message);
       } else {
           // Anything else
           setLoading(false);
           setError(err.message);
-          console.log('Error anything', err.message);
       }
   }
     

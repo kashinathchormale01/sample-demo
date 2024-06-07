@@ -17,82 +17,76 @@ import { toast } from "react-toastify";
 const CryptoJS = require("crypto-js");
 
 const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
-  }));
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: "center",
+  color: theme.palette.text.secondary,
+}));
 
 const LoginForm = () => {
-
   const navigate = useNavigate();
-
   const [userId, setUsername] = useState("");
   const [userPassword, setPassword] = useState("");
 
-  // sessionStorage.setItem("user", false);
-
-
-  
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (!userId || !userPassword) {
-      // Handle null or empty values
-      console.log('User ID or password is missing');
+
+      /**
+       * Handle null or empty values
+       */       
+      console.log("User ID or password is missing");
       return;
     }
 
-    console.log("Started");
-   
-    //encrypt
-    const hashedPassword = CryptoJS.AES.encrypt(userPassword, 'nks').toString();
-    console.log("hashedPassword",hashedPassword);
+    /**
+     * encrypt
+     */
+    const hashedPassword = CryptoJS.AES.encrypt(userPassword, "nks").toString();
 
-    //Decrypt
-const defaultOrigionalBytes  = CryptoJS.AES.decrypt(hashedPassword, 'nks');
-const defaultOrigional = defaultOrigionalBytes.toString(CryptoJS.enc.Utf8);
-console.log("defaultOrigional",defaultOrigional);
+    /**
+     * Decrypt
+     */
+    const defaultOrigionalBytes = CryptoJS.AES.decrypt(hashedPassword, "nks");
+    const defaultOrigional = defaultOrigionalBytes.toString(CryptoJS.enc.Utf8);
 
-    let sendingdata = {     
-        userId: userId,
-        userPassword: hashedPassword,
-        roleID: "0",      
+    const sendingdata = {
+      userId: userId,
+      userPassword: hashedPassword,
+      roleID: "0",
     };
     axios
       .post("http://192.168.1.121:8089/Login", sendingdata)
       .then((res) => {
-       console.log(res);
-        if(res.data.msg==="Succesfull")
-        {
-        console.log("success");
-      
-        //toast.success('User LoggedIn '+res.data.msg);
-        // sessionStorage.setItem("user", true);
-        sessionStorage.removeItem("token");
-         sessionStorage.setItem("token",res.data.Key);
-         console.log('response data',res.data.data[0])
+        if (res.data.msg === "Succesfull") {
+          
+          /**
+           * set the 'token' after login Succesfull
+           */          
+          sessionStorage.removeItem("token");
+          sessionStorage.setItem("token", res.data.Key);
 
-         const hashedEmpId = CryptoJS.AES.encrypt(res.data.data[0].empId, 'nks').toString();
-         console.log("hashedEmpId",hashedEmpId);
-         sessionStorage.removeItem('Id');     
-         sessionStorage.setItem('Id',hashedEmpId);
-        //  navigate(0)
-          // navigate("/my-profile");
-         // navigate("/Afterlogin");
-         if('1234'===defaultOrigional){
-          navigate("/change-password");
-          window.location.replace("/change-password");
-         }else{
-          window.location.replace("/my-profile");
-         }
-        }
-        else
-        {
+          const hashedEmpId = CryptoJS.AES.encrypt(
+            res.data.data[0].empId,
+            "nks"
+          ).toString();
+
+           /**
+           * set the employee 'Id' after login Succesfull
+           */ 
+          sessionStorage.removeItem("Id");
+          sessionStorage.setItem("Id", hashedEmpId);
+          
+          if ("1234" === defaultOrigional) {
+            navigate("/change-password");
+            window.location.replace("/change-password");
+          } else {
+            window.location.replace("/my-profile");
+          }
+        } else {
           sessionStorage.setItem("user", false);
           toast.error(res.data.msg);
-          console.log("Session Invalid");
         }
       })
       .catch((error) => {
@@ -100,118 +94,98 @@ console.log("defaultOrigional",defaultOrigional);
       });
   };
 
-
   return (
     <>
-    <form onSubmit={handleSubmit}>
-      <Box sx={{ height: "100vh" }}>
-        <Grid
-          container
-          direction="row"
-          justifyContent="center"
-          alignItems="center"
-          spacing={2}
-          sx={{ height: "100%", width: "100%", p: 1, mx: 1 }}
-        >
+      <form onSubmit={handleSubmit}>
+        <Box sx={{ height: "100vh" }}>
           <Grid
             container
             direction="row"
             justifyContent="center"
             alignItems="center"
-            item
-            xs={8}
-            sx={{ height: "100%" }}
+            spacing={2}
+            sx={{ height: "100%", width: "100%", p: 1, mx: 1 }}
           >
-            <div style={{ width: "100%" }}>
-              <img
-                alt=""
-                style={{ width: "100%", height: "100%" }}
-                src={loginimg}
-              ></img>
-            </div>
+            <Grid
+              container
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+              item
+              xs={8}
+              sx={{ height: "100%" }}
+            >
+              <div style={{ width: "100%" }}>
+                <img
+                  alt=""
+                  style={{ width: "100%", height: "100%" }}
+                  src={loginimg}
+                ></img>
+              </div>
+            </Grid>
+            <Grid item xs={4}>
+              <Item>
+                <Grid item xs={12}>
+                  <LockPersonIcon fontSize="large" sx={{ color: "red" }} />
+                </Grid>
+                <Grid item xs={12}>
+                  <label>Sign in</label>
+                </Grid>
+
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+                      <AccountCircle
+                        sx={{ color: "action.active", mr: 1, my: 0.5 }}
+                      />
+                      <TextField
+                        fullWidth
+                        id="usernametxt"
+                        label="User Name"
+                        variant="standard"
+                        required
+                        onChange={(e) => setUsername(e.target.value)}
+                      />
+                    </Box>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+                      <PasswordRoundedIcon
+                        sx={{ color: "action.active", mr: 1, my: 0.5 }}
+                      />
+                      <TextField
+                        fullWidth
+                        id="passwordtxt"
+                        label="Password"
+                        variant="standard"
+                        type="password"
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                      />
+                    </Box>
+                  </Grid>{" "}
+                  <Grid item xs={12}>
+                    <Button
+                      variant="contained"
+                      type="sumbit"
+                      size="large"
+                      endIcon={<Login />}
+                    >
+                      {" "}
+                      Login
+                    </Button>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Link to={`/`}>Dont Have an Account </Link>
+                  </Grid>
+                </Grid>
+              </Item>
+            </Grid>
           </Grid>
-          <Grid item xs={4}>
-            <Item>
-              <Grid item xs={12}>
-                <LockPersonIcon fontSize="large" sx={{ color: "red" }} />
-              </Grid>
-              <Grid item xs={12}>
-                <label>Sign in</label>
-              </Grid>
-
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-                    <AccountCircle
-                      sx={{ color: "action.active", mr: 1, my: 0.5 }}
-                    />
-                    <TextField
-                      fullWidth
-                      id="usernametxt"
-                      label="User Name"
-                      variant="standard"
-                      required
-                      onChange={(e) => setUsername(e.target.value)}
-                    />
-                  </Box>
-                </Grid>
-                <Grid item xs={12}>
-                  <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-                    <PasswordRoundedIcon
-                      sx={{ color: "action.active", mr: 1, my: 0.5 }}
-                    />
-                    <TextField
-                      fullWidth
-                      id="passwordtxt"
-                      label="Password"
-                      variant="standard"
-                      type="password"
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                    />
-                  </Box>
-                </Grid>{" "}
-                <Grid item xs={12}>
-                  <Button
-                    variant="contained"
-                    type="sumbit"
-                    size="large"
-                    endIcon={<Login />}
-                  >
-                    {" "}
-                    Login
-                  </Button>
-                </Grid>
-                <Grid item xs={12}>
-                  <Link to={`/`}>Dont Have an Account </Link>
-                </Grid>
-              </Grid>
-            </Item>
-          </Grid>
-
-          {/* <Grid item xs={4}>
-          <Item>xs=4</Item>
-        </Grid>
-        <Grid item xs={8}>
-          <Item>xs=8</Item>
-        </Grid>
-
-        <Grid item xs={4} md={4}>
-          <Item>xs=4</Item>
-        </Grid>
-
-        <Grid item xs={4} md={4}>
-          <Item>xs=4</Item>
-        </Grid>
-
-        <Grid item xs={4} md={4}>
-          <Item>xs=4</Item>
-        </Grid> */}
-        </Grid>
-      </Box>
-    </form>
+        </Box>
+      </form>
     </>
-  )
-}
+  );
+};
 
-export default LoginForm
+export default LoginForm;

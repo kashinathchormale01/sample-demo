@@ -1,11 +1,9 @@
 import React, { useState, useEffect,useMemo} from "react";
-import axios from "axios";
 import * as moment from 'moment';
-import { Grid, Typography,FormControlLabel,Checkbox } from "@mui/material";
+import { Typography} from "@mui/material";
 import {
   MaterialReactTable,
   useMaterialReactTable,  
-  createMRTColumnHelper
 } from 'material-react-table';
 import { Box, Button } from '@mui/material';
 import { Link } from "react-router-dom";
@@ -16,18 +14,13 @@ import autoTable from 'jspdf-autotable';
 import { useNavigate } from "react-router-dom";
 import axiosHttp from "../../../AxiosInstance";
 let Buffer = require('buffer/').Buffer;
-// const baseURL = "http://192.168.1.121:8089/api/GetEmp";
-
-
 
 const EmployeeList = () => {
-  const [data, setData] = useState([]);
   const navigate = useNavigate();
   const [emplist, setEmplist] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null)
   const empData = emplist;
-  const [selectedRowsId, setSelectedRowsId] = React.useState([]);
   const [selectedRowsData, setSelectedRowsData] = React.useState();
   const [profileimg, setProfileimg] = useState([]);
 
@@ -53,7 +46,6 @@ const loadEmployees = async () => {
 };
 
 
-
   useEffect(() => {
     loadEmployees();
   }, []);
@@ -71,11 +63,8 @@ const loadEmployees = async () => {
   }; 
 
   const handleDownloadRows = (rows) => {
-    // alert('Hi')
     const tableData = rows.map((row) => Object.values(row.original));
     setSelectedRowsData(tableData);
-    // console.log('Hi',tableData)
-    console.log('Hi',selectedRowsData)
   }
     
   const columns = useMemo(
@@ -88,8 +77,7 @@ const loadEmployees = async () => {
       {
         id: 'fullname',
         header: 'Full Name',
-        accessorFn: (row) => `${row.firstName} ${row.lastName}`,         
-        //Add a link in a cell render
+        accessorFn: (row) => `${row.firstName} ${row.lastName}`,   
         Cell: ({ renderedCellValue, cell, row }) => {
           return(<Link style={{color:'#1976d2'}} to={{pathname:`/employee-details`}} state={{ id:row.original }}>
           {renderedCellValue}
@@ -143,40 +131,41 @@ const loadEmployees = async () => {
       size: 20, //make columns wider by default
     },
     muiTableBodyRowProps: ({ row }) => ({
-      onDoubleClick: async(event) => {
-        console.log('before row data original',row.original)
-        if(row.original.Id){
+      onDoubleClick: async (event) => {
+        console.log("before row data original", row.original);
+        if (row.original.Id) {
           try {
-           console.log('getting', row.original.Id)
-           let result = await axiosHttp.get(`/GetEmpImage/${row.original.Id}`);
-           console.log('profileimg',result.data.data[0].ImageSave);
-           const buffer = Buffer.from(result.data.data[0].ImageSave); // Convert to buffer
-       const imageUrl = `data:image/jpeg;base64,${buffer.toString('base64')}`;
-       console.log('getting imageUrl', imageUrl)
-           row.original.img = imageUrl;
-           
-          // setProfileimg(result.data.data[0].ImageSave);
-          // methods.setValue("img",result.data.data[0].ImageSave);
-           setLoading(false);
-         } catch (err) {
-           if (err.response) {
-             setLoading(false);
-             setError(err.message);
-           } else if (err.request) {
-             setLoading(false);
-             setError(err.message);
-           } else {
-             setLoading(false);
-             setError(err.message);
-           }
-         }
-         }
-         console.log('row data original',row.original)
-       navigate("/employee-register", { state: row.original});
+            console.log("getting", row.original.Id);
+            const result = await axiosHttp.get(
+              `/GetEmpImage/${row.original.Id}`
+            );
+            console.log("profileimg", result.data.data[0].ImageSave);
+            const buffer = Buffer.from(result.data.data[0].ImageSave);
+            const imageUrl = `data:image/jpeg;base64,${buffer.toString(
+              "base64"
+            )}`;
+            console.log("getting imageUrl", imageUrl);
+            row.original.img = imageUrl;
+            // setProfileimg(result.data.data[0].ImageSave);
+            // methods.setValue("img",result.data.data[0].ImageSave);
+            setLoading(false);
+          } catch (err) {
+            if (err.response) {
+              setLoading(false);
+              setError(err.message);
+            } else if (err.request) {
+              setLoading(false);
+              setError(err.message);
+            } else {
+              setLoading(false);
+              setError(err.message);
+            }
+          }
+        }
+        console.log("row data original", row.original);
+        navigate("/employee-register", { state: row.original });
 
-       
-
-       // console.log("clicked", imageUrl);
+        // console.log("clicked", imageUrl);
       },
       sx: {
         textDecoration: "none",
@@ -194,7 +183,6 @@ const loadEmployees = async () => {
         <Typography>Employee List</Typography>
         <Button
           disabled={table.getPrePaginationRowModel().rows.length === 0}
-          //export all rows, including from the next page, (still respects filtering and sorting)
           onClick={() =>
             handleExportRows(table.getPrePaginationRowModel().rows)
           }
@@ -204,7 +192,6 @@ const loadEmployees = async () => {
         </Button>
         <Button
           disabled={table.getRowModel().rows.length === 0}
-          //export all rows as seen on the screen (respects pagination, sorting, filtering, etc.)
           onClick={() => handleExportRows(table.getRowModel().rows)}
           startIcon={<FileDownloadIcon />}
         >
@@ -214,7 +201,6 @@ const loadEmployees = async () => {
           disabled={
             !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
           }
-          //only export selected rows
           onClick={() => handleExportRows(table.getSelectedRowModel().rows)}
           startIcon={<FileDownloadIcon />}
         >
@@ -224,7 +210,6 @@ const loadEmployees = async () => {
           disabled={
             !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
           }
-          //only export selected rows
           onClick={() => handleDownloadRows(table.getSelectedRowModel().rows)}
           startIcon={<FileDownloadIcon />}
         >
@@ -234,11 +219,8 @@ const loadEmployees = async () => {
     ),
   });
 
-  // console.log(table.getRowModel().rows)
-
   if (error) return `Error: ${error.message}`;
   if (!empData.length) return <Typography color="error">No Employees available!</Typography>;
-
 
   return (
     <>      

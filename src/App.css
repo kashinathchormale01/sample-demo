@@ -1,21 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 
 /* Accordion custom css */
-.MuiAccordion-gutters::before{
+.MuiAccordion-gutters::before {
   opacity: 0 !important;
 }
-.MuiAccordion-gutters.Mui-expanded{
+
+.MuiAccordion-gutters.Mui-expanded {
   margin: 20px 15px 0 15px !important;
 }
 
-.loginContainer{
+.loginContainer {
   background-image: url('./images/bg.png');
   background-repeat: no-repeat;
   background-position: center;
   border-radius: 10px;
 }
 
-.SummaryMain{
+.SummaryMain {
   background-color: #eeeeee;
   border-radius: 10px;
   padding: 10px;
@@ -23,34 +24,47 @@
   margin-bottom: 15pt;
 }
 
-.stepFormButtonGroup{
+.stepFormButtonGroup {
   display: flex !important;
   justify-content: space-between;
   margin-top: 20px;
-  box-shadow:none !important;
+  box-shadow: none !important;
 }
-.stepFormButtonGroup button{
+
+.stepFormButtonGroup button {
   border-radius: 4px !important;
 }
 
-.wrapper-main{
+.wrapper-main {
   margin: 0 auto;
   width: 50%;
 }
-.wrapper-main .summaryData{
+
+.wrapper-main .summaryData {
   color: #838383;
 }
-.buttonMain{
+
+.buttonMain {
   display: block !important;
   margin-top: 20px !important;
 }
-.DialogTitle{
+
+.DialogTitle {
   color: red;
   font-weight: bold;
 }
-.details-page-wrapper label{font-style: normal !important ;}
-.details-page-wrapper label,.details-page-wrapper h6{color: '#808080'; font-style: italic;}
-.sitemap-container{
+
+.details-page-wrapper label {
+  font-style: normal !important;
+}
+
+.details-page-wrapper label,
+.details-page-wrapper h6 {
+  color: '#808080';
+  font-style: italic;
+}
+
+.sitemap-container {
   display: flex;
   flex-direction: row;
   align-items: baseline;
@@ -58,19 +72,23 @@
   justify-content: center;
   column-gap: 20pt;
 }
-.sitemap-container .MuiPaper-elevation{
+
+.sitemap-container .MuiPaper-elevation {
   min-height: 230pt;
 }
-.sitemap-container .topLabel:hover{
+
+.sitemap-container .topLabel:hover {
   color: black;
 }
-.sitemap-container .MuiMenuItem-root:hover{
-  cursor:default;
+
+.sitemap-container .MuiMenuItem-root:hover {
+  cursor: default;
 }
 
-.reviewWrapper:nth-child(odd){
+.reviewWrapper:nth-child(odd) {
   background-color: #f1f1f1;
 }
+
 .MuiFormHelperText-root {
   font-size: 9pt !important;
 }

@@ -1,5 +1,4 @@
 import React, { useState, useEffect,useMemo} from "react";
-import axios from "axios";
 import {
   Button,
   FormControl,
@@ -23,16 +22,14 @@ const FCWidth = {
   width: "20rem"
 };
 
-
 const EmployeeExitPage = () => {
-const navigate = useNavigate();
+  const navigate = useNavigate();
   const [emplist, setEmplist] = useState([]);
   const [dateValue, setDateValue] = useState(dayjs());
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null)
+  const [error, setError] = useState(null);
 
   const { register, control, handleSubmit, formState: { errors } } = useForm();
-
 
   const loadEmployees = async () => {      
     try {
@@ -59,44 +56,38 @@ const navigate = useNavigate();
       loadEmployees();
     }, []);
 
-    // console.log(emplist)
     const handleDateChange = (date) => {
-      setDateValue(date);
-      console.log('Onchange',date)      
+      setDateValue(date);  
     };
-// console.log(dateValue)
-  const formSubmitHandler = async (formData) => {
-    console.log('Onchange',dayjs(dateValue).format('YYYY/MM/DD')) 
-    console.log('Onsubmit',formData);
-    const makePayload = {     
-      doe:dayjs(dateValue).format('YYYY/MM/DD'),
-      empId:formData.empid,
-    }
-    console.log(makePayload)
-    try {
-      let result = await axiosHttp.post('/DeleteEmp',makePayload);
-      toast.error(result.data.msg)
-      navigate('/employee-list');
-      setLoading(false);    
-  } catch (err) {
-      if (err.response) {
-        setLoading(false);    
-        setError(err.message);       
-      } else if (err.request) {
+
+    const formSubmitHandler = async (formData) => {
+      const makePayload = {
+        doe: dayjs(dateValue).format("YYYY/MM/DD"),
+        empId: formData.empid,
+      };
+
+      try {
+        let result = await axiosHttp.post("/DeleteEmp", makePayload);
+        toast.error(result.data.msg);
+        navigate("/employee-list");
         setLoading(false);
-        setError(err.message);      
-      } else {
+      } catch (err) {
+        if (err.response) {
+          setLoading(false);
+          setError(err.message);
+        } else if (err.request) {
+          setLoading(false);
+          setError(err.message);
+        } else {
           // Anything else
           setLoading(false);
-          setError(err.message);     
+          setError(err.message);
+        }
       }
-  }
-
-  };
- // Filter only active employees
+    };
+ 
 const activeEmployees = emplist.filter(emp => emp.empstatus === 'Active');
-
-  // const emps = [{id:1,label:'Kash'},{id:2,label:'MD'}];
+  
   return (
    <>
     <div className="App">

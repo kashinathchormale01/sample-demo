@@ -68,4 +68,4 @@ export let sitesloc = [
     siteName: "bijapur ves",
   siteArea: "Solapur",
   creationDate: "0002121"}
-]
+];

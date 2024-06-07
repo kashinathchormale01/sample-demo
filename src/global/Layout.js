@@ -1,24 +1,12 @@
-// import React from 'react';
- import React, { useState, useEffect } from 'react';
-//  import Login from '../component/Login';
+import React from 'react';
 import MiniDrawer from './sidebar/sidebar';
 import LoginForm from '../component/LoginManagement/LoginForm';
 
-const Layout =  () => {
-    // const [userLoggedIn, setUserLoggedIn] = useState();
-     //console.log(userLoggedIn)
+const Layout =  () => {    
   const userLoggedIn = sessionStorage.getItem('token');
-    //   function setUserLoggedIn(){
-    //   return 
-    //  }
-    
-
   return (
-    <>
-    {/* <MiniDrawer /> */}
-    {userLoggedIn?.length>4 ? <MiniDrawer /> : <LoginForm />}
-    {/* {userLoggedIn === 'true' ? <MiniDrawer /> : <LoginForm />} */}
-    
+    <>    
+      {userLoggedIn?.length>4 ? <MiniDrawer /> : <LoginForm />}
     </>
   )
 }

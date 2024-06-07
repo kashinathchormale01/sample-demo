@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { InputAdornment, IconButton, TextField, Button, Typography, Grid, Box, Paper } from "@mui/material";
+import { InputAdornment, IconButton, TextField, Button, Typography, Grid, Paper } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const ChangePasswordForm = ({ onSubmit }) => {
-  const [passwordsMatch, setPasswordsMatch] = useState(); // State to track if passwords match
+  const [passwordsMatch, setPasswordsMatch] = useState(); 
   const [currentPasswordVisible, setCurrentPasswordVisible] = useState(false);
   const [newPasswordVisible, setNewPasswordVisible] = useState(false);
   const [confirmNewPasswordVisible, setConfirmNewPasswordVisible] = useState(false);
@@ -13,7 +13,7 @@ const ChangePasswordForm = ({ onSubmit }) => {
     register,
     handleSubmit,
     formState: { errors },
-    watch // Get the values of the form inputs
+    watch 
   } = useForm();
 
   const handleToggleCurrentPasswordVisibility = () => {
@@ -39,8 +39,7 @@ const ChangePasswordForm = ({ onSubmit }) => {
     } else {
       alert('You have entered new password as current password!!!')
       return;
-    }
-    
+    }    
   };
 
   useEffect(() => {

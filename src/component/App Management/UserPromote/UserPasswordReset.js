@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Typography,Container,Paper, Grid, Button,Chip } from "@mui/material";
-import axios from "axios";
 import { toast } from "react-toastify";
 import axiosHttp from '../../../AxiosInstance';
 
@@ -15,11 +14,7 @@ const UserPasswordReset = () => {
   useEffect(() => {
     setSelectedadminemp(location.state.id);
   }, [location]);
-
-  //console.log({location });
-  console.log(selectedadminemp);
-
-
+  
   const handlereset = async()=>{
     let userResetPayload = {};
     userResetPayload = {
@@ -27,14 +22,14 @@ const UserPasswordReset = () => {
     }
     console.log(userResetPayload)
     try {
-      setLoading(true); // Set loading before sending API request
+      setLoading(true); 
       const res = await axiosHttp.get(`/ResetEmpPass/${userResetPayload.empid}`);
-      const response = res; // Response received
+      const response = res; 
       toast.success(res.data.msg);
-      setLoading(false); // Stop loading
+      setLoading(false); 
       navigate('/access-management');
     } catch (err) {
-      setLoading(false); // Stop loading in case of error
+      setLoading(false); 
       console.error(error);
     } 
   }
@@ -65,8 +60,7 @@ const UserPasswordReset = () => {
               Selected Employee Details
             </Typography>
             <Grid container spacing={2}>
-              <Grid item className="details-page-wrapper">
-               
+              <Grid item className="details-page-wrapper">               
                 <Typography variant="subtitle1">
                   <label>Name Of Employee:</label> {selectedadminemp.firstName}{" "}
                   {selectedadminemp?.fatherSpouseName}{" "}

@@ -1,6 +1,4 @@
 import React, { useMemo, useState,useEffect } from "react";
-import axios from "axios";
-import * as yup from "yup";
 import { Formik, Form, } from 'formik';
 import {
   Table,
@@ -11,8 +9,7 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Typography,
-  FormControl,InputLabel,Select,OutlinedInput,MenuItem,ListItemText,Box,Chip,CircularProgress
+  Typography,Box,Chip,CircularProgress
 } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import { styled } from "@mui/material/styles";
@@ -20,24 +17,17 @@ import ToggleOn from "@mui/icons-material/ToggleOn";
 import ToggleOff from "@mui/icons-material/ToggleOff";
 import Button from "@mui/material/Button";
 import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
-import PreviousWeekIcon from '@mui/icons-material/NextWeek';
-import NextWeekIcon from '@mui/icons-material/NextWeek';
 import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
 import ViewWeekIcon from '@mui/icons-material/ViewWeek';
-import CalendarViewDayIcon from '@mui/icons-material/CalendarViewDay';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import DateRangeIcon from '@mui/icons-material/DateRange';
 import Stack from "@mui/material/Stack";
 import dayjs from "dayjs";
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-// import { sitesloc } from "../../global/common/StubData/CommonStubData";
 import Autocomplete from '@mui/material/Autocomplete';
 import { toast } from "react-toastify";
-import moment from "moment";
 import axiosHttp from "../../../AxiosInstance";
 import { useNavigate } from "react-router-dom";
 
@@ -61,10 +51,6 @@ const MenuProps = {
   },
 };
 
-const SendSiteSchema = yup.object().shape({
-  siteId: yup.string().required("required"),
-});
-
 const initialValues = {
   siteId: "",
 };
@@ -76,11 +62,9 @@ const dateOffset = (date, offset) => {
 };
 
 const getFirstDayOfWeek = (date) => {
-  const day = (date.getDay() + 6) % 7; // Monday is the first day of week
+  const day = (date.getDay() + 6) % 7; 
   return dateOffset(date, -day);
 };
-
-
 
 const weekDayFormat = { weekday: "short", month: "short", day: "numeric" };
 
@@ -109,21 +93,7 @@ export const EmployeeTimeSheet = () => {
 
   const [monthly, setMonthly] = React.useState(false);
   const [data, setData] = useState([]);
-  // const [data, setData] = useState([
-  //   {emp_id:1,
-  //   sheet:{}
-  // },
-  // {emp_id:2,
-  //   sheet:{}
-  // },
-  // {emp_id:3,
-  //   sheet:{}
-  // },
-  // {emp_id:4,
-  //   sheet:{}
-  // }
-  // ]); 
- 
+  
   const handlePreviousWeek = () => {
     setStartDate((currDate) => dateOffset(currDate, -7));
   };
@@ -147,16 +117,6 @@ export const EmployeeTimeSheet = () => {
       return newData;
     });
   };
-
-  const setWeekOff = (index, day) => {
-    setData((prevData) => {
-      const newData = [...prevData];
-      newData[index].weekOff = day;
-      setWeekoffday(newData[0].weekOff)
-      return newData;
-    });
-  };
-
   
   const handleCalendarTableWeekly = () => {
     setMonthly(false);
@@ -194,20 +154,14 @@ export const EmployeeTimeSheet = () => {
   } catch (err) {
       if (err.response) {
         setLoading(false);
-        console.log('Status', err.response.status);
         setError(err.message);
-          // The client was given an error response (5xx, 4xx)
-          console.log('Error response', err.message);
       } else if (err.request) {
         setLoading(false);
         setError(err.message);
-          // The client never received a response, and the request was never left
-          console.log('Error Request', err.message);
       } else {
           // Anything else
           setLoading(false);
           setError(err.message);
-          console.log('Error anything', err.message);
       }
   }    
   }; 
@@ -221,9 +175,6 @@ const handleSiteSubmit = (values) => {
   }
   setIsButtonDisabled(true);
   axiosHttp.post("/GetAttendance", values).then((res) => {
-    console.log(res);
-    console.log(res.data);
-    // setGetAttendanceres(res.data.data);
     const formatDate = (dateString) => {
       if (!dateString) return null;
       const [year, month, day] = dateString.split("-");
@@ -239,7 +190,6 @@ const handleSiteSubmit = (values) => {
 
     const transformData = res.data.data.map((emp) => {
       const sheetObject = {};
-      const weekOff = "";
       const fullname = emp.firstName + ' ' + emp.lastName;
       if (emp.Sheet) {
         emp.Sheet.split(", ").forEach((date) => {
@@ -253,7 +203,6 @@ const handleSiteSubmit = (values) => {
         weekOff:""
       };
     });
-    console.log(transformData);  
     setData(transformData);
     toast.success(res.data.msg);
     setIsButtonDisabled(false);
@@ -285,15 +234,13 @@ const submitAttendance = async () => {
   };
   // post api call for attendance with required payload
   try {
-    setLoading(true); // Set loading before sending API request
+    setLoading(true); 
     const res = await axiosHttp.post("/Attendance", makeAttendancePayload);
-    const response = res; // Response received
     toast.success(res.data.msg);
-    setLoading(false); // Stop loading
+    setLoading(false); 
     navigate('/employee-attendance');
   } catch (err) {
-    setLoading(false); // Stop loading in case of error
-    console.error(error);
+    setLoading(false); 
   }  
 };
 
@@ -301,7 +248,6 @@ const submitAttendance = async () => {
     loadSiteLocation();
   }, []);
 
-  console.log('emplistbylocation',emplistbylocation);
   if (loading) return <>Loading...<CircularProgress /></>;
   if (!sitelocationlist) return 'No Sites available';
 
@@ -325,7 +271,6 @@ const submitAttendance = async () => {
                 getOptionLabel={(option) => option.siteName}
                 style={{ width: 300 }}
                 onChange={(e, value) => {
-                  //console.log(value);
                   isSubmitting = false;
                   setIsButtonDisabled(false);
                   setFieldValue(
@@ -449,7 +394,6 @@ const submitAttendance = async () => {
                   <TableCell>Employee Id</TableCell>
                   <TableCell>Employee Name</TableCell>
                   <TableCell>Total Attendance</TableCell>
-                  {/* <TableCell>WeekOff</TableCell> */}
                   {weekDates?.map((day) => (
                     <TableCell key={day}>
                       {day.toLocaleDateString("en-US", weekDayFormat)}
@@ -468,31 +412,7 @@ const submitAttendance = async () => {
                         color="success"
                         variant="filled"
                       />
-                    </TableCell>
-                    {/* <TableCell>
-                      <FormControl>
-                        <InputLabel id={`week-off-label-${index}`}>
-                          Week Off
-                        </InputLabel>
-                        <Select
-                          labelId={`week-off-label-${index}`}
-                          id={`week-off-select-${index}`}
-                          value={item.weekOff}
-                          onChange={(e) => setWeekOff(index, e.target.value)}
-                        >
-                          <MenuItem value="">None</MenuItem>
-                          <MenuItem value="Mon">Mon</MenuItem>
-                          <MenuItem value="Tue">Tue</MenuItem>
-                          <MenuItem value="Wed">Wed</MenuItem>
-                          <MenuItem value="Thu">Thu</MenuItem>
-                          <MenuItem value="Fri">Fri</MenuItem>
-                          <MenuItem value="Sat">Sat</MenuItem>
-                          <MenuItem value="Sun">Sun</MenuItem>
-                          
-                        </Select>
-                      </FormControl>
-                    </TableCell> */}
-
+                    </TableCell>                  
                     {weekDates.map((date) => (
                       <TableCell key={date}>
                         <Checkbox
@@ -513,7 +433,6 @@ const submitAttendance = async () => {
                   </StyledTableRow>
                 ))}
                 <TableRow>
-                {/* <TableCell></TableCell> */}
                 <TableCell></TableCell>
                   <TableCell></TableCell>
                   <TableCell></TableCell>
@@ -536,11 +455,7 @@ const submitAttendance = async () => {
             {loading ? <>Loading..</> : <>Submit Attendance</>}
           </Button>
         </>
-      )}
-      {/* {data.length <= 0 && <Typography color="error">Employee's not assigned with this site</Typography>} */}
-      {/* {data.length && <Typography color="error">{data.length}</Typography>} */}
-      {/* Just for visualization purposes */}
-      <pre>{JSON.stringify(data, null, 4)}</pre>
+      )}  
     </>
   );
 };

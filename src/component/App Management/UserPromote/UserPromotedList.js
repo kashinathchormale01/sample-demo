@@ -18,11 +18,10 @@ import axiosHttp from "../../../AxiosInstance";
 
 const UserPromotedList = ({ sendempid }) => {
     const [promotedemplist, setPromotedemplist] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null)
-  const empData = promotedemplist;
-  const [selectedRowsId, setSelectedRowsId] = React.useState([]);
-  const [selectedRowsData, setSelectedRowsData] = React.useState();
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const empData = promotedemplist;
+    const [selectedRowsData, setSelectedRowsData] = React.useState();
 
   const loadpromotedEmployees = async () => {      
     try {
@@ -37,7 +36,6 @@ const UserPromotedList = ({ sendempid }) => {
         setLoading(false);
         setError(err.message);      
       } else {
-          // Anything else
           setLoading(false);
           setError(err.message);     
       }
@@ -62,11 +60,8 @@ const UserPromotedList = ({ sendempid }) => {
   }; 
 
   const handleDownloadRows = (rows) => {
-    // alert('Hi')
     const tableData = rows.map((row) => Object.values(row.original));
     setSelectedRowsData(tableData);
-    // console.log('Hi',tableData)
-    console.log('Hi',selectedRowsData)
   }
 
   const columns = useMemo(
@@ -94,7 +89,6 @@ const UserPromotedList = ({ sendempid }) => {
         accessorFn: (row) => `PassWord Reset`,         
         //Add a link in a cell render
         Cell: ({ renderedCellValue, cell,row }) => {
-         //console.log(row.original)
           return(<Link style={{color:'#1976d2'}} to={`/user-password-reset`} state={{ id:row.original }}>
           {renderedCellValue}
         </Link>   )                 
@@ -111,7 +105,6 @@ const UserPromotedList = ({ sendempid }) => {
         header: 'Work Locaion',
         size:50,
         Cell: ({ renderedCellValue }) => {
-          // Check if the cell value contains a comma
           const hasComma = renderedCellValue.split(',');
           return (
             hasComma.map((item,index)=>(<Chip key={index} label={item.trim()} color='warning' variant="outlined" sx={{ marginRight: "5px" }} />))
@@ -182,8 +175,6 @@ const UserPromotedList = ({ sendempid }) => {
     ),
     
   });
-
-  // console.log(table.getRowModel().rows)
 
   if (error) return `Error: ${error.message}`;
   if (!empData.length) return <Typography color="error">No Employees available!</Typography>;
