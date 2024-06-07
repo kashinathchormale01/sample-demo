@@ -17,7 +17,7 @@ axiosHttp.interceptors.request.use(
         },
       };
     }else{
-        window.location.href = "/LoginError";
+         window.location.href = "/LoginError";
     }
     },
     (error) => {
@@ -27,8 +27,8 @@ axiosHttp.interceptors.request.use(
 
   axiosHttp.interceptors.response.use(
     (response) => {
-        if(response.data.msg.message === 'jwt expired' || response.data.msg.message === 'invalid signature' || response.data.msg.message === 'jwt malformed');
-        window.location.href = "/LoginError";
+        if(response.data.msg.message === 'jwt expired' || response.data.msg.message === 'invalid signature' || response.data.msg.message === 'jwt malformed')
+         window.location.href = "/LoginError";
       return response;
     },
     (error) => {
