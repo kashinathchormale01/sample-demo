@@ -52,6 +52,8 @@ const loadEmployees = async () => {
 
   const handleExportRows = (rows) => {
     const doc = new jsPDF();
+    const title = "Employee List";
+    doc.text(title, 15, 10);
     const tableData = rows.map((row) => Object.values(row._valuesCache));
     const tableHeaders = columns.map((c) => c.header);
     autoTable(doc, {
@@ -59,7 +61,7 @@ const loadEmployees = async () => {
       body: tableData,
     });
 
-    doc.save('mrt-pdf-example.pdf');
+    doc.save('Employee-List.pdf');
   }; 
 
   const handleDownloadRows = (rows) => {

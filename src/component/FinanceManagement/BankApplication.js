@@ -33,6 +33,8 @@ const bankApplicationSchema = yup.object().shape({
   };
 
 let doc = new jsPDF("p", "pt", "a4");
+const title = "Bank Application";
+doc.text(title, 15, 15);
  const source = document.getElementById("converts");
 //  const newSource = doc.splitTextToSize(source, 850);
 // const button = document.getElementsByTagName("button")[0];

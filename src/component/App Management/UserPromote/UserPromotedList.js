@@ -49,6 +49,8 @@ const UserPromotedList = ({ sendempid }) => {
 
   const handleExportRows = (rows) => {
     const doc = new jsPDF();
+    const title = "Promoted User List";
+    doc.text(title, 15, 10);
     const tableData = rows.map((row) => Object.values(row._valuesCache));
     const tableHeaders = columns.map((c) => c.header);
     autoTable(doc, {
@@ -56,7 +58,7 @@ const UserPromotedList = ({ sendempid }) => {
       body: tableData,
     });
 
-    doc.save('mrt-pdf-example.pdf');
+    doc.save('PromotedUserList.pdf');
   }; 
 
   const handleDownloadRows = (rows) => {

@@ -13,17 +13,23 @@ import autoTable from "jspdf-autotable";
 
 const Example = () => {
   const handleExportRows = (rows) => {
+    
     const doc = new jsPDF("landscape");
+    const title = "Wage Breakup";
+    doc.text(title, 15, 15);
     const tableData = rows.map((row) => Object.values(row._valuesCache));
+    const roundedTableData = tableData.map(row =>
+      row.map(value => typeof value === 'number' ? Math.round(value) : value)
+    );
     const tableHeaders = columns.map((c) => c.header);
-    console.log(tableData);
-    console.log(tableHeaders);
+    //console.log(roundedTableData);
+    //console.log(tableHeaders);
 
     doc.autoTable({
       html: "#table",
       columnStyles: {
         0: { cellWidth: 20 },
-        1: { cellWidth: 100 },
+        1: { cellWidth: 200 },
         2: { cellWidth: 80 },
         3: { cellWidth: 100 },
         4: { cellWidth: 80 },
@@ -42,11 +48,12 @@ const Example = () => {
     });
 
     autoTable(doc, {
+      showHead: "everyPage", 
       head: [tableHeaders],
-      body: tableData,
+      body: roundedTableData,
     });
 
-    doc.save("mrt-pdf-example.pdf");
+    doc.save("Wage-Slip-All.pdf");
   };
 
   const columns = useMemo(
@@ -74,22 +81,22 @@ const Example = () => {
         accessorKey: "noOfDayswork",
         header: "No Of Days Work",
       },
-      {
-        accessorKey: "overtimeHrs",
-        header: "Overtime Hours",
-      },
-      {
-        accessorKey: "basicWage",
-        header: "Basic Wage",
-      },
+      // {
+      //   accessorKey: "overtimeHrs",
+      //   header: "Overtime Hours",
+      // },
+      // {
+      //   accessorKey: "basicWage",
+      //   header: "Basic Wage",
+      // },
       {
         accessorKey: "specialBasic",
         header: "Special Basic",
       },
-      {
-        accessorKey: "wageDA",
-        header: "DA",
-      },
+      // {
+      //   accessorKey: "wageDA",
+      //   header: "DA",
+      // },
       {
         id: "totalWage",
         header: "Total Wage",
@@ -98,10 +105,10 @@ const Example = () => {
           return <>{renderedCellValue}</>;
         },
       },
-      {
-        accessorKey: "paymentovertime",
-        header: "Payment Overtime",
-      },
+      // {
+      //   accessorKey: "paymentovertime",
+      //   header: "Payment Overtime",
+      // },
       {
         accessorKey: "HRA",
         header: "HRA",
@@ -135,26 +142,26 @@ const Example = () => {
           return <span>{Math.round(renderedCellValue)}</span>;
         },
       },
-      {
-        accessorKey: "deductSociety",
-        header: "Society",
-      },
+      // {
+      //   accessorKey: "deductSociety",
+      //   header: "Society",
+      // },
       {
         accessorKey: "deductPT",
         header: "Proffessional Tax",
       },
-      {
-        accessorKey: "deductInsurance",
-        header: "Insurance",
-      },
-      {
-        accessorKey: "deductOthers",
-        header: "Others",
-      },
-      {
-        accessorKey: "deductRecoveries",
-        header: "Recoveries",
-      },
+      // {
+      //   accessorKey: "deductInsurance",
+      //   header: "Insurance",
+      // },
+      // {
+      //   accessorKey: "deductOthers",
+      //   header: "Others",
+      // },
+      // {
+      //   accessorKey: "deductRecoveries",
+      //   header: "Recoveries",
+      // },
       {
         id: "totalDeduction",
         header: "Total Deduction",
