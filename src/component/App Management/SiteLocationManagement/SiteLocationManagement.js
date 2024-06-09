@@ -100,7 +100,7 @@ const SiteLocationManagement = (props) => {
       >
         Add New Site Location
       </Button>
-      <TableContainer sx={{ maxWidth: '50%', marginTop: '20px' }} component={Paper}>
+      <TableContainer sx={{ width: '100%', marginTop: '20px' }} component={Paper}>
         <Table aria-label="customized table">
           <TableHead>
             <TableRow

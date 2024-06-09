@@ -10,27 +10,6 @@ import { TextField,Box,Button } from '@mui/material'
 import { Formik, Form, } from 'formik';
 import BankApp from './BankApp';
 
-const bankApplicationSchema = yup.object().shape({
-    applicationDate: yup.date().nullable(),
-    bnkNameApp: yup.string().required("required"),
-    bnkBranchApp: yup.string().required("required"),
-    bankAdress: yup.string().required("required"),
-    chequenumApp: yup.string().required("required"),    
-    chequeDateApp: yup.date().nullable(),
-    AmountbnkApp: yup.string().required("required"),
-    chequeBy: yup.string().required("required"),
-  });
-  
-  const initialValues = {
-    applicationDate: new Date(),
-    bnkNameApp: "State Bank Of India",
-    bnkBranchApp: "Navi Peth",
-    bankAdress: "Solapur",
-    chequenumApp: "",   
-    chequeDateApp: new Date(),
-    AmountbnkApp: "",
-    chequeBy: "N.K.Sharma"
-  };
 
 let doc = new jsPDF("p", "pt", "a4");
 const title = "Bank Application";
@@ -51,19 +30,30 @@ const BankApplication = () => {
 //     doc.text("Hello world!", 10, 10);
 // doc.save("a4.pdf");
 
-const [applicationData, setApplicationData] = useState([{
-    applicationDate: new Date(),
-    bnkNameApp: "State Bank Of India",
-    bnkBranchApp: "Navi Peth",
-    bankAdress: "Solapur",
-    chequenumApp: "555665",   
-    chequeDateApp: new Date(),
-    AmountbnkApp: "500056",
-    chequeBy: "N.K.Sharma"
-}])
+const bankApplicationSchema = yup.object().shape({
+  applicationDate: yup.date().nullable(),
+  bnkNameApp: yup.string().required("required"),
+  bnkBranchApp: yup.string().required("required"),
+  bankAdress: yup.string().required("required"),
+  chequenumApp: yup.string().required("required"),    
+  chequeDateApp: yup.date().nullable(),
+  AmountbnkApp: yup.string().required("required"),
+  chequeBy: yup.string().required("required"),
+});
 
+const initialValues = {
+  applicationDate: new Date(),
+  bnkNameApp: "State Bank Of India",
+  bnkBranchApp: "Navi Peth",
+  bankAdress: "Solapur",
+  chequenumApp: "",   
+  chequeDateApp: new Date(),
+  AmountbnkApp: "",
+  chequeBy: "N.K.Sharma"
+};
 
-
+const [applicationData, setApplicationData] = useState([initialValues])
+console.log('applicationData',applicationData)
 // const docdate = '01/01/2010';
 // const bankname = 'Bank Of Maharashtra';
 // const bankAdress = 'Navi peth Solapur';
@@ -83,10 +73,7 @@ const generatePDF = () => {
   };
 
   function handleFormSubmit (values){
-   
-    const makePayload = [values];
-    console.log(makePayload);
-    setApplicationData(makePayload)
+    setApplicationData([values])
   }
 
   useEffect(()=>{

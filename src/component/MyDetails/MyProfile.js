@@ -149,8 +149,7 @@ const MyProfile = () => {
               {selectedEmp.alternateMobileNumber}
             </Typography>
           </Stack>
-        </Paper>
-
+        </Paper>         
         <Paper>
           <BarChart
             xAxis={[
@@ -172,7 +171,7 @@ const MyProfile = () => {
                 ],
               },
             ]}
-            series={[{ data: [25, 21, 30, 22, 11, 28, 26, 12, 0, 0, 23, 27] }]}
+            series={[{ data: [25, 21, 30, 22, 11, 28, 26, 12, 1, 2, 23, 27] }]}
             width={700}
             height={300}
           />

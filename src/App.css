@@ -92,3 +92,34 @@
 .MuiFormHelperText-root {
   font-size: 9pt !important;
 }
+.monthlyDatePicker .MuiStack-root:first-child{
+  justify-content: space-around;
+}
+.monthlyDatePicker .MuiStack-root .MuiStack-root:first-child{
+  margin-top: 0;
+  margin-right: 25px;
+}
+.monthlyDatePicker .MuiStack-root .MuiStack-root:last-child{
+  margin-top: 0;
+}
+.monthlyDatePicker .monthcal {
+  background-color: #dcffff;
+  border-radius: 4px;
+}
+.SPLallowance{
+  color: red;
+  animation: blinker 2s linear infinite;
+}
+.SPLallowanceinput{
+  margin-top: 4px !important;
+}
+.SPLallowanceinput input{
+   background-color: #ffffff;
+   height: 10px;
+  text-align: center !important;
+}
+@keyframes blinker {
+  50% {
+    opacity: 0
+  }
+}

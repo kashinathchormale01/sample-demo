@@ -25,6 +25,8 @@ import LoginForm from '../../component/LoginManagement/LoginForm';
 import EmployeeEnrollMain from '../../component/EmployeeManagement/EmployeeEnrollment/EmployeeEnrollMain';
 import VarRateChart from '../../component/FinanceManagement/VarRateChart';
 import PasswordChange from '../../component/LoginManagement/ChangePassword/PasswordChange';
+import Contactlist from '../../component/MyDetails/Contactlist';
+import GenerateBill from '../../component/ReportManagement/GenerateBill/GenerateBill';
 
 const Routing = () => {
   return (
@@ -41,6 +43,7 @@ const Routing = () => {
         <Route path="/generate-wage-reports" exact element={<BasicTable />} />
         <Route path="/generate-wage-slip" exact element={<WageSlip />} />
         <Route path='/rate-chart' exact element={<VarRateChart />} />
+        <Route path='/generate-bill' exact element={<GenerateBill />} />
 
         {/* Employee attendance */}
         <Route path='/employee-attendance' exact element={<EmployeeTimeSheet />} />
@@ -67,6 +70,8 @@ const Routing = () => {
         
          {/* Finance Managament Routes */}
         <Route path='/bank-application' exact element={<BankApplication />} />
+        <Route path='/contact-list' exact element={<Contactlist />} />
+
 
         {/* Redirect for login page */}
         <Route path='/login' exact element={<LoginForm />} />

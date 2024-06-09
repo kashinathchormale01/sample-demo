@@ -1,7 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect} from 'react'
 
 const BankApp = (props) => {
     const [applicationData, setApplicationData] = useState(props.data);
+    useEffect(() => {
+        setApplicationData(props.data);
+      }, [props.data]); 
   return (
     <>
     {applicationData?.map((data, index) => (
