@@ -33,7 +33,8 @@ const VarRateChart = () => {
   const { register, handleSubmit, formState: { errors }, watch } = useForm();
 
   const onSubmit = async (data) => {
-    const initialnullvalues = { DArate: null, HRARate: null, PFRate: null, ESICRate: null, incomeTax: null, Id: 1 };
+    console.log('data',data)
+    const initialnullvalues = {High_Skilled:null, Semi_Skilled:null, Skilled:null, UnSkilled:null, DArate: null, HRARate: null, PFRate: null, ESICRate: null, incomeTax: null, Id: 1 };
     const newval = Object.values(data).map(item => parseFloat(item));
     const updatedInitialValues = { ...initialnullvalues };
     
@@ -53,7 +54,7 @@ const VarRateChart = () => {
     }
   };
 
-  const watchAllFields = watch(["DArate", "HRARate", "PFRate", "ESICRate", "incomeTax"]);
+  const watchAllFields = watch(["High_Skilled","Semi_Skilled","Skilled","UnSkilled","DArate", "HRARate", "PFRate", "ESICRate", "incomeTax"]);
 
   return (
     <>
@@ -66,11 +67,15 @@ const VarRateChart = () => {
 
       {showTable && (
         loading ? <CircularProgress /> : error ? <div>Error: {error}</div> : vrates && (
-          <TableContainer sx={{ maxWidth: '50%', marginTop: '20px' }} component={Paper}>
+          <TableContainer sx={{ maxWidth: '70%', marginTop: '20px' }} component={Paper}>
             <form onSubmit={handleSubmit(onSubmit)}>
               <Table aria-label="customized table">
                 <TableHead>
                   <TableRow sx={{ "& th": { fontSize: "1rem", color: "rgba(96, 96, 96)", backgroundColor: "#b1dbdf" } }}>
+                  <TableCell>High Skilled(Basic)</TableCell>
+                  <TableCell>Semi Skilled(Basic)</TableCell>
+                  <TableCell>Skilled(Basic)</TableCell>
+                  <TableCell>Un Skilled(Basic)</TableCell>
                     <TableCell>DA</TableCell>
                     <TableCell>HRA</TableCell>
                     <TableCell>PF</TableCell>
@@ -81,6 +86,10 @@ const VarRateChart = () => {
                 </TableHead>
                 <TableBody>
                   <TableRow>
+                  <TableCell><TextField defaultValue={vrates.High_Skilled} {...register("High_Skilled", { required: true })} /></TableCell>
+                    <TableCell><TextField defaultValue={vrates.Semi_Skilled} {...register("Semi_Skilled", { required: true })} /></TableCell>
+                    <TableCell><TextField defaultValue={vrates.Skilled} {...register("Skilled", { required: true })} /></TableCell>
+                    <TableCell><TextField defaultValue={vrates.UnSkilled} {...register("UnSkilled", { required: true })} /></TableCell>
                     <TableCell><TextField defaultValue={vrates.DArate} {...register("DArate", { required: true })} /></TableCell>
                     <TableCell><TextField defaultValue={vrates.HRARate} {...register("HRARate", { required: true })} /></TableCell>
                     <TableCell><TextField defaultValue={vrates.PFRate} {...register("PFRate", { required: true })} /></TableCell>
@@ -91,7 +100,7 @@ const VarRateChart = () => {
                 </TableBody>
               </Table>
             </form>
-            <div>{(errors.DArate || errors.HRARate || errors.PFRate || errors.ESICRate || errors.incomeTax) && <TableRow><TableCell><Typography color="error">This field is required</Typography></TableCell></TableRow>}</div>
+            <div>{(errors.High_Skilled || errors.Semi_Skilled || errors.Skilled || errors.UnSkilled || errors.DArate || errors.HRARate || errors.PFRate || errors.ESICRate || errors.incomeTax) && <TableRow><TableCell><Typography color="error">This field is required</Typography></TableCell></TableRow>}</div>
           </TableContainer>
         )
       )}
