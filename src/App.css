@@ -103,17 +103,20 @@
   margin-top: 0;
 }
 .monthlyDatePicker .monthcal {
-  background-color: #dcffff;
   border-radius: 4px;
+  margin-bottom: 15px;
+  box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),
+  0px 1px 1px 0px rgba(0,0,0,0.14),
+  0px 1px 3px 0px rgba(0,0,0,0.12);
 }
-.SPLallowance{
+.blinkItem{
   color: red;
   animation: blinker 2s linear infinite;
 }
-.SPLallowanceinput{
+.blinkIteminput{
   margin-top: 4px !important;
 }
-.SPLallowanceinput input{
+.blinkIteminput input{
    background-color: #ffffff;
    height: 10px;
   text-align: center !important;
@@ -122,4 +125,7 @@
   50% {
     opacity: 0
   }
+}
+.checboxwrapper{
+  margin-top: 10px;
 }

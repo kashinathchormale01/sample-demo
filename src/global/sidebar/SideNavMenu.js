@@ -118,7 +118,11 @@ export const menuItemsData = [
       {
         menu:"Update Rate Chart",
         url:"rate-chart"
-      }
+      },
+      {
+        menu: "Generate Bill",
+        url: "generate-bill",
+      },
     ],
   },
   {

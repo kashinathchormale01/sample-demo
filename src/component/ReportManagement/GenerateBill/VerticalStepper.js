@@ -16,27 +16,9 @@ import {
   FormProvider,
 
 } from "react-hook-form";
-
-// const steps = [
-//     {
-//       label: 'Select campaign settings',
-//       description: `For each ad campaign that you create, you can control how much
-//                 you're willing to spend on clicks and conversions, which networks
-//                 and geographical locations you want your ads to show on, and more.`,
-//     },
-//     {
-//       label: 'Create an ad group',
-//       description:
-//         'An ad group contains one or more ads which target a shared set of keywords.',
-//     },
-//     {
-//       label: 'Create an ad',
-//       description: `Try out different ad text to see what brings in the most customers,
-//                 and learn how to enhance your ads using features like ad extensions.
-//                 If you run into any problems with your ads, find out how to tell if
-//                 they're running and how to resolve approval issues.`,
-//     },
-//   ];
+import { toast } from 'react-toastify';
+import axiosHttp from '../../../AxiosInstance';
+import moment from 'moment';
 
 function getSteps() {
     return [
@@ -79,7 +61,52 @@ const VerticalStepper = () => {
     const handleNext = (data) => {
       console.log(data);
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      if(activeStep === steps.length-1){
+        console.log('last step');
 
+        let sessionsids = [];
+        sessionsids.push(sessionStorage.getItem("site.Id"));
+        console.log("sessionsids", sessionsids);
+        const newsiteData = sessionsids[0].split(",").map((item) => parseInt(item));
+        console.log("newsessionsids in emp page", newsiteData);
+
+        const datagridstatedata = JSON.parse(sessionStorage.getItem('dataGridState'));
+        const filtereddatagridstatedata = Object.keys(datagridstatedata)
+          .filter((key) => JSON.parse(sessionStorage.getItem('selectedEmployee')).includes(parseInt(key, 10)))
+          .reduce((obj, key) => {
+            obj[key] = datagridstatedata[key];
+            return obj;
+          }, {});
+
+        console.log('filteredResponse',filtereddatagridstatedata);
+
+        const vstepperPayload = {
+            siteId: newsiteData,
+            selectedEmployee: JSON.parse(sessionStorage.getItem('selectedEmployee')),
+            billStartDate: sessionStorage.getItem('billStartDate'),
+            billEndDate: sessionStorage.getItem('billEndDate'),
+            dataGridState: filtereddatagridstatedata,
+            rateGridState: JSON.parse(sessionStorage.getItem('rateGridState')),
+          }
+          console.log('verticalstepPayload',vstepperPayload);
+
+          axiosHttp
+   .post("/SaveBill",vstepperPayload)
+   .then((res) => {
+    if(res.data.msg)
+      toast.success(res.data.msg);
+    // sessionStorage.removeItem(['rateGridState', 'site.Id','billEndDate','dataGridState','selectedEmployee','billStartDate']);
+    const keysToRemove = ['rateGridState', 'site.Id', 'billEndDate', 'dataGridState', 'selectedEmployee', 'billStartDate'];
+
+// Remove each item from sessionStorage
+keysToRemove.forEach(key => {
+    sessionStorage.removeItem(key);
+});
+   })
+   .catch((error) => {
+    console.log(error);
+  });
+      }
     };
   
     const handleBack = () => {
@@ -88,11 +115,20 @@ const VerticalStepper = () => {
   
     const handleReset = () => {
       setActiveStep(0);
+      // const makePayload = {
+      //   siteId: sessionStorage.getItem('site.Id'),
+      //   selectedEmployee: JSON.parse(sessionStorage.getItem('selectedEmployee')),
+      //   billStartDate: sessionStorage.getItem('billStartDate'),
+      //   billEndDate: sessionStorage.getItem('billEndDate'),
+      //   dataGridState: JSON.parse(sessionStorage.getItem('dataGridState')),
+      //   rateGridState: JSON.parse(sessionStorage.getItem('rateGridState')),
+      // }
+      // console.log('makePayload',makePayload)
     };
   
     return (
       <Box sx={{ width: "100%" ,display:"flex",flexDirection:"row",justifyContent:"center"}}>
-        <Paper sx={{padding:'10px', backgroundColor:'#fcffff', width:'auto', minWidth:'60%'}}>
+        <Paper sx={{padding:'10px', width:'auto', minWidth:'60%'}}>
         <FormProvider>
         <form
                 // onSubmit={methods.handleSubmit(handleNext)}

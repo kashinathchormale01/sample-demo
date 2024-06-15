@@ -1,63 +1,71 @@
-import React,{useState,useEffect} from 'react';
-import {Box, TextField} from '@mui/material';
-import { DataGrid  } from '@mui/x-data-grid';
-import axiosHttp from '../../../AxiosInstance';
-import { Category } from '@mui/icons-material';
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import { DataGrid, useGridApiRef  } from '@mui/x-data-grid';
+import axios from 'axios';
+import { useForm } from "react-hook-form";
+import { GridFilterModel } from '@mui/x-data-grid'
 
 const columns = [
-  { field: 'id', headerName: 'ID', width: 90,
-    hide: true }, 
+  { field: 'id', headerName: 'ID', width: 90 },
+  // {
+  //   field: 'fullName',
+  //   headerName: 'Full name',
+  //   description: 'This column has a value getter and is not sortable.',
+  //   sortable: false,
+  //   width: 160,
+  //   valueGetter: (value, row) => `${row.firstName || ''} ${row.lastName || ''}`,
+  // },
   {
     field: 'CategoryWork',
-    headerName: 'Catagory Name',
+    headerName: 'catagory Name',
     type: 'text',
     width: 210,
+    // editable: true,
   },
   {
     field:'RoleName',
     headerName:"Role Name",
     type: 'text',
-    width: 210,    
-  },
-  {
-    field:'basicAllowance',
-    headerName:"Basic Allowance(Editable)",
-    type: 'text',
     width: 210,
-    editable: true,
-    headerClassName: 'blinkItem',
-    renderCell: (params) => {    
-      const { id, basicAllowance } = params.row;
-      return <TextField className='blinkIteminput' value={basicAllowance} />;
-    }    
+   // editable: true,
+
+    
   },
   {
     field:'otherAllowance',
-    headerName:"Other Allowance(Editable)",
+    headerName:"Other Allowance",
     type: 'text',
     width: 210,
     editable: true,
-    headerClassName: 'blinkItem',
-    renderCell: (params) => {    
-      const { id, otherAllowance } = params.row;
-      return <TextField className='blinkIteminput' value={otherAllowance} />;
-    }    
+
+    
   },
 ];
+
+// const parsedata = [
+//   { id: 1, CatId: '4', otherAllowance: 14,CategoryWork:"Skilled",RoleName:"Loader" },
+//   { id: 2, CatId: '3',  otherAllowance: 31,CategoryWork:"Unskilled",RoleName:"Worker" },
+//   { id: 3, CatId: '1',  otherAllowance: 31,CategoryWork:"High Skilled" ,RoleName:"HR"},
+//   { id: 4, CatId: '2',  otherAllowance: 11,CategoryWork:"Semi Skill",RoleName:"Packer B.T." },
+  
+// ];
+
+
 
 const Rates = () => {
   const [sitedata,setSitedata]=React.useState();
   let stateFromLocalStorage = sessionStorage?.getItem('rateGridState');
-  let selectedempsFromStorage = sessionStorage?.getItem('selectedEmployee');
-  // console.log('selectedempsFromStorage',selectedempsFromStorage)
-  const [initialState, setInitialState] = useState();
-  let currentState=null; 
+  const [initialState, setInitialState] = React.useState();
+  let currentState=null;
   
-  // const handleCellEditStop = React.useCallback((params) => {
+  
+ // console.log("outer current state",stateFromLocalStorage );
+  const handleCellEditStop = React.useCallback((params) => {
   
   //  localStorage.setItem('rateGridState',JSON.stringify(currentState));
-  //  console.log("Cell edit stopped:", JSON.stringify(currentState));
-  // }, []);
+   // console.log("Cell edit stopped:", JSON.stringify(currentState));
+  }, []);
+  //useGridApiEventHandler(apiRef, 'cellEditStop', handleEvent);
   const handleStateChange = React.useCallback((params) => {
     
     
@@ -66,24 +74,47 @@ const Rates = () => {
     try
     {
      if(Object.keys(currentState).length > 0 )
+      {
       sessionStorage.setItem('rateGridState',JSON.stringify(currentState));
+      //console.log("rows",rows,"/nstorage",currentState);
+      }
     //console.log("Cell edit stopped:", params.rows.dataRowIdToModelLookup);
   }
   catch{}
-  }, []);  
+  }, []);
+  
+  function generateRandom() {
+    var length = 8,
+        charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+        retVal = "";
+    for (var i = 0, n = charset.length; i < length; ++i) {
+        retVal += charset.charAt(Math.floor(Math.random() * n));
+    } 
+    return retVal;
+}
 
-    useEffect( ()=>{
+    React.useEffect( ()=>{
     
-      axiosHttp
-   .post("/GetBillEmpCatRole",JSON.parse(sessionStorage.getItem('selectedEmployee')))
+
+   // const tempdata=[8,9,10];
+   const tempdata=[8,9,10,22,23];
+
+     let config = {
+      headers: {
+        'Authorization': 'Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiMSIsImlhdCI6MTcxODM0NzQ3MiwiZXhwIjoxNzE4NDMzODcyfQ.nUEl3z-qZ5HRXqhJIKOOXqng90DGRvnlJ-Hfgo6dJ8I'
+      }
+    }
+
+      axios
+   .post("http://localhost:8089/api/GetBillEmpCatRole",tempdata,config)
    .then((res) => {
-    // console.log('GetBillEmpCatRole',res.data.data);
+    //console.log("response is",res);
      if(res.data.msg==="billempcatrole")
      {
-    // console.log("success",sessionStorage?.getItem('rateGridState')?.length);
-   if(sessionStorage?.getItem('rateGridState')?.length===0 || sessionStorage?.getItem('rateGridState')?.length===undefined)
+    console.log("success",sessionStorage?.getItem('rateGridState')?.length);
+   if(sessionStorage?.getItem('rateGridState')?.length===0||sessionStorage?.getItem('rateGridState')?.length===undefined)
     {
-      // console.log("setting orig data");
+      console.log("setting orig data");
    setSitedata(res.data.data);
 
     }
@@ -102,16 +133,15 @@ if(!checknewid)
    
      rows=[...rows,{id: value.id,
       CategoryWork: value.CategoryWork,
-      otherAllowance: undefined,      
-     CategoryId:value.CatId,
+      otherAllowance: undefined,
       RoleName:value.RoleName}]
   }
   else
   {
-    // console.log('row value',checknewid.otherAllowance)
+    console.log('row value',checknewid.otherAllowance)
     //rows[index].otherAllowance=checknewid.otherAllowance
   }
-  // console.log('new rows are', rows)
+  console.log('new rows are', rows)
 
  
    })
@@ -121,11 +151,11 @@ if(!checknewid)
   let checknewid=res.data.data.find(o => o.id === value.id);
   if(checknewid&&value!==undefined)
     {
-// console.log('deleteion values are', value)
+console.log('deleteion values are', value)
       return value
     }
 })
-// console.log('after deleteition', t.filter(item=>item))
+console.log('after deleteition', t.filter(item=>item))
 rows=t.filter(item=>item);
 
 
@@ -148,7 +178,10 @@ setSitedata(rows)
      console.log(error);
    });
 
-       // console.log("all data",parsedata);
+
+
+
+     // console.log("all data",parsedata);
   
    try
    {
@@ -163,10 +196,9 @@ setSitedata(rows)
      {
      id: entry.id,
      CategoryWork: entry.CategoryWork,
-     basicAllowance: entry?.basicAllowance,
      otherAllowance: entry.otherAllowance,
-     RoleName:entry.RoleName,
-     CategoryId:entry.CatId
+     RoleName:entry.RoleName// Age is not provided in the original data
+   
     }
    )
    
@@ -203,30 +235,16 @@ setSitedata(rows)
 
   },[])
   
-   
-  // const rows = [];
-  // console.log("cheking",sitedata);
-  // const rows =parsedata;  // Data is Set Here
-  //let filteredData;
-
-  useEffect(() => {
-   
-      axiosHttp.post('/GetBillEmpCatRole', JSON.parse(selectedempsFromStorage))
-        .then((res) => {
-          const filteredData = sitedata.map((row) => ({
-            ...row,
-            backgroundColor: res.data.data.some((item) => item.id !== row.id) ? '#ffff00' : '#FFEB3B',
-          }));
-          setSitedata(filteredData);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    
-  }, []);
   
+  
+  // const rows = [];
+  console.log("cheking",sitedata);
+  // const rows =parsedata;  // Data is Set Here
  const rows = sitedata===undefined? []:sitedata;  // Data is Set Here
 
+const hideiddata=[3,4,5]
+ 
+  
     return (
       <Box sx={{  width: '100%' }}>
       <DataGrid
@@ -234,15 +252,30 @@ setSitedata(rows)
         columns={columns}
        // getRowId={(row) =>  generateRandom()}
         onStateChange={handleStateChange}
+        onCellEditStop={handleCellEditStop}
         pageSizeOptions={[1,5,10,15]}
         initialState={{
           pagination:{
             paginationModel:{pageSize:10}
           }
+          
         }}
         //checkboxSelection
         disableRowSelectionOnClick
-        //getRowClassName={(params) => (params.row.backgroundColor ? 'custom-row' : '')}
+      
+  //  filterModel={{
+  //   items:[{field:'id'}],
+  // quickFilterValues: ['3' ],
+    
+      
+     
+     
+    // items: [hideiddata.map((value,index)=>{
+    //   return({ field: 'id', operator: 'equals', value: '3' })
+  //   // })]
+  //  }}
+
+    
       />
       
     </Box>

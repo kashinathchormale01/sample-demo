@@ -1,115 +1,149 @@
-import * as React from 'react';
-import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-
-
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-// import { YearCalendar } from '@mui/x-date-pickers/YearCalendar';
-import { MonthCalendar } from '@mui/x-date-pickers/MonthCalendar';
-import axios from 'axios';
-import {
-  
-  useFormContext,
-  Controller} from "react-hook-form";
-import axiosHttp from '../../../AxiosInstance';
-
-// const =site
-// axios
-// .post("http://localhost:8089/Login", sendingdata)
-// .then((res) => {
-//  console.log(res);
-//   if(res.data.msg==="Succesfull")
-//   {
-//   console.log("success");
-
-
-//    sessionStorage.setItem("token",res.data.Key);
-
-//    navigate("/Afterlogin");
-//   }
-//   else
-//   {
-//     alert(res.data.msg);
-//     console.log("Session Invalid");
-//   }
-// })
-// .catch((error) => {
-//   console.log(error);
-// });
+import React, { useEffect, useState } from "react";
+import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { Button, FormGroup, FormControlLabel, Checkbox } from "@mui/material";
+import { MonthCalendar } from "@mui/x-date-pickers/MonthCalendar";
+import { useFormContext, Controller } from "react-hook-form";
+import axiosHttp from "../../../AxiosInstance";
+import moment from "moment/moment";
+let siteIdCookie = sessionStorage?.getItem("site.Id")?.split(",")?.map(Number);
 
 const DateSite = () => {
   const { control } = useFormContext();
-  const { register ,setValue,getValues} = useFormContext();
-const [sitedata,setSitedata]=React.useState();
-  //const sitedata1=getsiteData();
+  const [error, setError] = useState()
+  const { register, setValue, getValues } = useFormContext();
+  const [sitedata, setSitedata] = React.useState();
+  const [selectedsite, setSelectedsite] = React.useState();
+  const [startDate, setStartdate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
-//const sitedata=getsiteData();
-React.useEffect(()=>{
-  
+  React.useEffect(() => {
+    axiosHttp
+      .get("/GetProj_Site")
+      .then((res) => {
+        if (res.data.msg === "Sites Dilo Bagh") {
+          // console.log("success", res.data.data);
+          const allSiteIds = res.data.data.map((site) => site.Id);
+          setSitedata(res.data.data);
+          if (siteIdCookie === undefined) {
+            // console.log(
+            //   "Cookie Status if",
+            //   sitedata,
+            //   "condition",
+            //   sessionStorage.getItem("dataGridState")
+            // );
+            setSelectedsite(allSiteIds);
+          } else {
+            // console.log(
+            //   "Cookie Status else",
+            //   sitedata,
+            //   "condition",
+            //   siteIdCookie
+            // );
+            setSelectedsite(siteIdCookie);
+          }
+        } else {
+          alert(res.data.msg);
+          console.log("Erro occured");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
-     axiosHttp
-   .get("/GetProj_Site")
-   .then((res) => {
-    //console.log(res);
-     if(res.data.msg==="Sites Dilo Bagh")
-     {
-   //  console.log("success",res.data.data);
-   
-   setSitedata(res.data.data);
-    // console.log("in axios call",sitedata)
-     // return(res.data.data);
-      
-     }
-     else
-     {
-       alert(res.data.msg);
-       console.log("Erro occured");
-     }
-   })
-   .catch((error) => {
-     console.log(error);
-   });
-   
-  
-},[])
+  const handleChange = (e) => {
+    sessionStorage.removeItem("dataGridState");
+    const siteId = parseInt(e.target.value);
+    setSelectedsite((prevState) => {
+      if (e.target.checked) {
+        setSelectedsite(prevState.length + 1);
+        return [...prevState, siteId];
+      } else {
+        return prevState.filter((id) => id !== siteId);
+      }
+    });
+  };
 
-const handlChange=(e)=>{
-console.log("chacked change",e.target.value);
-
-}
-
-//console.log("sitedata",sitedata);
-
+  React.useEffect(() => {
+    if (selectedsite !== undefined) {
+      siteIdCookie = selectedsite;
+      sessionStorage.setItem("site.Id", selectedsite);
+    }
+  }, [selectedsite]);
 
   return (
-  <div className='monthlyDatePicker' style={{display:"flex",flexDirection:"column",justifyContent:"center",alignContent:"center"}}>
-   <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DemoContainer  components={['MonthCalendar']} sx={{display:"flex",flexDirection:"row",justifyContent:"center",verticalAlign:"baseline"}}>
-       <DemoItem key={"1"} sx={{ m: 4 }} label="From ">
-          <MonthCalendar className='monthcal'  />
-        </DemoItem>
-        <DemoItem key={"2"} sx={{marginTop:"0"}} label="To ">
-          <MonthCalendar  className='monthcal 2ndmonth' />
-        </DemoItem>
-      </DemoContainer>
-    </LocalizationProvider>
-    <div className='checboxwrapper' > 
-    {
-    sitedata?.map((value,index)=>{
-    //  console.log("datat proccesing",value.Id);
-      return(
-
-        
-        <FormControlLabel key={index} onChange={handlChange} value={value.Id} control={<Checkbox defaultChecked />} label={value.siteName} />
-      );
-    })}
-    
-  
+    <div
+      className="monthlyDatePicker"
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignContent: "center",
+      }}
+    >
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DemoContainer
+          components={["MonthCalendar"]}
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            verticalAlign: "baseline",
+          }}
+        >
+          <DemoItem key={"1"} sx={{ m: 4 }} label="From ">
+            <MonthCalendar
+              className="monthcal"
+              onChange={(newValue) => {
+                if (newValue) {
+                  setStartdate(newValue.$d);
+                  sessionStorage.setItem(
+                    "billStartDate",
+                    moment(newValue.$d).format("DD/MM/YYYY")
+                  );
+                }
+              }}
+            />
+          </DemoItem>
+          <DemoItem key={"2"} sx={{ marginTop: "0" }} label="To ">
+            <MonthCalendar
+              className="monthcal 2ndmonth"
+              onChange={(newValue) => {
+                if (newValue) {
+                  setEndDate(newValue.$d);
+                  sessionStorage.setItem(
+                    "billEndDate",
+                    moment(newValue.$d).endOf("month").format("DD/MM/YYYY")
+                  );
+                }
+              }}
+            />
+          </DemoItem>
+        </DemoContainer>
+      </LocalizationProvider>
+      <div className="checboxwrapper">
+        <>
+          <FormGroup sx={{ flexDirection: "row", maxWidth: "95%" }}>
+            {sitedata?.map((site, index) => (
+              <FormControlLabel
+                key={site.Id}
+                control={
+                  <Checkbox
+                    onChange={handleChange}
+                    checked={selectedsite.includes(sitedata[index].Id)}
+                  />
+                }
+                label={site.siteName}
+                value={site.Id}
+              />
+            ))}
+          </FormGroup>
+        </>
+      </div>
     </div>
-  </div>
-  )
-}
+  );
+};
 
-export default DateSite
+export default DateSite;
