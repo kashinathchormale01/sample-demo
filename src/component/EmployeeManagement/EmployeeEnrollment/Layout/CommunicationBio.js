@@ -23,29 +23,6 @@ const CommunicationBio = (data) => {
     control,
     formState: { errors },
   } = useFormContext();
-  const [talukaList, setTalukaList] = React.useState([]);
-
-  const talukaListPassValues = {
-    sendvalues: talukaList,
-    label: "Select Taluka",
-    isRequired: "false",
-    sentname: "cityName",
-    sentdefaultvalue: data.values.cityName,
-  };
-
-  const getTalukaData = async () => {
-    await axiosHttp.get("/GetTalukaList").then((res) => {
-      setTalukaList(
-        res.data.data.map((value) => ({
-          valueitem: value.TalukaId,
-          labelitem: value.TalukaName,
-        }))
-      );
-    });
-  };
-  React.useEffect(() => {
-    getTalukaData();
-  }, []);
 
   return (
     <Box sx={{ width: "100%", padding: 2 }}>
@@ -95,10 +72,28 @@ const CommunicationBio = (data) => {
               )}
             />
           </Item>
-        </Grid>
+        </Grid>       
         <Grid item xs={6}>
           <Item elevation={0}>
-            <SelectComp {...talukaListPassValues} />
+            <Controller
+              control={control}
+              name="cityName"
+              defaultValue={""}
+              rules={{
+                required: "Taluka Name is required",
+              }}
+              render={({ field }) => (
+                <TextField
+                  fullWidth
+                  id="TalukaName"
+                  label="Taluka Name"
+                  variant="outlined"
+                  {...field}
+                  error={Boolean(errors.cityName)}
+                  helperText={errors.cityName?.message}
+                />
+              )}
+            />
           </Item>
         </Grid>
         <Grid item xs={6}>

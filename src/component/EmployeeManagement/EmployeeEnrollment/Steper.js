@@ -99,7 +99,7 @@ methods.setValue("Id", selectedid.sentid.Id);
    methods.setValue("presentAddress",responsedata.presentAddress);
    methods.setValue("permanentAddress",responsedata.permanentAddress);
    methods.setValue("cityName",responsedata.cityName);
-   methods.setValue("cityName1",responsedata.TalukaName);
+   methods.setValue("cityName",responsedata.cityName);
    methods.setValue("markOfIdentification",responsedata.markOfIdentification);
    methods.setValue("mobileNumber",responsedata.mobileNumber);
    methods.setValue("alternateMobileNumber",responsedata.alternateMobileNumber);
