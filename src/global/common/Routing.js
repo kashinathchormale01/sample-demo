@@ -27,6 +27,8 @@ import VarRateChart from '../../component/FinanceManagement/VarRateChart';
 import PasswordChange from '../../component/LoginManagement/ChangePassword/PasswordChange';
 import Contactlist from '../../component/MyDetails/Contactlist';
 import GenerateBill from '../../component/ReportManagement/GenerateBill/GenerateBill';
+import Viewbill from '../../component/ReportManagement/Viewbill/Viewbill';
+
 
 const Routing = () => {
   return (
@@ -44,6 +46,7 @@ const Routing = () => {
         <Route path="/generate-wage-slip" exact element={<WageSlip />} />
         <Route path='/rate-chart' exact element={<VarRateChart />} />
         <Route path='/generate-bill' exact element={<GenerateBill />} />
+        <Route path='/view-bill' exact element={<Viewbill />} />
 
         {/* Employee attendance */}
         <Route path='/employee-attendance' exact element={<EmployeeTimeSheet />} />

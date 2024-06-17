@@ -123,6 +123,10 @@ export const menuItemsData = [
         menu: "Generate Bill",
         url: "generate-bill",
       },
+      {
+        menu: "View Bill",
+        url: "view-bill",
+      },
     ],
   },
   {

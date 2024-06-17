@@ -95,7 +95,7 @@ const SelectEmp = () => {
       .post("/GetSiteEmp", SentSite)
       .then((res) => {
         if (res.data.msg === "worker ale ka") {
-          const parsedata = res.data.data.map((entry, index) => ({
+          const parsedata = res?.data?.data?.map((entry, index) => ({
             id: entry.Id,
             lastName: entry.lastName,
             firstName: entry.firstName,
@@ -114,7 +114,8 @@ const SelectEmp = () => {
           } catch (error) {}
           let rows = null;
           try {
-            rows = Object.values(stateFromLocalStorage).map((entry, index) => ({
+            if(stateFromLocalStorage !== null)
+            rows = Object?.values(stateFromLocalStorage)?.map((entry, index) => ({
               id: entry.id,
               lastName: entry.lastName,
               firstName: entry.firstName,
@@ -122,7 +123,7 @@ const SelectEmp = () => {
               dateOfJoning: entry.dateOfJoning,
               SPLallowance: entry.SPLallowance,
             }));
-            const selectedidlist = rows.map((value, index) => value.id);
+            const selectedidlist = rows?.map((value, index) => value.id);
             if (!sessionStorage?.getItem("selectedemp"))
               setSelectedEmp(selectedidlist);
           } catch (error) {

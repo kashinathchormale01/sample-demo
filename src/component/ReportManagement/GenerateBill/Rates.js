@@ -6,7 +6,8 @@ import { Category } from '@mui/icons-material';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 90,
-    hide: true }, 
+    enableSorting: true,
+   }, 
   {
     field: 'CategoryWork',
     headerName: 'Catagory Name',
@@ -20,15 +21,15 @@ const columns = [
     width: 210,    
   },
   {
-    field:'basicAllowance',
+    field:'Basic',
     headerName:"Basic Allowance(Editable)",
     type: 'text',
     width: 210,
     editable: true,
     headerClassName: 'blinkItem',
     renderCell: (params) => {    
-      const { id, basicAllowance } = params.row;
-      return <TextField className='blinkIteminput' value={basicAllowance} />;
+      const { id, Basic } = params.row;
+      return <TextField className='blinkIteminput' value={Basic} />;
     }    
   },
   {
@@ -98,13 +99,15 @@ if(!checknewid)
     //   CategoryWork: value.CategoryWork,
     //   otherAllowance: value.otherAllowance,
     //   RoleName:value.RoleName})
-    //   console.log('value',index,":", Object.values(stateFromLocalStorage),"checkid",checknewid)
+       console.log('value',value)
    
      rows=[...rows,{id: value.id,
       CategoryWork: value.CategoryWork,
       otherAllowance: undefined,      
      CategoryId:value.CatId,
-      RoleName:value.RoleName}]
+      RoleName:value.RoleName,
+     // Basic: value?.Basic,
+    }]
   }
   else
   {
@@ -121,13 +124,13 @@ if(!checknewid)
   let checknewid=res.data.data.find(o => o.id === value.id);
   if(checknewid&&value!==undefined)
     {
-// console.log('deleteion values are', value)
+ console.log('deleteion values are', value)
       return value
     }
 })
-// console.log('after deleteition', t.filter(item=>item))
-rows=t.filter(item=>item);
 
+rows=t.filter(item=>item);
+console.log('after deleteition', rows)
 
 sessionStorage.setItem('rateGridState',JSON.stringify(rows));
 setSitedata(rows)
@@ -155,7 +158,7 @@ setSitedata(rows)
    stateFromLocalStorage=JSON.parse(stateFromLocalStorage);
    }catch(error)
    {}
-   //console.log("data to parser",stateFromLocalStorage);
+   console.log("data to parser",stateFromLocalStorage);
    let rows=null
    try
    {
@@ -163,7 +166,7 @@ setSitedata(rows)
      {
      id: entry.id,
      CategoryWork: entry.CategoryWork,
-     basicAllowance: entry?.basicAllowance,
+     Basic: entry?.Basic,
      otherAllowance: entry.otherAllowance,
      RoleName:entry.RoleName,
      CategoryId:entry.CatId
@@ -209,21 +212,21 @@ setSitedata(rows)
   // const rows =parsedata;  // Data is Set Here
   //let filteredData;
 
-  useEffect(() => {
+  // useEffect(() => {
    
-      axiosHttp.post('/GetBillEmpCatRole', JSON.parse(selectedempsFromStorage))
-        .then((res) => {
-          const filteredData = sitedata.map((row) => ({
-            ...row,
-            backgroundColor: res.data.data.some((item) => item.id !== row.id) ? '#ffff00' : '#FFEB3B',
-          }));
-          setSitedata(filteredData);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+  //     axiosHttp.post('/GetBillEmpCatRole', JSON.parse(selectedempsFromStorage))
+  //       .then((res) => {
+  //         const filteredData = sitedata?.map((row) => ({
+  //           ...row,
+  //           backgroundColor: res.data.data.some((item) => item.id !== row.id) ? '#ffff00' : '#FFEB3B',
+  //         }));
+  //         setSitedata(filteredData);
+  //       })
+  //       .catch((error) => {
+  //         console.log(error);
+  //       });
     
-  }, []);
+  // }, []);
   
  const rows = sitedata===undefined? []:sitedata;  // Data is Set Here
 

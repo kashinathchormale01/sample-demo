@@ -33,6 +33,7 @@ const DateSite = () => {
             //   "condition",
             //   sessionStorage.getItem("dataGridState")
             // );
+            console.log(allSiteIds)
             setSelectedsite(allSiteIds);
           } else {
             // console.log(

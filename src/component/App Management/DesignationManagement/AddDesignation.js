@@ -26,7 +26,8 @@ const AddDesignation = () => {
 
   const loadCategories = async () => {
     try {
-      let result = await axiosHttp.get("/GetCategory");
+      // let result = await axiosHttp.get("/GetCategory");
+      let result = await axiosHttp.get("/GetCategoryAdmin");      
       setCategorylist(result.data.data);
       setLoading(false);
     } catch (err) {
@@ -48,6 +49,7 @@ const AddDesignation = () => {
   }, []);
 
   function handleFormSubmit(values) {
+    console.log('values',values)
     axiosHttp.post("/AddRole", values).then((res) => {
       toast.success(res.data.msg);
     });

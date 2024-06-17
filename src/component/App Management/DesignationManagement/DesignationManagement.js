@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
+  Typography,
   Button,
   Stack,
   CircularProgress,
@@ -85,7 +86,7 @@ const DesignationManagement = () => {
         >
           Add New Designation/Role
         </Button>{" "}
-        <p>No Designation available!</p>
+        <Typography color="error">No Designation available!</Typography>
       </>
     );
 
