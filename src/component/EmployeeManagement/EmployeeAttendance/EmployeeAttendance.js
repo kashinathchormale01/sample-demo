@@ -91,16 +91,24 @@ export const EmployeeTimeSheet = () => {
    */
   const isFutureStartDate = useMemo(() => startDate > new Date(), [startDate]);
 
-  const [monthly, setMonthly] = React.useState(false);
+  const [monthly, setMonthly] = React.useState(true);
   const [data, setData] = useState([]);
   
   const handlePreviousWeek = () => {
+    if(monthly === true){
+    setStartDate((currDate) => dateOffset(currDate, -31));
+    }else{
     setStartDate((currDate) => dateOffset(currDate, -7));
+    }
   };
 
   const handleNextWeek = () => {
-    setStartDate((currDate) => dateOffset(currDate, 7));
-  };
+    if(monthly === true){
+      setStartDate((currDate) => dateOffset(currDate, 31));
+      }else{
+      setStartDate((currDate) => dateOffset(currDate, 7));
+      }
+  };  
 
   const getValue = (index, date) => {
     const key = date.toLocaleDateString("en-US");
@@ -210,28 +218,27 @@ const handleSiteSubmit = (values) => {
 };
 
 const submitAttendance = async () => {
-  const dateKeys = {};
+  let dateKeys = {};
   data.forEach((emp) => {
-    Object.entries(emp.sheet).forEach(([date, value]) => {
-      if (value === true) {
-        if (!dateKeys[date]) {
-          dateKeys[date] = [];
-        }
-        dateKeys[date].push(emp.emp_id);
-      }
+    Object.entries(emp.sheet).forEach(([date, value],i) => {
+      if (i == 0) 
+      dateKeys[emp.emp_id] = [];
+      if (value === true) {        
+        dateKeys[emp.emp_id].push(date);
+      }      
     });
   });
 
   // Create filtered data with emp_id arrays
-  const filteredData = Object.keys(dateKeys).map((date) => ({
-    date,
-    emp_ids: dateKeys[date],
+  const filteredData = Object.keys(dateKeys).map((emp_id) => ({
+    emp_id,
+    Date: dateKeys[emp_id],
   }));
 
   const makeAttendancePayload = {
     selectedSite,
     filteredData,
-  };
+  };  
   // post api call for attendance with required payload
   try {
     setLoading(true); 
