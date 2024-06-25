@@ -29,7 +29,8 @@ import Contactlist from '../../component/MyDetails/Contactlist';
 import GenerateBill from '../../component/ReportManagement/GenerateBill/GenerateBill';
 import Viewbill from '../../component/ReportManagement/Viewbill/Viewbill';
 import PFValidationReport from '../../component/FinanceManagement/PFValidationReport/PFValidationReport';
-
+// import EmployeeInActiveList1 from '../../component/EmployeeManagement/EmployeeList/EmployeeInActiveList';
+import EmployeeInActiveList from '../../component/EmployeeManagement/EmployeeList/EmployeeInactiveList';
 
 const Routing = () => {
   return (
@@ -37,7 +38,8 @@ const Routing = () => {
       <Routes>
 
        {/* Employee Managament Routes */}
-        <Route path='/employee-list' exact element={<EmployeeList /> } /> 
+        <Route path='/employee-list' exact element={<EmployeeList /> } />
+        <Route path='/employee-inactive-list' exact element={<EmployeeInActiveList /> } /> 
         <Route path='/employee-register' exact element={<EmployeeEnrollMain />} />
         <Route path="/employee-exit" exact element={<EmpExitForm />} />
         <Route path="/employee-details" exact element={<EmployeeDetails />} />

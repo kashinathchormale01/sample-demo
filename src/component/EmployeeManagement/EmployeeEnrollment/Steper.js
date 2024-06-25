@@ -149,13 +149,14 @@ methods.setValue("Id", selectedid.sentid.Id);
     console.log(values);
     if(activeStep===steps.length-1&&savelabel==="Finish")
       {
-       console.log(values);
+       console.log('finish values',values);
        axiosHttp
        .post("/SaveEmp", values)
        .then((res) => {
         console.log(res);
          if(res.data.msg==="Succesfull")
          {
+          setActiveStep(activeStep + 1); 
          console.log("success");
          setLastMessage("Employe Saved Successfully");
          toast.success("Employe Saved Successfully");
@@ -177,12 +178,18 @@ methods.setValue("Id", selectedid.sentid.Id);
          setLastMessage("Technical Error please contact Administrator");
          toast.error("Technical Error please contact Administrator");
        });
+      }else{
+        console.log('else true');
+        if(!(activeStep===steps.length-1&&savelabel==="Update")){
+        setActiveStep(activeStep + 1); 
+        }
       }
       if(activeStep===steps.length-1&&savelabel==="Update")
         {
           //alert("This is Triggered");
           console.log("update values",values);
           if (window.confirm("Update the employee details?")) {
+            console.log('if true');
           axiosHttp
           .put("/UpdateEmp", values)
           .then((res) => {
@@ -209,11 +216,13 @@ methods.setValue("Id", selectedid.sentid.Id);
             setLastMessage("Technical Error please contact Administrator");
             toast.error("Technical Error please contact Administrator");
           });
+          setActiveStep(activeStep + 1); 
         }
+        
         }
-    setActiveStep(activeStep + 1); 
+    // setActiveStep(activeStep + 1); 
     if (activeStep === 0) {
-      if (data.hasOwnProperty('img')) {     
+      if (data.hasOwnProperty('img') || defaultdates.img) {     
         console.log('photo is available')
     }else{
       toast.error('Please select the Photo to enroll the employee.');

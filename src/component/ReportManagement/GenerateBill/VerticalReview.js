@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import axiosHttp from '../../../AxiosInstance';
-import { Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 
 const VerticalReview = () => {
   const [sitenames, setSitenames] = useState([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
     axiosHttp.get("/GetProj_Site").then((res) => {
@@ -34,41 +31,7 @@ const VerticalReview = () => {
   };
 
   // Convert payload object to an array of rows
-  const rows = [payload];
-
-  // Action buttons render function
-  const renderActions = (params) => {
-    return (
-      <div>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => handleWageSlip(params.row.id)}
-          style={{ marginRight: 10 }}
-        >
-          Wage Slip
-        </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={() => handleWageRegister(params.row.id)}
-        >
-          Wage Register
-        </Button>
-      </div>
-    );
-  };
-
-  // Handle click actions
-  const handleWageSlip = (id) => {
-    // Implement your logic for Wage Slip
-    console.log(`Wage Slip clicked for row with id ${id}`);
-  };
-
-  const handleWageRegister = (id) => {
-    // Implement your logic for Wage Register
-    console.log(`Wage Register clicked for row with id ${id}`);
-  };
+  const rows = [payload]; 
 
   return (
     <div style={{ height: 400, width: '100%' }}>
@@ -79,13 +42,7 @@ const VerticalReview = () => {
           { field: 'sites', headerName: 'Sites', width: 150 },
           { field: 'totalEmps', headerName: 'Total Employees', width: 200 },
           { field: 'billStartDate', headerName: 'Bill Start Date', width: 200 },
-          { field: 'billEndDate', headerName: 'Bill End Date', width: 200 },
-          {
-            field: 'actions',
-            headerName: 'Actions',
-            width: 200,
-            renderCell: renderActions,
-          },
+          { field: 'billEndDate', headerName: 'Bill End Date', width: 200 },          
         ]}
       />
     </div>

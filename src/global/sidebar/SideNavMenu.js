@@ -81,6 +81,10 @@ export const menuItemsData = [
         menu: "Employee List",
         url: "employee-list",
       },
+      {
+        menu: "Employee Inactive List",
+        url: "employee-inactive-list",
+      },
     ],
   },
   {

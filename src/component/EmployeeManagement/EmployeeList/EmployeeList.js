@@ -72,7 +72,7 @@ const loadEmployees = async () => {
   const columns = useMemo(
     () => [
       {
-        id: 'Emp ID',
+        id: 'EmpID',
         header: 'Emp Id',
         accessorFn: (row) => `NKS-${row.Id}`,        
       },
@@ -127,6 +127,14 @@ const loadEmployees = async () => {
     columnFilterDisplayMode: "popover",
     paginationDisplayMode: "pages",
     positionToolbarAlertBanner: "bottom",
+    initialState: {
+      sorting: [
+        {
+          id: 'EmpID', //sort by age by default on page load
+          desc: true,
+        }        
+      ],
+    },
     defaultColumn: {
       minSize: 20, //allow columns to get smaller than default
       maxSize: 9001, //allow columns to get larger than default

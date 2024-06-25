@@ -10,6 +10,7 @@ import { saveAs } from 'file-saver';
  import Invoice from './../../../global/common/Reports/Invoice';
 import { Link, useNavigate } from "react-router-dom";
 import moment from "moment";
+import { toast } from "react-toastify";
 
 const Viewbill = () => {
   const navigate = useNavigate();
@@ -19,18 +20,18 @@ const Viewbill = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const loadBilldata = async () => {
-      try {
-        let result = await axiosHttp.get('/GetBill');
-        setBillList(result.data.data);
-        setLoading(false);
-      } catch (err) {
-        setLoading(false);
-        setError(err.message);
-      }
-    };
+  const loadBilldata = async () => {
+    try {
+      let result = await axiosHttp.get('/GetBill');
+      setBillList(result.data.data);
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+      setError(err.message);
+    }
+  };
 
+  useEffect(() => {
     loadBilldata();
   }, []);
 
@@ -68,6 +69,19 @@ const Viewbill = () => {
    
   };
  
+  const handleDeletebill = async(billId) =>{
+    console.log(`delete clicked for billId ${billId}`);
+    try {
+      let result = await axiosHttp.delete(`/DeleteBill/${billId}`);
+     //  setWageslipData(result.data.data);
+     toast.error(result.data.msg);
+     loadBilldata();
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+      setError(err.message);
+    }
+  }
 
   const columns = useMemo(
     () => [
@@ -98,8 +112,8 @@ const Viewbill = () => {
         header: "Total Sites",
       },
       {
-        id: "actions",
-        header: "Actions",
+        id: "reports",
+        header: "Reports",
         accessorFn: (row) => ``,
         Cell: ({ row }) => {
           return(<Box state={{ id:row.original }}>
@@ -107,18 +121,28 @@ const Viewbill = () => {
               variant="outlined"
               color="primary"
               onClick={() => handleWageSlip(row.original.billid)}
-              style={{ marginRight: 10 }}
+              style={{ marginRight: 7 }}
             >
               Wage Slip
             </Button>
-            {/* <Button
-              variant="outlined"
-              color="secondary"
-              onClick={() => handleWageRegister(row.original.billid)}
+            <Link to={{pathname:`/generate-wage-reports`}} state={{ id:row.original.billid }}>WageRegister</Link>
+          </Box>)                 
+        },
+      },
+      {
+        id: "actions",
+        header: "Actions",
+        accessorFn: (row) => ``,
+        Cell: ({ row }) => {
+          return(<Box state={{ id:row.original }}>            
+            <Button
+              variant="contained"
+              color="error"
+              onClick={() => handleDeletebill(row.original.billid)}
+              style={{ marginRight: 10 }}
             >
-              Wage Register
-            </Button> */}
-            <Link to={{pathname:`/generate-wage-reports`}} state={{ id:row.original.billid }}>Wage Register</Link>
+              Delete Bill
+            </Button>
           </Box>)                 
         },
       },

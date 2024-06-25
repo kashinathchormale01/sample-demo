@@ -74,6 +74,7 @@ const VerticalStepper = () => {
     }
 
     const handleNext = (data) => {
+      handleDatealert()
       //console.log('values',data);
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
       console.log('steps.length',activeStep)
