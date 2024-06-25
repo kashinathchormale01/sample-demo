@@ -1,17 +1,51 @@
-import React from "react";
+import React,{useEffect,useState} from "react";
 import { useMemo } from "react";
 import {
   MaterialReactTable,
   useMaterialReactTable,
   createMRTColumnHelper,
 } from "material-react-table";
-import { Box, Button, Link } from "@mui/material";
+import { Box, Button, Link,Typography } from "@mui/material";
 import { fakeData } from "./makeData";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { jsPDF } from "jspdf"; //or use your library of choice here
 import autoTable from "jspdf-autotable";
+import { useLocation } from "react-router-dom";
+import axiosHttp from "../../AxiosInstance";
 
 const Example = () => {
+ // let fakeData;
+ let array;
+ let array1 = null;
+  const location = useLocation();
+ // console.log('location data',location.state.id);
+  const [loading, setLoading] = useState(true);
+  const [wageData, setWageData] = useState();
+
+  useEffect(() => {
+   // console.log('in useffect',location.state.id)
+
+    if (location.state?.id) {   
+      console.log('in if useffect',location.state.id)
+     // setLoading(true);
+      axiosHttp.get(`/GetBill/${location.state?.id}`)
+        .then(response => {
+          //setSelectedEmp(response.data.data[0]);
+         //fakeData = response.data
+         setWageData(response.data.data)
+        // console.log('response',response.data.data)
+         array = response.data.data;
+        //  setLoading(false);
+        })
+        .catch(error => {
+         // setLoading(false);
+          console.error('Error fetching data:', error);
+        });
+    }
+  }, []);
+
+  //console.log('after useffect',array)
+
   const handleExportRows = (rows) => {
     
     const doc = new jsPDF("landscape");
@@ -22,8 +56,7 @@ const Example = () => {
       row.map(value => typeof value === 'number' ? Math.round(value) : value)
     );
     const tableHeaders = columns.map((c) => c.header);
-    //console.log(roundedTableData);
-    //console.log(tableHeaders);
+    
 
     doc.autoTable({
       html: "#table",
@@ -59,17 +92,17 @@ const Example = () => {
   const columns = useMemo(
     () => [
       {
-        accessorKey: "id",
+        accessorKey: "EmpId",
         header: "Id",
         size: 50,
       },
       {
         id: "fullname",
         header: "Full Name",
-        accessorFn: (row) => `${row.firstName} ${row.lastName}`,
+        accessorFn: (row) => `${row?.firstName} ${row?.lastName}`,
         //Add a link in a cell render
         Cell: ({ renderedCellValue, row }) => (
-          <Link to={`/profile/${row.id}`}>{renderedCellValue}</Link>
+          <Link to={`/profile/${row?.id}`}>{renderedCellValue}</Link>
         ),
       },
       {
@@ -81,34 +114,30 @@ const Example = () => {
         accessorKey: "noOfDayswork",
         header: "No Of Days Work",
       },
-      // {
-      //   accessorKey: "overtimeHrs",
-      //   header: "Overtime Hours",
-      // },
-      // {
-      //   accessorKey: "basicWage",
-      //   header: "Basic Wage",
-      // },
+      {
+        accessorKey: "overtimeHrs",
+        header: "Overtime Hours",
+      },
+      {
+        accessorKey: "basicWage",
+        header: "Basic Wage",
+      },
       {
         accessorKey: "specialBasic",
         header: "Special Basic",
       },
-      // {
-      //   accessorKey: "wageDA",
-      //   header: "DA",
-      // },
       {
-        id: "totalWage",
-        header: "Total Wage",
-        accessorFn: (row) => row.noOfDayswork * (row.basicWage + row.wageDA),
-        Cell: ({ renderedCellValue, row }) => {
-          return <>{renderedCellValue}</>;
-        },
+        accessorKey: "wageDA",
+        header: "DA",
       },
-      // {
-      //   accessorKey: "paymentovertime",
-      //   header: "Payment Overtime",
-      // },
+      {
+        accessorKey: "totalWage",
+        header: "Total Wage",
+      },
+      {
+        accessorKey: "paymentovertime",
+        header: "Payment Overtime",
+      },
       {
         accessorKey: "HRA",
         header: "HRA",
@@ -118,77 +147,46 @@ const Example = () => {
         header: "Other Special Allows",
       },
       {
-        id: "grandTotal",
+        accessorKey: "grandTotal",
         header: "Grand Total",
-        accessorFn: (row) => row.wageRate * row.noOfDayswork,
-        Cell: ({ renderedCellValue }) => {
-          return <span>{renderedCellValue}</span>;
-        },
       },
       {
-        id: "deductPf",
+        accessorKey: "deductPf",
         header: "PF",
-        accessorFn: (row) =>
-          ((row.noOfDayswork * (row.basicWage + row.wageDA)) / 100) * 12,
-        Cell: ({ renderedCellValue }) => {
-          return <span>{Math.round(renderedCellValue)}</span>;
-        },
       },
       {
-        id: "deductESIC",
+        accessorKey: "deductESIC",
         header: "ESIC",
-        accessorFn: (row) => (row.wageRate * row.noOfDayswork * 0.75) / 100,
-        Cell: ({ renderedCellValue }) => {
-          return <span>{Math.round(renderedCellValue)}</span>;
-        },
       },
-      // {
-      //   accessorKey: "deductSociety",
-      //   header: "Society",
-      // },
+      {
+        accessorKey: "deductSociety",
+        header: "Society",
+      },
       {
         accessorKey: "deductPT",
         header: "Proffessional Tax",
       },
-      // {
-      //   accessorKey: "deductInsurance",
-      //   header: "Insurance",
-      // },
-      // {
-      //   accessorKey: "deductOthers",
-      //   header: "Others",
-      // },
-      // {
-      //   accessorKey: "deductRecoveries",
-      //   header: "Recoveries",
-      // },
       {
-        id: "totalDeduction",
+        accessorKey: "deductInsurance",
+        header: "Insurance",
+      },
+      {
+        accessorKey: "deductOthers",
+        header: "Others",
+      },
+      {
+        accessorKey: "deductRecoveries",
+        header: "Recoveries",
+      },
+      {
+        accessorKey: "totalDeduction",
         header: "Total Deduction",
-        accessorFn: (row) =>
-          ((row.noOfDayswork * (row.basicWage + row.wageDA)) / 100) * 12 +
-          (row.wageRate * row.noOfDayswork * 0.75) / 100 +
-          (row.deductSociety +
-            row.deductPT +
-            row.deductInsurance +
-            row.deductOthers +
-            row.deductRecoveries),
-        Cell: ({ renderedCellValue }) => {
-          return <span>{Math.round(renderedCellValue)}</span>;
-        },
       },
       {
         id: "netPayment",
         header: "Net Payment",
         accessorFn: (row) =>
-          row.wageRate * row.noOfDayswork -
-          (((row.noOfDayswork * (row.basicWage + row.wageDA)) / 100) * 12 +
-            (row.wageRate * row.noOfDayswork * 0.75) / 100 +
-            row.deductSociety +
-            row.deductPT +
-            row.deductInsurance +
-            row.deductOthers +
-            row.deductRecoveries),
+         (row.grandTotal + row.totalDeduction),
         Cell: ({ renderedCellValue }) => {
           return <span>{Math.round(renderedCellValue)}</span>;
         },
@@ -197,7 +195,7 @@ const Example = () => {
         id: "pfEmployer",
         header: "PF By Employer",
         accessorFn: (row) =>
-          (row.noOfDayswork * (row.basicWage + row.wageDA) * 13.15) / 100,
+          (row.totalWage * 13.15) / 100,
         Cell: ({ renderedCellValue }) => {
           return <span>{Math.round(renderedCellValue)}</span>;
         },
@@ -208,14 +206,13 @@ const Example = () => {
 
   const table = useMaterialReactTable({
     columns,
-    data: fakeData,
+    data: wageData? wageData:[],
     enableRowSelection: true,
     enableEditing: false,
     columnFilterDisplayMode: "popover",
     paginationDisplayMode: "pages",
     positionToolbarAlertBanner: "bottom",
     //optionally customize modal content
-
     renderTopToolbarCustomActions: ({ table }) => (
       <Box
         sx={{
@@ -256,6 +253,8 @@ const Example = () => {
       </Box>
     ),
   });
+
+  if (!location.state) return <Typography color="error">No Data available!</Typography>;
 
   return <MaterialReactTable table={table} />;
 };

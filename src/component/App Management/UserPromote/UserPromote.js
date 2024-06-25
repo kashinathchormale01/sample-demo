@@ -35,52 +35,28 @@ const UserPromote = () => {
   const [selectedSite, setSelectedSite] = React.useState([]);
   const [selectedEmps, setSelectedEmps] = React.useState();
 
-  const getEmployeeList = async() => {
+    const getdataAll = async()=>{
     setLoading(true);
-    await axiosHttp
-      .get("/GetEmpAdmin")
-      .then((response) => {
-        setLoading(false);        
-        setEmpList(response.data.data);
-      })
-      .catch((error) => {
-        setLoading(false);
-        setError(error);
-      });
-  };
-
-  const getRole = async() => {
-    setLoading(true);
-    await axiosHttp
-      .get("/GetRoleIdAdmin")
-      .then((response) => {
-        setLoading(false);
-        setUserRoles(response.data.data);
-      })
-      .catch((error) => {
-        setLoading(false);
-        setError(error);
-      });
-  };
-
-  const getLocation = async() => {
-    setLoading(true);
-    await axiosHttp
-      .get("/GetProj_Site")
-      .then((response) => {
-        setLoading(false);
-        setSitelocationlist(response.data.data);
-      })
-      .catch((error) => {
-        setLoading(false);
-        setError(error);
-      });
-  };
+    try {
+      const response = await axios.all([
+        axiosHttp.get('/GetEmpAdmin'),
+        axiosHttp.get('/GetRoleIdAdmin'),
+        axiosHttp.get('/GetProj_Site')
+      ]);
+      setLoading(false);
+      setEmpList(response[0].data.data);
+      setUserRoles(response[1].data.data);
+      setSitelocationlist(response[2].data.data)
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
 
   useEffect(() => {
-    getEmployeeList();
-    getRole();
-    getLocation();
+    // getEmployeeList();
+    // getRole();
+    // getLocation();
+    getdataAll();
   }, []);
 
   const handleChangeselect = (event) => {

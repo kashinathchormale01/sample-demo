@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
 });
 
 const Invoice = ({ invoice }) => (
+  // console.log('items in invoice',inv)
   <Document>
     <Page size="A4" orientation="landscape" style={styles.page}>
       <InvoiceItemsTable invoice={invoice} />

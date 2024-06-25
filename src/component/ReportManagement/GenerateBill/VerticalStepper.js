@@ -31,7 +31,7 @@ function getSteps() {
   let values={};
 const VerticalStepper = () => {
 
-
+  let selectedEmps = sessionStorage?.getItem('selectedemp')?.split(",")?.map(Number);
     const steps = getSteps();
     const methods = useForm();
 
@@ -59,44 +59,43 @@ const VerticalStepper = () => {
     const [activeStep, setActiveStep] = React.useState(0);
 
     const handleNext = (data) => {
-      console.log(data);
+      //console.log('values',data);
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
       if(activeStep === steps.length-1){
-        console.log('last step');
+        //console.log('last step');
 
         let sessionsids = [];
         sessionsids.push(sessionStorage.getItem("site.Id"));
-        console.log("sessionsids", sessionsids);
+        //console.log("sessionsids", sessionsids);
         const newsiteData = sessionsids[0].split(",").map((item) => parseInt(item));
-        console.log("newsessionsids in emp page", newsiteData);
+        //console.log("newsessionsids in emp page", newsiteData);
 
         const datagridstatedata = JSON.parse(sessionStorage.getItem('dataGridState'));
         const filtereddatagridstatedata = Object.keys(datagridstatedata)
-          .filter((key) => JSON.parse(sessionStorage.getItem('selectedEmployee')).includes(parseInt(key, 10)))
+          .filter((key) => selectedEmps.includes(parseInt(key, 10)))
           .reduce((obj, key) => {
             obj[key] = datagridstatedata[key];
             return obj;
           }, {});
 
-        console.log('filteredResponse',filtereddatagridstatedata);
+       // console.log('filteredResponse',filtereddatagridstatedata);
 
         const vstepperPayload = {
             siteId: newsiteData,
-            selectedEmployee: JSON.parse(sessionStorage.getItem('selectedEmployee')),
+            selectedEmployee: selectedEmps,
             billStartDate: sessionStorage.getItem('billStartDate'),
             billEndDate: sessionStorage.getItem('billEndDate'),
             dataGridState: filtereddatagridstatedata,
             rateGridState: JSON.parse(sessionStorage.getItem('rateGridState')),
           }
-          console.log('verticalstepPayload',vstepperPayload);
+         // console.log('verticalstepPayload',vstepperPayload);
 
           axiosHttp
    .post("/SaveBill",vstepperPayload)
    .then((res) => {
     if(res.data.msg)
       toast.success(res.data.msg);
-    // sessionStorage.removeItem(['rateGridState', 'site.Id','billEndDate','dataGridState','selectedEmployee','billStartDate']);
-    const keysToRemove = ['rateGridState', 'site.Id', 'billEndDate', 'dataGridState', 'selectedEmployee', 'billStartDate'];
+    const keysToRemove = ['rateGridState', 'site.Id', 'billEndDate', 'dataGridState', 'selectedemp', 'billStartDate'];
 
 // Remove each item from sessionStorage
 keysToRemove.forEach(key => {
@@ -114,16 +113,7 @@ keysToRemove.forEach(key => {
     };
   
     const handleReset = () => {
-      setActiveStep(0);
-      // const makePayload = {
-      //   siteId: sessionStorage.getItem('site.Id'),
-      //   selectedEmployee: JSON.parse(sessionStorage.getItem('selectedEmployee')),
-      //   billStartDate: sessionStorage.getItem('billStartDate'),
-      //   billEndDate: sessionStorage.getItem('billEndDate'),
-      //   dataGridState: JSON.parse(sessionStorage.getItem('dataGridState')),
-      //   rateGridState: JSON.parse(sessionStorage.getItem('rateGridState')),
-      // }
-      // console.log('makePayload',makePayload)
+      setActiveStep(0);      
     };
   
     return (
@@ -131,7 +121,6 @@ keysToRemove.forEach(key => {
         <Paper sx={{padding:'10px', width:'auto', minWidth:'60%'}}>
         <FormProvider>
         <form
-                // onSubmit={methods.handleSubmit(handleNext)}
                 onSubmit={methods.handleSubmit(handleNext)}
                 style={{ alignContent: "center" }}
               >

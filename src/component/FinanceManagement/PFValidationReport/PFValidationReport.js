@@ -43,18 +43,17 @@ const PFValidationReport = () => {
   const [error, setError] = useState(null);
 
   console.log('pfholderEmpList',pfholderEmpList)
-  useEffect(() => {
-    const loadPfdata = async () => {
-      try {
-        let result = await axiosHttp.get('/GetBill');
-        setPfholderEmpList(result.data.data);
-        setLoading(false);
-      } catch (err) {
-        setLoading(false);
-        setError(err.message);
-      }
-    };
-
+  const loadPfdata = async () => {
+    try {
+      let result = await axiosHttp.get('/GetBill');
+      setPfholderEmpList(result.data.data);
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+      setError(err.message);
+    }
+  };
+  useEffect(() => {    
     loadPfdata();
   }, []);
 

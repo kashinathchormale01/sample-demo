@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
 
   const InvoiceItemsTable = ({invoice}) => (
     <View style={styles.tableContainer}>
-        <InvoiceTableRow items={invoice?.items} />        
+        <InvoiceTableRow items={invoice} />        
     </View>
   );
   

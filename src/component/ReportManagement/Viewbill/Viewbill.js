@@ -5,11 +5,11 @@ import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 import { MaterialReactTable, useMaterialReactTable } from "material-react-table";
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import moment from "moment";
 import { pdf} from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
-import Invoice from '../../../global/common/Reports/Invoice';
-import { useNavigate } from "react-router-dom";
+ import Invoice from './../../../global/common/Reports/Invoice';
+import { Link, useNavigate } from "react-router-dom";
+import moment from "moment";
 
 const Viewbill = () => {
   const navigate = useNavigate();
@@ -38,8 +38,8 @@ const Viewbill = () => {
     const doc = new jsPDF();
     const title = "Bill List";
     doc.text(title, 15, 10);
-    const tableData = rows.map((row) => Object.values(row._valuesCache));
-    const tableHeaders = columns.map((c) => c.header);
+    const tableData = rows?.map((row) => Object.values(row._valuesCache));
+    const tableHeaders = columns?.map((c) => c.header);
     autoTable(doc, {
       head: [tableHeaders],
       body: tableData,
@@ -52,36 +52,22 @@ const Viewbill = () => {
        
     console.log(`Wage Slip clicked for billId ${billId}`);
     try {
-      let result = await axiosHttp.get(`/GetBill/${billId}`);
-      setWageslipData(result.data.data);
+      let result = await axiosHttp.get(`/GetBillSlip/${billId}`);
+       setWageslipData(result.data.data);
+      console.log('wageslipData',result.data.data) ;
       setLoading(false);
+       const blob = await pdf(<Invoice invoice={result.data.data}/>).toBlob()
+       saveAs(blob, 'wageslip.pdf')
     } catch (err) {
       setLoading(false);
       setError(err.message);
     }
-    console.log('wageslipData',wageslipData) ;
-
-   
-      // const blob = await pdf(<Invoice invoice={invoice}/>).toBlob()
-      // saveAs(blob, 'wageslip.pdf')
+    // console.log('wageslipData',wageslipData) ;   
+    //   const blob = await pdf(<Invoice invoice={invoice}/>).toBlob()
+    //   saveAs(blob, 'wageslip.pdf')
    
   };
-
-  const handleWageRegister = async(billId) => {
-    console.log(`Wage Register clicked for billId ${billId}`);
-    try {
-      let result = await axiosHttp.get(`/GetBill/${billId}`);
-      setWageRegisterData(result.data.data);
-      setLoading(false);
-    } catch (err) {
-      setLoading(false);
-      setError(err.message);
-    }
-    console.log('wageregisterData',wageRegisterData)
-    navigate("/generate-wage-reports", { state: billId.original });
-  };
-
-  //console.log(`Wage Register clicked for billId ${billId}`);
+ 
 
   const columns = useMemo(
     () => [
@@ -125,13 +111,14 @@ const Viewbill = () => {
             >
               Wage Slip
             </Button>
-            <Button
+            {/* <Button
               variant="outlined"
               color="secondary"
               onClick={() => handleWageRegister(row.original.billid)}
             >
               Wage Register
-            </Button>
+            </Button> */}
+            <Link to={{pathname:`/generate-wage-reports`}} state={{ id:row.original.billid }}>Wage Register</Link>
           </Box>)                 
         },
       },

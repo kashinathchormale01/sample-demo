@@ -42,7 +42,7 @@ const EmployeeProfile = (defaultdates,profileimg, data) => {
   const { register, setValue, getValues } = useFormContext();
   const inputRef = React.useRef(null);
   const [age, setAge] = React.useState("");
-  const [image, setImage] = React.useState(getValues("img"));
+  const [image, setImage] = React.useState(defaultdates?.img);
   const gender = getgendervalues();
   const handleChange = (event) => {
     setAge(event.target.value);
@@ -64,23 +64,22 @@ const EmployeeProfile = (defaultdates,profileimg, data) => {
     register("img", { required: false });
     setValue("img", imageSrc);
   };
- console.log("image in profile",defaultdates);
 //  console.log("datavalues",defaultdates?.img);
 //  setImage(window.URL.createObjectURL(defaultdates?.img));
 //  const base64String = btoa(String.fromCharCode(...new Uint8Array(defaultdates?.img)));
-function convertimgblob(){
-  console.log('profile image',defaultdates?.img)
-  if(defaultdates.img){
- // const base64String = btoa(String.fromCharCode(...new Uint8Array(defaultdates?.img)));
-   console.log('profile image in useefffect',defaultdates?.img)
-  setImage(defaultdates?.img);
-  console.log('after profile image in useefffect',image)
-  }
-}
+// function convertimgblob(){
+//   console.log('profile image',defaultdates?.img)
+//   if(defaultdates.img){
+//  // const base64String = btoa(String.fromCharCode(...new Uint8Array(defaultdates?.img)));
+//    console.log('profile image in useefffect',defaultdates?.img)
+//   setImage(defaultdates?.img);
+//   console.log('after profile image in useefffect',image)
+//   }
+// }
 
-React.useEffect(()=>{
-convertimgblob()
-},[defaultdates])
+// React.useEffect(()=>{
+// convertimgblob()
+// },[defaultdates])
 
  //setImage(URL.createObjectURL(defaultdates?.img))
   const gendepassvalues = {

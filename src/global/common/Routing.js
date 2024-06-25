@@ -28,6 +28,7 @@ import PasswordChange from '../../component/LoginManagement/ChangePassword/Passw
 import Contactlist from '../../component/MyDetails/Contactlist';
 import GenerateBill from '../../component/ReportManagement/GenerateBill/GenerateBill';
 import Viewbill from '../../component/ReportManagement/Viewbill/Viewbill';
+import PFValidationReport from '../../component/FinanceManagement/PFValidationReport/PFValidationReport';
 
 
 const Routing = () => {
@@ -47,6 +48,7 @@ const Routing = () => {
         <Route path='/rate-chart' exact element={<VarRateChart />} />
         <Route path='/generate-bill' exact element={<GenerateBill />} />
         <Route path='/view-bill' exact element={<Viewbill />} />
+        <Route path='/emp-pf-validation' exact element={<PFValidationReport />} />
 
         {/* Employee attendance */}
         <Route path='/employee-attendance' exact element={<EmployeeTimeSheet />} />

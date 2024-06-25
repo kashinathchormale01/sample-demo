@@ -4,6 +4,7 @@ import { DataGrid  } from '@mui/x-data-grid';
 import axiosHttp from '../../../AxiosInstance';
 import { Category } from '@mui/icons-material';
 
+
 const columns = [
   { field: 'id', headerName: 'ID', width: 90,
     enableSorting: true,
@@ -41,15 +42,16 @@ const columns = [
     headerClassName: 'blinkItem',
     renderCell: (params) => {    
       const { id, otherAllowance } = params.row;
-      return <TextField className='blinkIteminput' value={otherAllowance} />;
+      return <TextField className='blinkIteminput' defaultValue={0} value={otherAllowance} />;
     }    
   },
 ];
 
 const Rates = () => {
+  
   const [sitedata,setSitedata]=React.useState();
   let stateFromLocalStorage = sessionStorage?.getItem('rateGridState');
-  let selectedempsFromStorage = sessionStorage?.getItem('selectedEmployee');
+  // let selectedempsFromStorage = sessionStorage?.getItem('selectedemp');
   // console.log('selectedempsFromStorage',selectedempsFromStorage)
   const [initialState, setInitialState] = useState();
   let currentState=null; 
@@ -72,11 +74,13 @@ const Rates = () => {
   }
   catch{}
   }, []);  
+  
 
     useEffect( ()=>{
-    
+      let selectedEmps = sessionStorage?.getItem('selectedemp')?.split(",")?.map(Number);
+      console.log('selectedEmps in axios',selectedEmps);
       axiosHttp
-   .post("/GetBillEmpCatRole",JSON.parse(sessionStorage.getItem('selectedEmployee')))
+   .post("/GetBillEmpCatRole",selectedEmps)
    .then((res) => {
     // console.log('GetBillEmpCatRole',res.data.data);
      if(res.data.msg==="billempcatrole")
@@ -104,7 +108,7 @@ if(!checknewid)
      rows=[...rows,{id: value.id,
       CategoryWork: value.CategoryWork,
       otherAllowance: undefined,      
-     CategoryId:value.CatId,
+      CatId:value.CatId,
       RoleName:value.RoleName,
      // Basic: value?.Basic,
     }]
@@ -169,7 +173,7 @@ setSitedata(rows)
      Basic: entry?.Basic,
      otherAllowance: entry.otherAllowance,
      RoleName:entry.RoleName,
-     CategoryId:entry.CatId
+     CatId:entry.CatId
     }
    )
    
@@ -239,6 +243,9 @@ setSitedata(rows)
         onStateChange={handleStateChange}
         pageSizeOptions={[1,5,10,15]}
         initialState={{
+          sorting: {
+            sortModel: [{ field: 'id', sort: 'asc' }],
+          },
           pagination:{
             paginationModel:{pageSize:10}
           }

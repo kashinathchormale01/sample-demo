@@ -32,6 +32,11 @@ const CapturePhoto = ({ open, onClose, onCapture  }) => {
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle>Capture Photo</DialogTitle>
       <DialogContent>
+      {url && (
+          <div>
+            <img src={url} alt="Screenshot" />
+          </div>
+        )}
         <Webcam
           ref={webcamRef}
           audio={false}
@@ -40,12 +45,7 @@ const CapturePhoto = ({ open, onClose, onCapture  }) => {
         />
         <Button onClick={capturePhoto}>Capture</Button>
         <Button onClick={() => setUrl(null)}>Reset</Button>
-        {error && <Typography color="error">{error}</Typography>}
-        {url && (
-          <div>
-            <img src={url} alt="Screenshot" />
-          </div>
-        )}
+        {error && <Typography color="error">{error}</Typography>}        
       </DialogContent>
       <DialogActions>
           <Button onClick={handleClose}>Close</Button>

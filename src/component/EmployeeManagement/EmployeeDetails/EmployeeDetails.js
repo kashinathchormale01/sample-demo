@@ -4,37 +4,28 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import { Typography,Container } from "@mui/material";
 import axiosHttp from "../../../AxiosInstance";
+import { useLocation } from "react-router-dom";
 
 const EmployeeDetails = (props) => {
   const [selectedEmp, setSelectedEmp] = useState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  const loadSelectedEmployee = async () => {      
-    try {
-      let result = await axiosHttp.get(`/GetEmp/1`);
-      setSelectedEmp(result?.data?.data[0]);          
-      setLoading(false);
-      // Work with the response...
-  } catch (err) {
-      if (err.response) {
-        setLoading(false);
-        setError(err.message);
-      } else if (err.request) {
-        setLoading(false);
-        setError(err.message);
-      } else {
-          // Anything else
-          setLoading(false);
-          setError(err.message);
-      }
-  }
-    
-  };
+  const location = useLocation();
 
   useEffect(() => {
-    loadSelectedEmployee();
-  }, []);
+    if (location.state) {   
+      setLoading(true);
+      axiosHttp.get(`/GetEmp/${location.state.id.Id}`)
+        .then(response => {
+          setSelectedEmp(response.data.data[0]);
+          setLoading(false);
+        })
+        .catch(error => {
+          setLoading(false);
+          console.error('Error fetching data:', error);
+        });
+    }
+  }, [location.state]);
 
   if (error) return <Typography color="error">Something went wrong !</Typography>
   if (!selectedEmp) return <Typography color="error"> No data available for selected employee!</Typography>

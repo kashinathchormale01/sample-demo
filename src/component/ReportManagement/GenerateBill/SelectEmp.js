@@ -13,12 +13,12 @@ const columns = [
     width: 90,
   },
   {
-    field: "fullName",
-    headerName: "Full name",
-    description: "This column has a value getter and is not sortable.",
+    field: 'fullName',
+    headerName: 'Full name',
+    description: 'This column has a value getter and is not sortable.',
     sortable: false,
     width: 160,
-    valueGetter: (value, row) => `${row.firstName || ""} ${row.lastName || ""}`,
+    valueGetter: (value, row) => `${row.firstName || ''} ${row.lastName || ''}`,
   },
   {
     field: "dateOfJoning",
@@ -29,9 +29,9 @@ const columns = [
       `${moment(row.dateOfJoning).format("DD/MM/YYYY")}`,
   },
   {
-    field: "SPLallowance",
-    headerName: "Special Allowance(Editable)",
-    type: "text",
+    field:'SPLallowance',
+    headerName:"Special Allowance",
+    type: 'text',
     width: 210,
     editable: true,
     headerClassName: "blinkItem",
@@ -43,143 +43,219 @@ const columns = [
 ];
 
 const SelectEmp = () => {
-  const [sitedata, setSitedata] = useState();
-  let stateFromLocalStorage = sessionStorage?.getItem("dataGridState");
-  const stateemplist = sessionStorage?.getItem("selectedemp")?.split(",");
-  const result = stateemplist?.map((number) => parseInt(number));
-  const [selectedEmp, setSelectedEmp] = useState(result);
-  let currentState = null;
-  // console.log("checking emplist", result);
-  // console.log("checking emp", sessionStorage?.getItem("selectedemp"));
+const [sitedata,setSitedata]=React.useState();
+let stateFromLocalStorage = sessionStorage?.getItem('dataGridState');
 
-  const handleSelectionChange = (item) => {
-    // console.log("selection fuction", item);
-    if (item.length > 0) {
-      setSelectedEmp(item);
-      sessionStorage.setItem("selectedemp", item);
+const stateemplist=sessionStorage?.getItem('selectedemp')?.split(',');
+
+const result=stateemplist?.map(number=>parseInt(number))
+
+const [initialState, setInitialState] = React.useState();
+
+// const [selectedEmp, setSelectedEmp] = React.useState( localStorage?.getItem('selectedemp'));
+const [selectedEmp, setSelectedEmp] = React.useState(result );
+let currentState=null;
+
+
+
+
+
+
+
+
+console.log("checking emplist",result)
+//const result = numbers.map(number => parseInt(number));
+console.log("checking emp",sessionStorage?.getItem('selectedemp'))
+
+
+
+
+
+
+
+const handleSelectionChange=(item)=>{
+  
+  
+  
+  console.log("selection fuction",item);
+  if(item.length>0)
+    {
+  setSelectedEmp(item);
+  sessionStorage.setItem('selectedemp',item)
     }
-  };
 
-  const handleStateChange = React.useCallback((params) => {
-    currentState = params.rows.dataRowIdToModelLookup;
-    // console.log("currentState", currentState);
-    // console.log(
-    //   "State data is",
-    //   params,
-    //   "condition checking",
-    //   Object.keys(currentState).length
-    // );
-    try {
-      if (Object.keys(currentState).length > 0) {
-        sessionStorage.setItem("dataGridState", JSON.stringify(currentState));
-        sessionStorage.setItem(
-          "selectedEmployee",
-          JSON.stringify(params.rowSelection)
-        );
-      }
-    } catch {}
-  }, []);
+  //console.log("selection fuction",item);
 
-  let sessionsids = [];
+}
+
+
+//console.log("outer current state",stateFromLocalStorage );
+const handleCellEditStop = React.useCallback((params) => {
+
+  sessionStorage.setItem('dataGridState',JSON.stringify(currentState));
+
+ // console.log("Cell edit stopped:", JSON.stringify(currentState));
+}, []);
+//useGridApiEventHandler(apiRef, 'cellEditStop', handleEvent);
+const handleStateChange = React.useCallback((params) => {
+  
+  
+  currentState=params.rows.dataRowIdToModelLookup;
+ // console.log("State data is",params.rows.dataRowIdToModelLookup,"condition checking",Object.keys(currentState).length)
+  try
+  {
+  if(Object.keys(currentState).length > 0 )
+    {
+      sessionStorage.setItem('dataGridState',JSON.stringify(currentState));
+ 
+    }
+  // console.log("Cell edit stopped:", params.rowSelection );
+  sessionStorage.setItem('selectedemp',params.rowSelection)
+}
+catch{}
+}, []);
+
+let sessionsids = [];
   sessionsids.push(sessionStorage.getItem("site.Id"));
   // console.log("sessionsids", sessionsids);
   const newsiteData = sessionsids[0].split(",").map((item) => parseInt(item));
   // console.log("newsessionsids in emp page", newsiteData);
 
-  const SentSite = {
-    siteId: newsiteData,
-  };
+const SentSite = {
+  siteId: newsiteData,
+};
+ 
 
-  useEffect(() => {
+  React.useEffect(()=>{
+  
+
     axiosHttp
-      .post("/GetSiteEmp", SentSite)
-      .then((res) => {
-        if (res.data.msg === "worker ale ka") {
-          const parsedata = res?.data?.data?.map((entry, index) => ({
-            id: entry.Id,
-            lastName: entry.lastName,
-            firstName: entry.firstName,
-            fatherSpouseName: entry.fatherSpouseName,
-            dateOfJoning: entry.dateOfJoning,
-            SPLallowance: entry.SPLallowance,
-          }));
+  .post("/GetSiteEmp",SentSite)
+  .then((res) => {
+  //console.log(res.data.msg);
+    if(res.data.msg==="worker ale ka")
+    {
+   // console.log("success",res.data.data);
+  const parsedata = res.data.data.map((entry,index) => ({
+    id: entry.Id,
 
-          const selectedidlist = parsedata.map((value, index) => value.id);
-          // console.log("parsedata", selectedidlist);
-          if (!sessionStorage?.getItem("selectedemp"))
-            setSelectedEmp(selectedidlist);
-          try {
-            stateFromLocalStorage = JSON.parse(stateFromLocalStorage);
-            // console.log("stateFromLocalStorage", stateFromLocalStorage);
-          } catch (error) {}
-          let rows = null;
-          try {
-            if(stateFromLocalStorage !== null)
-            rows = Object?.values(stateFromLocalStorage)?.map((entry, index) => ({
-              id: entry.id,
-              lastName: entry.lastName,
-              firstName: entry.firstName,
-              fatherSpouseName: entry.fatherSpouseName,
-              dateOfJoning: entry.dateOfJoning,
-              SPLallowance: entry.SPLallowance,
-            }));
-            const selectedidlist = rows?.map((value, index) => value.id);
-            if (!sessionStorage?.getItem("selectedemp"))
-              setSelectedEmp(selectedidlist);
-          } catch (error) {
-            console.log("maping error", error);
-          }
+    lastName: entry.lastName,
+    firstName: entry.firstName,
+    fatherSpouseName: entry.fatherSpouseName,
+    dateOfJoning: entry.dateOfJoning,
+    SPLallowance:entry.SPLallowance// Age is not provided in the original data
+  }));
+ // console.log("all data",parsedata);
 
-          if (
-            !(
-              sessionStorage?.getItem("billStartDate") &&
-              sessionStorage?.getItem("billEndDate")
-            )
-          ) {
-            toast.error("Start and End date not selected");
-          }
+const selectedidlist= parsedata.map((value,index)=>(
+  value.id
+))
+if(!(sessionStorage?.getItem('selectedemp')))
+ setSelectedEmp(selectedidlist);
+//console.log("for ids",selectedidlist);
 
-          stateFromLocalStorage === null ||
-          Object.keys(stateFromLocalStorage).length === 0
-            ? setSitedata(parsedata)
-            : setSitedata(rows);
-        } else {
-          alert(res.data.msg);
-          console.log("Error occured");
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
 
-  // const handleCellEditChangeStart = (item) => {
-  //   console.log("handleCellEditChangeStart item", item);
-  // };
 
-  const rows = sitedata === undefined ? [] : sitedata;
+ try
+ {
+ stateFromLocalStorage=JSON.parse(stateFromLocalStorage);
+ }catch(error)
+ {}
+ //console.log("data to parser",stateFromLocalStorage);
+ let rows=null
+ try
+ {
+   rows = Object.values(stateFromLocalStorage).map((entry, index) => (
+   {
+   id: entry.id,
+   lastName: entry.lastName,
+   firstName: entry.firstName,
+   fatherSpouseName: entry.fatherSpouseName,
+   dateOfJoning: entry.dateOfJoning,
+   SPLallowance:entry.SPLallowance// Age is not provided in the original data
+  }
+
+ )
+ 
+ );
+ const selectedidlist= rows.map((value,index)=>(
+  value.id
+))
+if(!(sessionStorage?.getItem('selectedemp')))
+ setSelectedEmp(selectedidlist);
+}
+catch(error){console.log("maping error",error)}
+
+
+
+stateFromLocalStorage===null|| Object.keys(stateFromLocalStorage).length === 0   ?  setSitedata(parsedata) :  setSitedata(rows);
+
+
+//  setSitedata(parsedata);
+
+
+//console.log("my item parsing",rows,"axios data",parsedata);
+
+
+
+// const newpayload= [];
+// temp.forEach(item => {
+//     const values = Object.values(item)[0]; // Get the values of the first (and only) property in each object
+//     newpayload.push(values);
+// });
+
+// console.log("ks data",newpayload);
+//console.log("Ai jason parse is",rows);
+ 
+  
+   // console.log("in axios call",sitedata)
+    // return(res.data.data);
+     
+    }
+    else
+    {
+      alert(res.data.msg);
+      console.log("Erro occured");
+    }
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+  
+ 
+},[])
+
+
+
+// const rows = [];
+//console.log("cheking",sitedata);
+ const rows = sitedata===undefined? []:sitedata;
 
   return (
-    <Box sx={{ height: 400, width: "100%" }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        onStateChange={handleStateChange}
-        // onCellEditStop={handleCellEditStop}
-        pageSizeOptions={[1, 5, 10, 15]}
-        initialState={{
-          pagination: {
-            paginationModel: { pageSize: 10 },
-          },
-        }}
-        // onCellEditStart={(item) => handleCellEditChangeStart(item)}
-        checkboxSelection
-        rowSelectionModel={selectedEmp}
-        onRowSelectionModelChange={(item) => handleSelectionChange(item)}
-        disableRowSelectionOnClick
-      />
-    </Box>
-  );
-};
+    <Box sx={{ height: 400, width: '100%' }}>
+    <DataGrid
+      rows={rows}
+      columns={columns}
+      
+      onStateChange={handleStateChange}
+      onCellEditStop={handleCellEditStop}
+      pageSizeOptions={[1,5,10,15]}
+      initialState={{
+        pagination:{
+          paginationModel:{pageSize:10}
+        }
+        
+      }}
+      checkboxSelection
+      rowSelectionModel={selectedEmp}
+      onRowSelectionModelChange={(item)=>handleSelectionChange(item)}
+      disableRowSelectionOnClick
+    
+      
+    />
+    
+  </Box>
+  )
+}
 
-export default SelectEmp;
+export default SelectEmp

@@ -67,7 +67,7 @@ const VarRateChart = () => {
 
       {showTable && (
         loading ? <CircularProgress /> : error ? <div>Error: {error}</div> : vrates && (
-          <TableContainer sx={{ maxWidth: '70%', marginTop: '20px' }} component={Paper}>
+          <TableContainer sx={{ maxWidth: '100%', marginTop: '20px' }} component={Paper}>
             <form onSubmit={handleSubmit(onSubmit)}>
               <Table aria-label="customized table">
                 <TableHead>

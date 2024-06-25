@@ -15,7 +15,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axiosHttp from "../../../AxiosInstance";
-
+import { Buffer } from "buffer";
 
 
 
@@ -50,7 +50,6 @@ const Steper = (selectedid) => {
   const methods = useForm();
   const isLastStep = activeStep === steps.length - 1;
  
-  console.log('profileimg in prfile',profileimg)
   const predefincevalues=async()=>{
     // console.log("valueinitiated as :",selectedid.sentid);
      if(selectedid.sentid.Id==="-1")
@@ -104,9 +103,6 @@ methods.setValue("Id", selectedid.sentid.Id);
    methods.setValue("mobileNumber",responsedata.mobileNumber);
    methods.setValue("alternateMobileNumber",responsedata.alternateMobileNumber);
  
- 
- 
-    
  })
  .catch((error) => {
    console.log(error);

@@ -158,6 +158,7 @@ const textRotate = StyleSheet.create({
 });
 
 const InvoiceTableRow = ({ items }) => {
+  console.log('items in row',items)
   const rows = items.map((item) => (
     <>
       {/* Upper section */}
@@ -177,7 +178,7 @@ const InvoiceTableRow = ({ items }) => {
               <Text style={styles.TopsideCell}>Period………</Text>
             </View>
             <View style={styles.TopsideCol}>
-              <Text style={styles.TopsideCell}>Mar 21</Text>
+              <Text style={styles.TopsideCell}>{item.startDate}</Text>
             </View>
             <View style={styles.TopsideCol}>
               <Text style={styles.TopsideCell}>Wage Slip</Text>
@@ -350,7 +351,29 @@ const InvoiceTableRow = ({ items }) => {
               <Text style={styles.tableCell}>{item.registerNo}</Text>
             </View>
             <View style={[styles.tableCol, customWidth.verySmall]}>
-              <Text style={styles.tableCell}>{item.pfAccountNo}</Text>
+              {/* <Text
+               style={[
+                  styles.tableCell,
+                  {
+                    verflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  },
+                ]}
+              >{item.pfAccountNo}</Text> */}
+               <Text
+                style={[
+                  styles.tableCell,
+                  {
+                    verflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  },
+                  textRotate.textoverflow,
+                ]}
+              >
+                {item.pfAccountNo}
+              </Text>
             </View>
             <View style={[styles.tableCol, customWidth.mediuamMid]}>
               <Text
@@ -373,12 +396,12 @@ const InvoiceTableRow = ({ items }) => {
             </View>
             <View style={[styles.tableCol, customWidth.extraSmall]}>
               <Text style={[styles.tableCell, textRotate.textoverflow]}>
-                {item.sex}
+                {item.gender}
               </Text>
             </View>
             <View style={[styles.tableCol, customWidth.Smallmid]}>
               <Text style={[styles.tableCell, textRotate.textoverflow]}>
-                {item.designation}
+                {item.RoleName}
               </Text>
             </View>
             <View style={[styles.tableCol, customWidth.Smallmid]}>

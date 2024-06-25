@@ -142,11 +142,9 @@ const loadEmployees = async () => {
               `/GetEmpImage/${row.original.Id}`
             );
             console.log("profileimg", result.data.data[0].ImageSave);
-            const buffer = Buffer.from(result.data.data[0].ImageSave);
-            const imageUrl = `data:image/jpeg;base64,${buffer.toString(
-              "base64"
-            )}`;
-            console.log("getting imageUrl", imageUrl);
+            const imgbuffer = Buffer.from(result.data.data[0].ImageSave);
+            const imageUrl = imgbuffer.toString();
+       
             row.original.img = imageUrl;
             // setProfileimg(result.data.data[0].ImageSave);
             // methods.setValue("img",result.data.data[0].ImageSave);
