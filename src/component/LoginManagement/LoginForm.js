@@ -29,6 +29,10 @@ const LoginForm = () => {
   const [userId, setUsername] = useState("");
   const [userPassword, setPassword] = useState("");
 
+  const handlenoaccount = ()=>{
+    toast.error("Please contact to Administrator.")
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!userId || !userPassword) {
@@ -177,7 +181,7 @@ const LoginForm = () => {
                     </Button>
                   </Grid>
                   <Grid item xs={12}>
-                    <Link to={`/`}>Dont Have an Account </Link>
+                    <Link onClick={handlenoaccount} to={`/`}>Dont Have an Account </Link>
                   </Grid>
                 </Grid>
               </Item>

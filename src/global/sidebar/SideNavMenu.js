@@ -63,7 +63,7 @@ export const menuItemsData = [
       // },
       {
         menu: "Employee Payslip",
-        url: "employee-payslip",
+        url: "view-bill",
       },
       {
         menu: "Employee Attendance",
@@ -94,12 +94,13 @@ export const menuItemsData = [
       },
       {
         menu: "Generate Employee Bill",
-        url: "generate-employee-bill",
+        url: "generate-bill",
       },
+      
       {
-        menu: "Employee PF validation",
-        url: "emp-pf-validation",
-      },      
+        menu:"Update Rate Chart",
+        url:"rate-chart"
+      },     
     ],
   },
   {
@@ -109,16 +110,12 @@ export const menuItemsData = [
     submenu: [
       {
         menu: "Generate Wage Reports",
-        url: "generate-wage-reports",
+        url: "view-bill",
       },
       {
         menu: "Generate Wage Slips",
-        url: "generate-wage-slip",
-      },
-      {
-        menu:"Update Rate Chart",
-        url:"rate-chart"
-      },
+        url: "view-bill",
+      },     
       {
         menu: "Generate Bill",
         url: "generate-bill",

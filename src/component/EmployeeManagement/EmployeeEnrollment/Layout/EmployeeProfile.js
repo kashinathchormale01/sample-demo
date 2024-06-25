@@ -131,7 +131,7 @@ const EmployeeProfile = (defaultdates,profileimg, data) => {
     reader.readAsDataURL(file);
   //  console.log('imageafterset',image)
    
-  };
+  };  
 
   return (
     <Box sx={{ width: "100%", padding: 2 }}>
@@ -152,7 +152,6 @@ const EmployeeProfile = (defaultdates,profileimg, data) => {
    
      <Avatar 
           sx={{
-            bgcolor: "red",
             alignSelf: "center",
             width: "100%",
             height: "100%",
@@ -287,6 +286,18 @@ const EmployeeProfile = (defaultdates,profileimg, data) => {
               defaultValue={""}
               rules={{
                 required: "Aadhar Number is required",
+                minLength:{
+                  value:12,
+                  message:"Aadhar Number is 12 Digits(Format:000011112222) "
+                },
+                maxLength:{
+                  value:12,
+                  message:"Aadhar Number is 12 Digits(Format:000011112222) "
+                },
+                pattern:{
+                  value: /^[0-9]*$/,
+                  message:"Aadhar Number is Invalid (Format:000011112222)"
+                },
               }}
               render={({ field }) => (
                 <TextField
@@ -357,6 +368,9 @@ const EmployeeProfile = (defaultdates,profileimg, data) => {
               control={control}
               name="educationLevel"
               defaultValue={""}
+              rules={{
+                required: "Education Level is required",
+              }}
               render={({ field }) => (
                 <TextField
                   fullWidth
@@ -365,6 +379,8 @@ const EmployeeProfile = (defaultdates,profileimg, data) => {
                   label="Education Level"
                   variant="outlined"
                   {...field}
+                  error={Boolean(errors.educationLevel)}
+                  helperText={errors.educationLevel?.message}
                 />
               )}
             />

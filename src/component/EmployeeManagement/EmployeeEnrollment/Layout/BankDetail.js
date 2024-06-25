@@ -54,7 +54,19 @@ const BankDetail = () => {
           name='bankAccountNumber'
           defaultValue={""}
           rules={{
-            required:"Bank Account Number is required"
+            required:"Bank Account Number is required",
+            minLength:{
+              value:9,
+              message:"Bank Account Number is 9-16 Digits(Format:000011112222) "
+            },
+            maxLength:{
+              value:16,
+              message:"Bank Account Number is 9-16 Digits(Format:000011112222) "
+            },
+            pattern:{
+              value: /^[0-9]+$/,
+              message:"Bank Account Number is Invalid (Format:000011112222)"
+            },
           }}
           render={({field})=>(
             <TextField
@@ -78,7 +90,19 @@ const BankDetail = () => {
           name='ifscCode'
           defaultValue={""}
           rules={{
-            required:"IFSC Code is required"
+            required:"IFSC Code is required",
+            minLength:{
+              value:11,
+              message:"IFSC Code is 11 Digits(Format: SBIN0000123) "
+            },
+            maxLength:{
+              value:11,
+              message:"IFSC Code is 11 Digits(Format: SBIN0000123) "
+            },
+            pattern:{
+              value: `^[A-Z]{4}0[A-Z0-9]{6}$`,
+              message:"IFSC Code is Invalid (Format: SBIN0000123)"
+            },
           }}
           render={({field})=>(
             <TextField
@@ -141,7 +165,7 @@ const BankDetail = () => {
             },
             pattern:{
               value: /^[0-9]+$/,
-              message:"UAN Number is Invalued (Format:000011112222)"
+              message:"UAN Number is Invalid (Format:000011112222)"
             },
           }}
           render={({field})=>(
@@ -169,7 +193,19 @@ const BankDetail = () => {
           name='pfNumber'
           defaultValue={""}
           rules={{
-            required:"PF Number is Required"
+            required:"PF Number is Required",
+            minLength:{
+              value:26,
+              message:"PF Number is 22 Digits(Format: TN/MAS/1207199/123/1234567) "
+            },
+            maxLength:{
+              value:26,
+              message:"PF Number is 22 Digits(Format: TN/MAS/1207199/123/1234567) "
+            },
+            pattern:{
+              value: `^[A-Z]{2}[\\s\\/]?[A-Z]{3}[\\s\\/]?[0-9]{7}[\\s\\/]?[0-9]{3}[\\s\\/]?[0-9]{7}$`,
+              message:"PF Number is Invalid (Format: TN/MAS/1207199/123/1234567)"
+            },
           }}
           render={({field})=>(
             <TextField
@@ -193,7 +229,19 @@ const BankDetail = () => {
           name='esicIP'
           defaultValue={""}
           rules={{
-            required:"esic IP Number is required"
+            required:"esic IP Number is required",
+            minLength:{
+              value:17,
+              message:"esic IP Number is 17 Digits(Format: 31001234560000001) "
+            },
+            maxLength:{
+              value:17,
+              message:"esic IP Number is 17 Digits(Format: 31001234560000001) "
+            },
+            pattern:{
+              value: `^[A-Z]{2}[\\s\\/]?[A-Z]{3}[\\s\\/]?[0-9]{7}[\\s\\/]?[0-9]{3}[\\s\\/]?[0-9]{7}$`,
+              message:"esic IP Number is Invalid (Format: 31001234560000001)"
+            },
           }}
           render={({field})=>(
             <TextField

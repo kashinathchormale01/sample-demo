@@ -58,9 +58,26 @@ const VerticalStepper = () => {
     
     const [activeStep, setActiveStep] = React.useState(0);
 
+    function handleDatealert(){
+      if (activeStep === 0) {
+        alert('Hi');
+       let sessionsiteids = [];
+       sessionsiteids.push(sessionStorage.getItem("site.Id"));
+       const newsiteData = sessionsiteids[0].split(",").map((item) => parseInt(item));
+       const makepayloadForDate = {
+        siteId: newsiteData,
+        billStartDate: sessionStorage.getItem('billStartDate'),
+        billEndDate: sessionStorage.getItem('billEndDate'),
+       }
+       console.log('makepayloadForDate',makepayloadForDate)
+      }
+    }
+
     const handleNext = (data) => {
       //console.log('values',data);
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      console.log('steps.length',activeStep)
+      
       if(activeStep === steps.length-1){
         //console.log('last step');
 

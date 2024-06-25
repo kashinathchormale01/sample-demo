@@ -123,6 +123,18 @@ const WorkDetails = (data) => {
               defaultValue={""}
               rules={{
                 required: "Service Book Number is required",
+                minLength:{
+                  value:4,
+                  message:"Service Book Number is 4-10 Digits(Format:0001) "
+                },
+                maxLength:{
+                  value:10,
+                  message:"Service Book Number is 4-10 Digits(Format:0001) "
+                },
+                pattern:{
+                  value: /^[0-9]+$/,
+                  message:"Service Book Number is Invalid (Format:0001)"
+                },
               }}
               render={({ field }) => (
                 <TextField

@@ -212,6 +212,14 @@ methods.setValue("Id", selectedid.sentid.Id);
         }
         }
     setActiveStep(activeStep + 1); 
+    if (activeStep === 0) {
+      if (data.hasOwnProperty('img')) {     
+        console.log('photo is available')
+    }else{
+      toast.error('Please select the Photo to enroll the employee.');
+      setActiveStep(0); 
+    }
+    }
   }
   
   const handleBack = () => {
