@@ -71,6 +71,7 @@ const Viewbill = () => {
  
   const handleDeletebill = async(billId) =>{
     console.log(`delete clicked for billId ${billId}`);
+    if (window.confirm("Are you sure you want to delete this Bill?")) {
     try {
       let result = await axiosHttp.delete(`/DeleteBill/${billId}`);
      //  setWageslipData(result.data.data);
@@ -81,6 +82,7 @@ const Viewbill = () => {
       setLoading(false);
       setError(err.message);
     }
+  }
   }
 
   const columns = useMemo(
@@ -198,7 +200,17 @@ const Viewbill = () => {
   if (!billList.length) return <Typography color="error">No Bill available!</Typography>;
 
   return (
-    <MaterialReactTable table={table} />
+    <>
+      <marquee
+        onmouseover="this.stop();"
+        onmouseout="this.start();"
+        style={{ color: "red", fontSize: "12pt" }}
+      >
+        If you delete bill then may be impact on the employee reports or may
+        loose the important related to the that employee.
+      </marquee>
+      <MaterialReactTable table={table} />
+    </>
   );
 };
 

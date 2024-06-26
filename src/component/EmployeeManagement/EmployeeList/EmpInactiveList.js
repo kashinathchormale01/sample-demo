@@ -13,6 +13,7 @@ import { jsPDF } from 'jspdf'; //or use your library of choice here
 import autoTable from 'jspdf-autotable';
 import { useNavigate } from "react-router-dom";
 import axiosHttp from "../../../AxiosInstance";
+import { toast } from "react-toastify";
 let Buffer = require('buffer/').Buffer;
 
 const EmployeeInActiveList = () => {
@@ -68,9 +69,41 @@ const EmployeeInActiveList = () => {
       const tableData = rows.map((row) => Object.values(row.original));
       setSelectedRowsData(tableData);
     }
+
+    const handleInactive = async (id) => {
+      //  console.log('id clicked', id)
+      if (window.confirm("Are you sure you want to make active this employee?")) {
+        try {
+          let result = await axiosHttp.put(`/ActivateEmp/${id}`);
+          toast.success(result.data.msg);
+          loadEmployees();
+          setLoading(false);
+        } catch (err) {
+          setLoading(false);
+          setError(err.message);
+        }
+      }
+    };
       
     const columns = useMemo(
-      () => [
+      () => [       
+        {
+          id: "actions",
+          header: "Actions",
+          accessorFn: (row) => ``,
+          Cell: ({ row }) => {
+            return(<Box state={{ id:row.original }}>            
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => handleInactive(row.original.Id)}
+                style={{ marginRight: 10 }}
+              >
+                Make Active
+              </Button>
+            </Box>)                 
+          },
+        }, 
         {
           id: 'EmpID',
           header: 'Emp Id',
@@ -85,15 +118,11 @@ const EmployeeInActiveList = () => {
             {renderedCellValue}
           </Link>   )                 
           },
-        },
+        },           
         {
-          accessorKey: 'gender',
-          header: 'Gender',
-        },
-        {
-          accessorKey: 'dateOfBirth',
-          header: 'Date Of Birth',
-          accessorFn: (row) => `${moment(row.dateOfBirth).format('DD/MM/YYYY')}`,
+          accessorKey: 'doe',
+          header: 'Date Of Exit',
+          accessorFn: (row) => `${moment(row.doe).format('DD/MM/YYYY')}`,
         },  
         {
           accessorKey: 'mobileNumber',
@@ -114,7 +143,8 @@ const EmployeeInActiveList = () => {
         {
          accessorKey:'empstatus',
          header:'Employee Status',
-        }       
+        },
+           
       ],
       [],
     );

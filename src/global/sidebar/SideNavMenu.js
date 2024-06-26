@@ -80,11 +80,7 @@ export const menuItemsData = [
       {
         menu: "Employee List",
         url: "employee-list",
-      },
-      {
-        menu: "Employee Inactive List",
-        url: "employee-inactive-list",
-      },
+      },     
     ],
   },
   {
@@ -111,14 +107,10 @@ export const menuItemsData = [
     sectionId: 4,
     section: "Reports",
     url: "/reports",
-    submenu: [
-      {
-        menu: "Generate Wage Reports",
-        url: "view-bill",
-      },
+    submenu: [      
       {
         menu: "Generate Wage Slips",
-        url: "view-bill",
+        url: "view-wage-bill",
       },     
       {
         menu: "Generate Bill",
@@ -127,6 +119,10 @@ export const menuItemsData = [
       {
         menu: "View Bill",
         url: "view-bill",
+      },
+      {
+        menu: "Show Wage Reports",
+        url: "show-bill",
       },
     ],
   },
@@ -154,6 +150,10 @@ export const menuItemsData = [
       {
         menu: "Role Management",
         url: "designation-management",
+      },
+      {
+        menu: "Employee Inactive List",
+        url: "employee-inactive-list",
       },
     ],
   },

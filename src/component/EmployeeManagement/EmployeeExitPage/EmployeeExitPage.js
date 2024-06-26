@@ -66,22 +66,24 @@ const EmployeeExitPage = () => {
         empId: formData.empid,
       };
 
-      try {
-        let result = await axiosHttp.post("/DeleteEmp", makePayload);
-        toast.error(result.data.msg);
-        navigate("/employee-list");
-        setLoading(false);
-      } catch (err) {
-        if (err.response) {
+      if (window.confirm("Are you sure you want to delete/Inactive this employee?")) {
+        try {
+          let result = await axiosHttp.post("/DeleteEmp", makePayload);
+          toast.warn("Employee Made Inactive successfully.");
+          navigate("/employee-list");
           setLoading(false);
-          setError(err.message);
-        } else if (err.request) {
-          setLoading(false);
-          setError(err.message);
-        } else {
-          // Anything else
-          setLoading(false);
-          setError(err.message);
+        } catch (err) {
+          if (err.response) {
+            setLoading(false);
+            setError(err.message);
+          } else if (err.request) {
+            setLoading(false);
+            setError(err.message);
+          } else {
+            // Anything else
+            setLoading(false);
+            setError(err.message);
+          }
         }
       }
     };
@@ -95,6 +97,7 @@ const activeEmployees = emplist.filter(emp => emp.empstatus === 'Active');
         <Typography color="error">No active employees found.</Typography>
       ) : (
       <form onSubmit={handleSubmit(formSubmitHandler)}>
+        <marquee onmouseover="this.stop();" onmouseout="this.start();" style={{ color: 'red', fontSize: '12pt' }}>If employee made exit then may be impact on the employee reports or may loose the important related to the that employee.</marquee>
         <Controller
           name="empid"
           control={control}

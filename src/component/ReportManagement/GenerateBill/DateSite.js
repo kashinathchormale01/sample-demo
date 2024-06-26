@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { Button, FormGroup, FormControlLabel, Checkbox } from "@mui/material";
+import { Button, FormGroup, FormControlLabel, Checkbox, Typography } from "@mui/material";
 import { MonthCalendar } from "@mui/x-date-pickers/MonthCalendar";
+import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { useFormContext, Controller } from "react-hook-form";
 import axiosHttp from "../../../AxiosInstance";
 import moment from "moment/moment";
@@ -82,11 +83,12 @@ const DateSite = () => {
         flexDirection: "column",
         justifyContent: "center",
         alignContent: "center",
+        boxShadow:"none"
       }}
     >
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DemoContainer
-          components={["MonthCalendar"]}
+          components={["MonthCalendar", "year"]}
           sx={{
             display: "flex",
             flexDirection: "row",
@@ -94,29 +96,33 @@ const DateSite = () => {
             verticalAlign: "baseline",
           }}
         >
-          <DemoItem key={"1"} sx={{ m: 4 }} label="From ">
-            <MonthCalendar
-              className="monthcal"
+          <DemoItem key={"1"} sx={{ m: 4 }} label={'From'}>         
+            <DateCalendar
+            className="monthcal"
+              views={["month", "year"]}
+              openTo="month"
               onChange={(newValue) => {
                 if (newValue) {
                   setStartdate(newValue.$d);
                   sessionStorage.setItem(
                     "billStartDate",
-                    moment(newValue.$d).format("DD/MM/YYYY")
+                    moment(newValue.$d).format("YYYY/MM/DD")
                   );
                 }
               }}
             />
           </DemoItem>
-          <DemoItem key={"2"} sx={{ marginTop: "0" }} label="To ">
-            <MonthCalendar
-              className="monthcal 2ndmonth"
+          <DemoItem key={"2"} sx={{ marginTop: "0" }} label="To">            
+             <DateCalendar
+           className="monthcal 2ndmonth"
+              views={["month", "year"]}
+              openTo="month"
               onChange={(newValue) => {
                 if (newValue) {
                   setEndDate(newValue.$d);
                   sessionStorage.setItem(
                     "billEndDate",
-                    moment(newValue.$d).endOf("month").format("DD/MM/YYYY")
+                    moment(newValue.$d).endOf("month").format("YYYY/MM/DD")
                   );
                 }
               }}
@@ -126,9 +132,10 @@ const DateSite = () => {
       </LocalizationProvider>
       <div className="checboxwrapper">
         <>
-          <FormGroup sx={{ flexDirection: "row", maxWidth: "95%" }}>
+        <Typography variant="h4">Please select the sites</Typography>
+          <FormGroup sx={{ flexDirection: "row", maxWidth: "95%" }} label="Select Sites">
             {sitedata?.map((site, index) => (
-              <FormControlLabel
+              <FormControlLabel 
                 key={site.Id}
                 control={
                   <Checkbox

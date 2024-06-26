@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React,{useState} from 'react';
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -34,6 +34,8 @@ const VerticalStepper = () => {
   let selectedEmps = sessionStorage?.getItem('selectedemp')?.split(",")?.map(Number);
     const steps = getSteps();
     const methods = useForm();
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     function getActiveStepContent(steps) {
         switch (steps) {
@@ -56,11 +58,11 @@ const VerticalStepper = () => {
         }
       }
     
-    const [activeStep, setActiveStep] = React.useState(0);
+    const [activeStep, setActiveStep] = useState(0);
 
-    function handleDatealert(){
+    const handleDatealert = async()=>{
       if (activeStep === 0) {
-        alert('Hi');
+        //alert('Hi');
        let sessionsiteids = [];
        sessionsiteids.push(sessionStorage.getItem("site.Id"));
        const newsiteData = sessionsiteids[0].split(",").map((item) => parseInt(item));
@@ -70,6 +72,25 @@ const VerticalStepper = () => {
         billEndDate: sessionStorage.getItem('billEndDate'),
        }
        console.log('makepayloadForDate',makepayloadForDate)
+       if((makepayloadForDate.billStartDate && makepayloadForDate.billEndDate) === null){
+        alert('Please select date first');
+        setActiveStep((prevActiveStep) => prevActiveStep - 1);
+       }else{
+        try {
+          let result = await axiosHttp.post(`/CheckBillParam`,makepayloadForDate);
+         if(result.data.data){
+         toast.error(result.data.msg);
+         setActiveStep((prevActiveStep) => prevActiveStep - 1);
+        }else{
+          toast.success(result.data.msg);
+        }        
+          setLoading(false);
+        } catch (err) {
+          setLoading(false);
+          setError(err.message);
+        }
+       }
+
       }
     }
 
@@ -133,6 +154,14 @@ keysToRemove.forEach(key => {
     const handleReset = () => {
       setActiveStep(0);      
     };
+
+    const handleResetBill = ()=>{
+      const keysToRemove = ['rateGridState', 'site.Id', 'billEndDate', 'dataGridState', 'selectedemp', 'billStartDate'];
+      keysToRemove.forEach(key => {
+          sessionStorage.removeItem(key);
+      });
+      setActiveStep(0);
+    }
   
     return (
       <Box sx={{ width: "100%" ,display:"flex",flexDirection:"row",justifyContent:"center"}}>
@@ -168,11 +197,20 @@ keysToRemove.forEach(key => {
                       {index === steps.length - 1 ? 'Finish' : 'Continue'}
                     </Button>
                     <Button
+                    variant="outlined"
                       disabled={index === 0}
                       onClick={handleBack}
                       sx={{ mt: 1, mr: 1 }}
                     >
                       Back
+                    </Button>
+                    <Button
+                    disabled={index === 0}
+                     variant="outlined"
+                      onClick={handleResetBill}
+                      sx={{ mt: 1, mr: 1 }}
+                    >
+                      Reset Bill
                     </Button>
                   </div>
                 </Box>

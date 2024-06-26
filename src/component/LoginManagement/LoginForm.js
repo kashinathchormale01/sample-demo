@@ -1,7 +1,8 @@
 import React from "react";
 import { Box, Grid, Paper } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import loginimg from "../../Asset/Images/Deep1.jpg";
+// import loginimg from "../../Asset/Images/Deep1.jpg";
+import loginimg from "../../Asset/Images/Deep.webp";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
@@ -120,6 +121,7 @@ const LoginForm = () => {
               xs={8}
               sx={{ height: "100%" }}
             >
+             
               <div style={{ width: "100%" }}>
                 <img
                   alt=""

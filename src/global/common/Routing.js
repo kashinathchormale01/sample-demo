@@ -30,7 +30,7 @@ import GenerateBill from '../../component/ReportManagement/GenerateBill/Generate
 import Viewbill from '../../component/ReportManagement/Viewbill/Viewbill';
 import PFValidationReport from '../../component/FinanceManagement/PFValidationReport/PFValidationReport';
 // import EmployeeInActiveList1 from '../../component/EmployeeManagement/EmployeeList/EmployeeInActiveList';
-import EmployeeInActiveList from '../../component/EmployeeManagement/EmployeeList/EmployeeInactiveList';
+import EmployeeInActiveList from '../../component/EmployeeManagement/EmployeeList/EmpInactiveList';
 
 const Routing = () => {
   return (
@@ -46,7 +46,8 @@ const Routing = () => {
 
         {/* Employee Wage Register */}
         <Route path="/generate-wage-reports" exact element={<BasicTable />} />
-        <Route path="/generate-wage-slip" exact element={<WageSlip />} />
+        <Route path="/view-wage-bill" exact element={<Viewbill />} />
+        <Route path="/show-bill" exact element={<Viewbill />} />
         <Route path='/rate-chart' exact element={<VarRateChart />} />
         <Route path='/generate-bill' exact element={<GenerateBill />} />
         <Route path='/view-bill' exact element={<Viewbill />} />
