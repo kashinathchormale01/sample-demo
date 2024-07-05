@@ -98,6 +98,7 @@ const DateSite = () => {
         >
           <DemoItem key={"1"} sx={{ m: 4 }} label={'From'}>         
             <DateCalendar
+            disableFuture={true}
             className="monthcal"
               views={["month", "year"]}
               openTo="month"
@@ -114,6 +115,7 @@ const DateSite = () => {
           </DemoItem>
           <DemoItem key={"2"} sx={{ marginTop: "0" }} label="To">            
              <DateCalendar
+             disableFuture={true}
            className="monthcal 2ndmonth"
               views={["month", "year"]}
               openTo="month"

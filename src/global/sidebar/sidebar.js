@@ -17,6 +17,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import PersonIcon from "@mui/icons-material/Person";
 import GroupIcon from "@mui/icons-material/Group";
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import SummarizeIcon from "@mui/icons-material/Summarize";
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -96,7 +97,7 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-export default function MiniDrawer({ userRole = "Super Admin" }) {
+export default function MiniDrawer({ userRole}) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -110,9 +111,13 @@ export default function MiniDrawer({ userRole = "Super Admin" }) {
 
   const filteredMenuItems = () => {
     switch (userRole) {
-      case "Super Admin":
+      case "Super":
       case "Admin":
         return menuItemsData;
+        case "HR":
+          return menuItemsData.filter(
+            (item) => item.sectionId === 1 || item.sectionId === 3
+          );
       case "Supervisor":
         return menuItemsData.filter(
           (item) => item.sectionId === 1 || item.sectionId === 2
@@ -175,6 +180,7 @@ export default function MiniDrawer({ userRole = "Super Admin" }) {
                 {index === 2 && <AccountBalanceIcon color="primary" />}
                 {index === 3 && <SummarizeIcon color="primary" />}
                 {index === 4 && <SettingsIcon color="primary" />}
+                {index === 5 && <ManageAccountsIcon color="primary" />}
                 <Typography
                   sx={{
                     color: "#0000008a",
@@ -223,7 +229,7 @@ export default function MiniDrawer({ userRole = "Super Admin" }) {
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 2, mt: 8 }}>
         <Appbreadcrumbs />
-        <Routing />
+        <Routing userRole={userRole} />
       </Box>
     </Box>
   );

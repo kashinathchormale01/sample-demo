@@ -34,6 +34,7 @@ export const menuItemsData = [
   // ...
   {
     sectionId: 1,
+    userAccess:[1,2,3,4,5],
     section: "My Details",
     icon: "settings",
     url: "/my-details",
@@ -54,6 +55,7 @@ export const menuItemsData = [
   },
   {
     sectionId: 2,
+    userAccess:[1,2,3,4,5],
     section: "Team Management",
     url: "/team-manage",
     submenu: [
@@ -61,10 +63,7 @@ export const menuItemsData = [
       //   menu: "Employee Details",
       //   url: "employee-details",
       // },
-      {
-        menu: "Employee Payslip",
-        url: "view-bill",
-      },
+      
       {
         menu: "Employee Attendance",
         url: "employee-attendance",
@@ -72,11 +71,7 @@ export const menuItemsData = [
       {
         menu: "Employee Register",
         url: "employee-register",
-      },
-      {
-        menu: "Employee Exit",
-        url: "employee-exit",
-      },
+      },      
       {
         menu: "Employee List",
         url: "employee-list",
@@ -85,6 +80,7 @@ export const menuItemsData = [
   },
   {
     sectionId: 3,
+    userAccess:[1,2,3,5],
     section: "Finance",
     url: "/finance",
     submenu: [
@@ -100,11 +96,16 @@ export const menuItemsData = [
       {
         menu:"Update Rate Chart",
         url:"rate-chart"
+      },
+      {
+        menu: "Employee Payslip",
+        url: "view-bill",
       },     
     ],
   },
   {
     sectionId: 4,
+    userAccess:[1,2,3,5],
     section: "Reports",
     url: "/reports",
     submenu: [      
@@ -128,6 +129,7 @@ export const menuItemsData = [
   },
   {
     sectionId: 5,
+    userAccess:[1,2],
     section: "App Management",
     url: "/app-management",
     submenu: [
@@ -140,20 +142,32 @@ export const menuItemsData = [
         url: "work-location-management",
       },
       {
+        menu: "Role Management",
+        url: "designation-management",
+      },
+    ],
+  },
+  {
+    sectionId: 6,
+    userAccess:[1,2],
+    section: "User Management",
+    url: "/user-management",
+    submenu: [
+      {
         menu: "User Promote",
         url: "user-promote",
       },      
       {
         menu:"User Password Reset",
         url:"user-promoted-list"
-      },      
-      {
-        menu: "Role Management",
-        url: "designation-management",
       },
       {
         menu: "Employee Inactive List",
         url: "employee-inactive-list",
+      },
+      {
+        menu: "Employee Exit",
+        url: "employee-exit",
       },
     ],
   },

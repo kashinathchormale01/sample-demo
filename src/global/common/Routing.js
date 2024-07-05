@@ -32,7 +32,7 @@ import PFValidationReport from '../../component/FinanceManagement/PFValidationRe
 // import EmployeeInActiveList1 from '../../component/EmployeeManagement/EmployeeList/EmployeeInActiveList';
 import EmployeeInActiveList from '../../component/EmployeeManagement/EmployeeList/EmpInactiveList';
 
-const Routing = () => {
+const Routing = ({userRole}) => {
   return (
     <>
       <Routes>
@@ -57,9 +57,9 @@ const Routing = () => {
         <Route path='/employee-attendance' exact element={<EmployeeTimeSheet />} />
                 
         {/* User Managament Routes */}   
-        <Route path='/my-profile' exact element={<MyProfile />} />
-        <Route path='/my-attendance' exact element={<MyAttendance />} />
-        <Route path='/my-payslip' exact element={<MyPayslip />} />        
+        <Route path='/my-profile' exact element={<MyProfile userRole={userRole} />} />
+        <Route path='/my-attendance' exact element={<MyAttendance userRole={userRole} />} />
+        <Route path='/my-payslip' exact element={<MyPayslip userRole={userRole} />} />        
         <Route path='/user-promote' exact element={<UserPromote />} />
         <Route path='/user-promoted-list' exact element={<UserPromotedList />} />
         <Route path='/user-password-reset' exact element={<UserPasswordReset />} />

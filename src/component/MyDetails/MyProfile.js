@@ -4,10 +4,13 @@ import { BarChart } from '@mui/x-charts/BarChart';
 import axiosHttp from '../../AxiosInstance';
 const CryptoJS = require("crypto-js");
 
-const MyProfile = () => {
-
+const MyProfile = ({userRole}) => {
+console.log('userRole',userRole)
   const [selectedEmp, setSelectedEmp] = useState();
+  const [sitenames, setSitenames] = useState();
+  const [empcount, setEmpcount] = useState();
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
   
   const loadSelectedEmployee = async () => {
     try {
@@ -37,13 +40,44 @@ const MyProfile = () => {
       }
     }
   };
+
+  const getSiteAttendance = async () => {      
+    try {
+      let result = await axiosHttp.get('/GetSiteEmpList');     
+     setSitenames(result.data.data); 
+      setLoading(false);    
+  } catch (err) {
+      if (err.response) {
+        setLoading(false);    
+        setError(err.message);       
+      } else if (err.request) {
+        setLoading(false);
+        setError(err.message);      
+      } else {
+          // Anything else
+          setLoading(false);
+          setError(err.message);     
+      }
+  }
+    
+  };
+
+  let plotSiteNames = sitenames?.map((site)=>{
+    return site.siteName;
+  })
+
+  let plotAtteCount = sitenames?.map((site)=>{
+    return site.EmployeeCount;
+  })
+ 
   
   useEffect(() => {
     loadSelectedEmployee(); //eslint-disable-next-line
+    getSiteAttendance();
   }, []);  
 
   if (error) return `Error: ${error.message}`;
-  if (!selectedEmp) return "No Data!"
+  if (!selectedEmp) return "No Data! Please login again"
 
   return (
     <>
@@ -149,33 +183,22 @@ const MyProfile = () => {
               {selectedEmp.alternateMobileNumber}
             </Typography>
           </Stack>
-        </Paper>         
+        </Paper> <br/>  
+        { userRole==='Admin' || userRole==='Super'?(     
         <Paper>
           <BarChart
             xAxis={[
               {
                 scaleType: "band",
-                data: [
-                  "Jan",
-                  "Feb",
-                  "March",
-                  "April",
-                  "May",
-                  "June",
-                  "July",
-                  "Aug",
-                  "Sept",
-                  "Oct",
-                  "Nov",
-                  "Dec",
-                ],
+                data: plotSiteNames
               },
             ]}
-            series={[{ data: [25, 21, 30, 22, 11, 28, 26, 12, 1, 2, 23, 27] }]}
+            series={[{ data: plotAtteCount }]}
             width={700}
             height={300}
           />
         </Paper>
+):''}
       </Box>     
     </>
   );

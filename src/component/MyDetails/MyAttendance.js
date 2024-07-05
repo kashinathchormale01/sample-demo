@@ -1,49 +1,116 @@
-import React from 'react';
-import { Gauge, gaugeClasses } from '@mui/x-charts/Gauge';
-import { green } from '@mui/material/colors';
+import React, { useState, useEffect,useMemo} from "react";
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography
+} from "@mui/material";
+import dayjs from "dayjs";
+import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { BarChart } from '@mui/x-charts/BarChart';
-import { PieChart } from '@mui/x-charts/PieChart';
+import axiosHttp from "../../AxiosInstance";
+const CryptoJS = require("crypto-js");
 
-const MyAttendance = () => {
+const MyAttendance = ({userRole}) => {
+  const navigate = useNavigate();
+  const [dateValue, setDateValue] = useState(dayjs());
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [barchartdata, setBarchartdata] = useState();
+  const { register, control, handleSubmit, formState: { errors } } = useForm();
+
+  const handleDateChange = (date) => {
+    setDateValue(date);  
+  };
+
+  const formSubmitHandler = async (formData) => {
+    const bytes = await CryptoJS.AES.decrypt(sessionStorage.getItem("Id"), "nks");
+    const originalId = await bytes.toString(CryptoJS.enc.Utf8);
+
+    const makePayload = {
+      year: parseInt(dayjs(dateValue).format("YYYY")),
+      Id: parseInt(originalId),
+    };
+    console.log('makePayload',makePayload)
+    try {
+      let result = await axiosHttp.post("/GetAttendanceId", makePayload);
+    setBarchartdata(result.data.data)
+      setLoading(false);
+    } catch (err) {
+      if (err.response) {
+        setLoading(false);
+        setError(err.message);
+      } else if (err.request) {
+        setLoading(false);
+        setError(err.message);
+      } else {
+        // Anything else
+        setLoading(false);
+        setError(err.message);
+      }
+    }
+  };
+
+  
+  let plotmonthNames = barchartdata?.map((chart)=>{
+    return chart.month;
+  })
+
+  let plotAtteCount = barchartdata?.map((chart)=>{
+    return chart.AttendanceCount;
+  })
+ 
   return (
     <>
-     <Gauge
-      height={200}
-  value={75}
-  startAngle={0}
-  endAngle={360}
-  innerRadius="80%"
-  outerRadius="100%"
-  text={
-    ({ value, valueMax }) => `Attendance: ${value} %`
- }
- sx={(theme) => ({
-  [`& .${gaugeClasses.valueText}`]: {
-    fill: green,
-  },
-})} 
-/>
+   { userRole !== 'Admin' && userRole !== 'Super' ? ( 
+    <form onSubmit={handleSubmit(formSubmitHandler)}>
+    <LocalizationProvider dateAdapter={AdapterDayjs} error={errors?.year?.type === "required"}>
+            <DemoContainer
+              sx={{ margin: "20px 0" }}
+              components={["DatePicker"]}
+            >
+              <DatePicker
+              views={['year']}
+                label="Select a Year"
+                name="year"
+                value={dateValue}
+                control={control}
+                onChange={(newValue) =>(handleDateChange(newValue))}
+              />
+            </DemoContainer>
+          </LocalizationProvider>
+          {errors?.year?.type === "required" && <Typography color="error">Select Year</Typography>} 
+        <FormControl>
+          <Button
+            type="submit"
+            variant="contained"
+            fullWidth
+            sx={{ marginTop: ".75rem", fontWeight: "bold" }}
+          >
+            Show My Attendace
+          </Button>
+        </FormControl>
+    </form>):''}   
+  
+{(userRole !== 'Admin' || 'Super') && barchartdata && (
+        <BarChart
+          xAxis={[{ scaleType: 'band', data: plotmonthNames }]}
+          series={[{ data: plotAtteCount }]}
+          width={700}
+          height={300}
+        />
+      )}
 
-<BarChart
-      xAxis={[{ scaleType: 'band', data: ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'] }]}
-      series={[{ data: [25,21,30,22,11,28,26,12,0,0,23,27]}]}
-      width={700}
-      height={300}
-    />
-    
-<PieChart
-colors={['orange', '#02b2af']}
-      series={[
-        {
-          data: [
-            { id: 0, value: 10, color:'#02b2af', label: 'Total Present days' },
-            { id: 1, value: 15, color:'orange', label: 'Total Absent days' },
-          ],
-        },
-      ]}
-      width={500}
-      height={200}
-    />
+      {(userRole !== 'Admin') ?'':(<Typography color="error">Admin account do not have attendace!!</Typography>)}
+      {(userRole !== 'Super') ?'':(<Typography color="error">Admin account do not have attendace!!</Typography>)}
+
     </>
   )
 }
