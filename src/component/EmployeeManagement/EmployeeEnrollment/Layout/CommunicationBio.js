@@ -103,7 +103,7 @@ const CommunicationBio = (data) => {
               name="markOfIdentification"
               defaultValue={""}
               rules={{
-                required: "Mark of Identification is required",
+                required: "Mark of Identification is required(eg: moles, birthmarks,etc)",
               }}
               render={({ field }) => (
                 <TextField

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState} from "react";
 import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
@@ -9,6 +9,7 @@ import axios from "axios";
 import TextField from "@mui/material/TextField";
 import { useFormContext, Controller } from "react-hook-form";
 import axiosHttp from "../../../../AxiosInstance";
+import { CircularProgress } from "@mui/material";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -18,6 +19,8 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 const WorkDetails = (data) => {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null)
   const {
     control,
     formState: { errors },
@@ -46,17 +49,33 @@ const WorkDetails = (data) => {
     sentdefaultvalue: data.values.categoryId,
   };
 
-  const isRequired = () => {
+  const isRequired = async () => {
     if (selectecatvalue !== undefined) {
-      axiosHttp.get("/GetRoleCat/" + selectecatvalue).then((res) => {
+      try {
+        setLoading(true);
+        let result = await axiosHttp.get("/GetRoleCat/" + selectecatvalue);
         setDesignationList(
-          res.data.data.map((value) => ({
+          result.data.data.map((value) => ({
             valueitem: value.Id,
             labelitem: value.RoleName,
           }))
         );
-      });
+        setLoading(false);
+      } catch (err) {
+        if (err.response) {
+          setLoading(false);
+          setError(err.message);
+        } else if (err.request) {
+          setLoading(false);
+          setError(err.message);
+        } else {
+          // Anything else
+          setLoading(false);
+          setError(err.message);
+        }
+      }
     }
+    setLoading(false);
   };
   const designationpassvalues = {
     sendvalues: DesignationList,
@@ -66,26 +85,56 @@ const WorkDetails = (data) => {
     sentdefaultvalue: data.values.roleId,
   };
 
-  const getsitedata = () => {
-    axiosHttp.get("/GetProj_Site").then((res) => {
+  const getsitedata = async () => {
+    try {
+      setLoading(true);
+      let result = await axiosHttp.get("/GetProj_Site");
       setSiteLocaionlist(
-        res.data.data.map((value) => ({
+        result.data.data.map((value) => ({
           valueitem: value.Id,
           labelitem: value.siteName,
         }))
       );
-    });
+      setLoading(false);
+    } catch (err) {
+      if (err.response) {
+        setLoading(false);
+        setError(err.message);
+      } else if (err.request) {
+        setLoading(false);
+        setError(err.message);
+      } else {
+        // Anything else
+        setLoading(false);
+        setError(err.message);
+      }
+    }
   };
 
-  const getWorkCategory = () => {
-    axiosHttp.get("/GetCategory").then((res) => {
+  const getWorkCategory = async () => {
+    try {
+      setLoading(true);
+      let result = await axiosHttp.get("/GetCategory");
       setWorkCategoryList(
-        res.data.data.map((value) => ({
+        result.data.data.map((value) => ({
           valueitem: value.Id,
           labelitem: value.CategoryWork,
         }))
       );
-    });
+      setLoading(false);
+    } catch (err) {
+      if (err.response) {
+        setLoading(false);
+        setError(err.message);
+      } else if (err.request) {
+        setLoading(false);
+        setError(err.message);
+      } else {
+        // Anything else
+        setLoading(false);
+        setError(err.message);
+      }
+    }
   };
 
   React.useEffect(() => {
@@ -96,6 +145,8 @@ const WorkDetails = (data) => {
   React.useEffect(() => {
     isRequired();
   }, [selectecatvalue]);
+
+  if (loading) return <div className="overlay"><div className="loadingicon"><CircularProgress color="inherit" /><br/>Loading...</div></div>;
 
   return (
     <Box sx={{ width: "100%", padding: 2 }}>

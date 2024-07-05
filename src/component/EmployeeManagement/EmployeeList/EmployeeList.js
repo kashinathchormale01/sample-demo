@@ -228,7 +228,7 @@ const loadEmployees = async () => {
     ),
   });
   
-  if (loading) return <div className="overlay"><div className="loadingicon">Loading...<CircularProgress /></div></div>;
+  if (loading) return <div className="overlay"><div className="loadingicon"><CircularProgress color="inherit" /><br/>Loading...</div></div>;
   if (error) return `Error: ${error.message}`;
   if (!empData.length) return <Typography color="error">No Employees available!</Typography>;
  

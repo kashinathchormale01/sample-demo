@@ -36,7 +36,7 @@ const EmployeeEnrollMain = () => {
     loadDesignations();
   }, []);
 
-  if (loading) return <div className="overlay"><div className="loadingicon">Loading...<CircularProgress /></div></div>;
+  if (loading) return <div className="overlay"><div className="loadingicon"><CircularProgress /><br/>Loading...</div></div>;
   
   if (!designationlist == null || !designationlist.length)
     return (
