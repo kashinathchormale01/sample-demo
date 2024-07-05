@@ -3,7 +3,7 @@ import FormPageLayout from './Layout/FormLayoutWrapper';
 import EmployeeEnroll from './EmployeeRegister';
 import axiosHttp from "../../../AxiosInstance";
 import { useNavigate } from "react-router-dom";
-import { Typography, Button } from "@mui/material";
+import { Typography, Button,CircularProgress } from "@mui/material";
 
 const EmployeeEnrollMain = () => {
   const navigate = useNavigate();
@@ -12,6 +12,7 @@ const EmployeeEnrollMain = () => {
   const [error, setError] = useState(null);
   const loadDesignations = async () => {
     try {
+      setLoading(true);
       let result = await axiosHttp.get("/GetRole");
       setDesignationlist(result.data.data);
       setLoading(false);
@@ -50,13 +51,14 @@ const EmployeeEnrollMain = () => {
         <Button
           variant="contained"
           color="primary"
-          onClick={() => navigate("/add-designation")}
+          onClick={() => navigate("/add-site-location")}
         >
           Add New Designation/Role
         </Button>{" "}
       </>
     );
 
+    if (loading) return <div className="overlay"><div className="loadingicon">Loading...<CircularProgress /></div></div>;
 
   return (
     <FormPageLayout>

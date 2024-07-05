@@ -244,7 +244,7 @@ const submitAttendance = async () => {
     setLoading(true); 
     const res = await axiosHttp.post("/Attendance", makeAttendancePayload);
     toast.success(res.data.msg);
-    setLoading(false); 
+    setLoading(true); 
     navigate('/employee-attendance');
   } catch (err) {
     setLoading(false); 
@@ -255,7 +255,7 @@ const submitAttendance = async () => {
     loadSiteLocation();
   }, []);
 
-  if (loading) return <>Loading...<CircularProgress /></>;
+  if (loading) return <div className="overlay"><div className="loadingicon">Loading...<CircularProgress /></div></div>;
   if (!sitelocationlist) return 'No Sites available';
 
   return (
