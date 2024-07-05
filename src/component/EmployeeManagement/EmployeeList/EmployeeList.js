@@ -1,6 +1,6 @@
 import React, { useState, useEffect,useMemo} from "react";
 import * as moment from 'moment';
-import { Typography} from "@mui/material";
+import { Typography,CircularProgress} from "@mui/material";
 import {
   MaterialReactTable,
   useMaterialReactTable,  
@@ -26,6 +26,7 @@ const EmployeeList = () => {
 
 const loadEmployees = async () => {      
   try {
+    setLoading(true);
     let result = await axiosHttp.get('/GetEmp');
     setEmplist(result.data.data);     
     setLoading(false);    
@@ -226,9 +227,11 @@ const loadEmployees = async () => {
       </Box>
     ),
   });
-
+  
+  if (loading) return <div className="overlay"><div className="loadingicon">Loading...<CircularProgress /></div></div>;
   if (error) return `Error: ${error.message}`;
   if (!empData.length) return <Typography color="error">No Employees available!</Typography>;
+ 
 
   return (
     <>      

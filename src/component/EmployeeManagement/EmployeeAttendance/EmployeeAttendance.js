@@ -182,15 +182,17 @@ const handleSiteSubmit = (values) => {
     return;
   }
   setIsButtonDisabled(true);
+  setLoading(true); 
   axiosHttp.post("/GetAttendance", values).then((res) => {
     const formatDate = (dateString) => {
       if (!dateString) return null;
       const [year, month, day] = dateString.split("-");
       return `${parseInt(month)}/${day}/${year}`;
     };
-
+   
     if (!res.data.data || res.data.data.length === 0) {
       setIsButtonDisabled(false);
+      setLoading(false); 
       setData([]);
       toast.error("Data Not exists.");      
       return;
@@ -213,6 +215,7 @@ const handleSiteSubmit = (values) => {
     });
     setData(transformData);
     toast.success(res.data.msg);
+    setLoading(false); 
     setIsButtonDisabled(false);
   });
 };
@@ -244,8 +247,8 @@ const submitAttendance = async () => {
     setLoading(true); 
     const res = await axiosHttp.post("/Attendance", makeAttendancePayload);
     toast.success(res.data.msg);
-    setLoading(true); 
     navigate('/employee-attendance');
+    setLoading(false); 
   } catch (err) {
     setLoading(false); 
   }  

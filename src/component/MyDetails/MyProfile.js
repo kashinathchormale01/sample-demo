@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Paper,Stack,Typography } from '@mui/material';
+import { Box, Paper,Stack,Typography,CircularProgress } from '@mui/material';
 import { BarChart } from '@mui/x-charts/BarChart';
 import axiosHttp from '../../AxiosInstance';
+import { useNavigate } from 'react-router-dom';
 const CryptoJS = require("crypto-js");
 
 const MyProfile = ({userRole}) => {
+  const navigate = useNavigate();
 console.log('userRole',userRole)
   const [selectedEmp, setSelectedEmp] = useState();
   const [sitenames, setSitenames] = useState();
@@ -17,15 +19,19 @@ console.log('userRole',userRole)
       const encryptedId = sessionStorage.getItem("Id");
       if (!encryptedId) {
         console.log("No encrypted ID found in sessionStorage");
-        window.location.href = "/login";
+       // window.location.href = "/login";
+       navigate("/login");
         return;
       } else {
+        setLoading(true); 
         const bytes = await CryptoJS.AES.decrypt(sessionStorage.getItem("Id"), "nks");
         const originalPassword = await bytes.toString(CryptoJS.enc.Utf8);
         const result = await axiosHttp.get(`/GetEmp/${originalPassword}`);
         setSelectedEmp(result.data.data[0]);
+        setLoading(false); 
       }
     } catch (err) {
+      setLoading(false); 
       console.log("profile", err);
       if (err.response) {
         setError(err.message);
@@ -43,6 +49,7 @@ console.log('userRole',userRole)
 
   const getSiteAttendance = async () => {      
     try {
+      setLoading(true); 
       let result = await axiosHttp.get('/GetSiteEmpList');     
      setSitenames(result.data.data); 
       setLoading(false);    
@@ -77,7 +84,8 @@ console.log('userRole',userRole)
   }, []);  
 
   if (error) return `Error: ${error.message}`;
-  if (!selectedEmp) return "No Data! Please login again"
+  if (!selectedEmp) return <Typography color="error">No Data! Please login again!<div className="overlay"><div className="loadingicon">Loading...<CircularProgress /></div></div></Typography>;
+  if (loading) return <div className="overlay"><div className="loadingicon">Loading...<CircularProgress /></div></div>;
 
   return (
     <>

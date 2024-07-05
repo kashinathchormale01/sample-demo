@@ -2,7 +2,8 @@ import React from "react";
 import { Box, Grid, Paper } from "@mui/material";
 import { styled } from "@mui/material/styles";
 // import loginimg from "../../Asset/Images/Deep1.jpg";
-import loginimg from "../../Asset/Images/Deep.webp";
+// import loginimg from "../../Asset/Images/Deep.webp";
+ import loginimg from "../../Asset/Images/wallpaper.jpg";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
@@ -63,7 +64,7 @@ const LoginForm = () => {
       roleID: "0",
     };
     axios
-      .post("http://192.168.1.121:8089/Login", sendingdata)
+      .post("https://epdsback.onrender.com/Login", sendingdata)
       .then((res) => {
         if (res.data.msg === "Succesfull") {
           
@@ -85,10 +86,14 @@ const LoginForm = () => {
           sessionStorage.setItem("Id", hashedEmpId);
           
           if ("1234" === defaultOrigional) {
-            navigate("/change-password");
-            window.location.replace("/change-password");
+            //navigate("/change-password",{replace: true});
+           // window.location.replace("/change-password");
+           window.location.href = '/change-password';
           } else {
-            window.location.replace("/my-profile");
+            //window.location.replace("/my-profile");
+            window.location.href = '/my-profile';
+            // navigate("/errorpage",{replace: true});
+            // navigate("/my-profile",{replace: true});
           }
         } else {
           sessionStorage.setItem("user", false);

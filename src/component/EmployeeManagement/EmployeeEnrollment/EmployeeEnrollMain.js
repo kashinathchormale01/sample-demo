@@ -36,6 +36,8 @@ const EmployeeEnrollMain = () => {
     loadDesignations();
   }, []);
 
+  if (loading) return <div className="overlay"><div className="loadingicon">Loading...<CircularProgress /></div></div>;
+  
   if (!designationlist == null || !designationlist.length)
     return (
       <>       
@@ -57,8 +59,7 @@ const EmployeeEnrollMain = () => {
         </Button>{" "}
       </>
     );
-
-    if (loading) return <div className="overlay"><div className="loadingicon">Loading...<CircularProgress /></div></div>;
+   
 
   return (
     <FormPageLayout>
