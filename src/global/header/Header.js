@@ -26,7 +26,9 @@ const Header = () => {
     console.log("Logout called");
     sessionStorage.clear();
     setAnchorElUser(null);
-    window.location.href = "/login";
+    // window.location.href = "/login";
+    window.location.href = "/";
+
   };
 
   const loadSelectedEmployee = async () => {
@@ -70,7 +72,7 @@ const Header = () => {
   return (
     <>
       <Toolbar sx={{ Padding: "0 10px" }}>
-        <img src={logoimg} height={60} alt="logo" className={useStyles.logo} />
+      <a href="/"> <img src={logoimg} height={60} alt="logo" className={useStyles.logo} /></a>
       </Toolbar>
 
       <Typography variant="h6" color="inherit" noWrap>

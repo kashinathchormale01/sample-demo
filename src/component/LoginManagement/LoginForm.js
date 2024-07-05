@@ -35,7 +35,7 @@ const LoginForm = () => {
     toast.error("Please contact to Administrator.")
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     if (!userId || !userPassword) {
 
@@ -63,7 +63,7 @@ const LoginForm = () => {
       userPassword: hashedPassword,
       roleID: "0",
     };
-    axios
+    await axios
       .post("https://epdsback.onrender.com/Login", sendingdata)
       .then((res) => {
         if (res.data.msg === "Succesfull") {
@@ -91,7 +91,7 @@ const LoginForm = () => {
            window.location.href = '/change-password';
           } else {
             //window.location.replace("/my-profile");
-            window.location.href = '/my-profile';
+            window.location.href = '/';
             // navigate("/errorpage",{replace: true});
             // navigate("/my-profile",{replace: true});
           }

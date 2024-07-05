@@ -209,7 +209,7 @@ const Review = (data) => {
           <Grid item xs={6}>
             <Item>
               <Typography>
-              Mark Of Identification: {data.values.permanentAddress}
+              Mark Of Identification: {data.values.markOfIdentification}
               </Typography>
             </Item>
           </Grid>

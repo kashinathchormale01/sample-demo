@@ -145,13 +145,13 @@ const EmployeeDetails = (props) => {
               <Grid container>
                 <Grid item className="details-page-wrapper">
                   <Typography variant="subtitle1">
-                    <label>Present Address:</label> {selectedEmp?.siteLocaion}
+                    <label>Work Location:</label> {selectedEmp?.siteName}
                   </Typography>
                   <Typography variant="subtitle1">
-                  <label>CategoryWork:</label> {selectedEmp?.categoryWork}
+                  <label>CategoryWork:</label> {selectedEmp?.categoryWork1}
                   </Typography>
                   <Typography variant="subtitle1">
-                    <label>Designation:</label> {selectedEmp?.designation}
+                    <label>Designation:</label> {selectedEmp?.designation1}
                   </Typography>
                   <Typography variant="subtitle1">
                     <label>Mobile Number: </label>
