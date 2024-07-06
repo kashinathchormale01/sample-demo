@@ -80,13 +80,13 @@ const CommunicationBio = (data) => {
               name="cityName"
               defaultValue={""}
               rules={{
-                required: "Taluka Name is required",
+                required: "Present Taluka Name is required",
               }}
               render={({ field }) => (
                 <TextField
                   fullWidth
                   id="TalukaName"
-                  label="Taluka Name"
+                  label="Present Taluka Name"
                   variant="outlined"
                   {...field}
                   error={Boolean(errors.cityName)}

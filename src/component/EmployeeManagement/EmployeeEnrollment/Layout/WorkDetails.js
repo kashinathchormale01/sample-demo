@@ -19,7 +19,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 const WorkDetails = (data) => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null)
   const {
     control,
@@ -52,7 +52,7 @@ const WorkDetails = (data) => {
   const isRequired = async () => {
     if (selectecatvalue !== undefined) {
       try {
-        setLoading(true);
+       // setLoading(true);
         let result = await axiosHttp.get("/GetRoleCat/" + selectecatvalue);
         setDesignationList(
           result.data.data.map((value) => ({
@@ -60,7 +60,7 @@ const WorkDetails = (data) => {
             labelitem: value.RoleName,
           }))
         );
-        setLoading(false);
+       // setLoading(false);
       } catch (err) {
         if (err.response) {
           setLoading(false);
@@ -87,7 +87,7 @@ const WorkDetails = (data) => {
 
   const getsitedata = async () => {
     try {
-      setLoading(true);
+      //setLoading(true);
       let result = await axiosHttp.get("/GetProj_Site");
       setSiteLocaionlist(
         result.data.data.map((value) => ({
@@ -95,7 +95,7 @@ const WorkDetails = (data) => {
           labelitem: value.siteName,
         }))
       );
-      setLoading(false);
+      //setLoading(false);
     } catch (err) {
       if (err.response) {
         setLoading(false);
@@ -113,7 +113,7 @@ const WorkDetails = (data) => {
 
   const getWorkCategory = async () => {
     try {
-      setLoading(true);
+     // setLoading(true);
       let result = await axiosHttp.get("/GetCategory");
       setWorkCategoryList(
         result.data.data.map((value) => ({
@@ -121,7 +121,7 @@ const WorkDetails = (data) => {
           labelitem: value.CategoryWork,
         }))
       );
-      setLoading(false);
+     // setLoading(false);
     } catch (err) {
       if (err.response) {
         setLoading(false);

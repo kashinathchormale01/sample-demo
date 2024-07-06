@@ -230,7 +230,7 @@ const Review = (data) => {
           <Grid item xs={6}>
             <Item>
               <Typography>
-              City Name: {data.values.cityName}
+              Present Taluka Name: {data.values.cityName}
               </Typography>
             </Item>
           </Grid>

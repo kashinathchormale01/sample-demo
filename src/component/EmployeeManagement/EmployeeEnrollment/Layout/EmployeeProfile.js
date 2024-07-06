@@ -15,6 +15,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { useFormContext, Controller } from "react-hook-form";
 import CapturePhoto from "./CapturePhoto";
+import Resizer from "react-image-file-resizer";
 
 
 
@@ -122,14 +123,44 @@ const EmployeeProfile = (defaultdates,profileimg, data) => {
   const handleImageChange = (event) => {
     const file = event.target.files[0];
      const reader = new FileReader();
-    reader.addEventListener("load", () => {
-      setImage(reader.result);
-     // console.log('imageinreader',image)
-      register("img", { required: false });
-      setValue("img", reader.result);
-    });
-    reader.readAsDataURL(file);
-  //  console.log('imageafterset',image)
+
+     reader.onloadend = () => {
+      // Resize image using react-image-file-resizer
+      Resizer.imageFileResizer(
+        file,
+        150, // maxWidth
+        100, // maxHeight
+        'JPEG', // compressFormat
+        80, // quality
+        0, // rotation
+        (uri) => {
+          setImage(uri); // Set the resized image URI
+          setValue("img", uri); // Set form field value assuming "img" is the field name
+        },
+        'base64', // outputType
+        150, // minWidth (optional)
+        100 // minHeight (optional)
+      );
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+
+    // reader.addEventListener("load", () => {
+    //   const resizeFile = (file) => new Promise(resolve => {
+    //     Resizer.imageFileResizer(file, 300, 300, 'JPEG', 100, 0,
+    //     uri => {
+    //       resolve(uri);
+    //     }, 'base64' );
+    // });
+    //   setImage(resizeFile);
+    //  // console.log('imageinreader',image)
+    //   register("img", { required: false });
+    //   setValue("img", reader.result);
+    // });
+  //  reader.readAsDataURL(file);
+   // console.log('compresses img',image)
    
   };  
 
@@ -158,7 +189,7 @@ const EmployeeProfile = (defaultdates,profileimg, data) => {
           }}
           variant="rounded"
         >
-         <img src={image} alt="photo" />
+         <img src={image} alt="Upload Photo" />
         </Avatar>
       </div>
       <div style={{ margin: "10px" }}>

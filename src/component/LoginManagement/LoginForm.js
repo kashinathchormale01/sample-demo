@@ -28,6 +28,8 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const LoginForm = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null)
   const [userId, setUsername] = useState("");
   const [userPassword, setPassword] = useState("");
 
@@ -63,46 +65,59 @@ const LoginForm = () => {
       userPassword: hashedPassword,
       roleID: "0",
     };
-    await axios
-      .post("https://epdsback.onrender.com/Login", sendingdata)
-      .then((res) => {
-        if (res.data.msg === "Succesfull") {
-          
-          /**
-           * set the 'token' after login Succesfull
-           */          
-          sessionStorage.removeItem("token");
-          sessionStorage.setItem("token", res.data.Key);
 
-          const hashedEmpId = CryptoJS.AES.encrypt(
-            res.data.data[0].empId,
-            "nks"
-          ).toString();
-
-           /**
-           * set the employee 'Id' after login Succesfull
-           */ 
-          sessionStorage.removeItem("Id");
-          sessionStorage.setItem("Id", hashedEmpId);
+    try {
+      setLoading(true);
+     // let res = await axios.post("http://192.168.1.121:8089/Login", sendingdata)
+     let res = await axios.post("https://epdsback.onrender.com/Login", sendingdata)     
+      if (res.data.msg === "Succesfull") {
           
-          if ("1234" === defaultOrigional) {
-            //navigate("/change-password",{replace: true});
-           // window.location.replace("/change-password");
-           window.location.href = '/change-password';
-          } else {
-            //window.location.replace("/my-profile");
-            window.location.href = '/';
-            // navigate("/errorpage",{replace: true});
-            // navigate("/my-profile",{replace: true});
-          }
+        /**
+         * set the 'token' after login Succesfull
+         */          
+        sessionStorage.removeItem("token");
+        sessionStorage.setItem("token", res.data.Key);
+
+        const hashedEmpId = CryptoJS.AES.encrypt(
+          res.data.data[0].empId,
+          "nks"
+        ).toString();
+
+         /**
+         * set the employee 'Id' after login Succesfull
+         */ 
+        sessionStorage.removeItem("Id");
+        sessionStorage.setItem("Id", hashedEmpId);
+        
+        if ("1234" === defaultOrigional) {
+          //navigate("/change-password",{replace: true});
+         // window.location.replace("/change-password");
+         window.location.href = '/change-password';
         } else {
-          sessionStorage.setItem("user", false);
-          toast.error(res.data.msg);
+          //window.location.replace("/my-profile");
+          window.location.href = '/';
+          // navigate("/errorpage",{replace: true});
+          // navigate("/my-profile",{replace: true});
         }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      } else {
+        sessionStorage.setItem("user", false);
+        toast.error(res.data.msg);
+      }  
+      setLoading(false);    
+  } catch (err) {
+      if (err.response) {
+        setLoading(false);    
+        setError(err.message);       
+      } else if (err.request) {
+        setLoading(false);
+        setError(err.message);      
+      } else {
+          // Anything else
+          setLoading(false);
+          setError(err.message);     
+      }
+  }
+
   };
 
   return (
