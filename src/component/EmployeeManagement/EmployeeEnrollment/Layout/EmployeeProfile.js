@@ -189,7 +189,7 @@ const EmployeeProfile = (defaultdates,profileimg, data) => {
           }}
           variant="rounded"
         >
-         <img src={image} alt="Upload Photo" />
+         <img style={{objectFit:'fill', maxHeight:'100%', maxWidth:'100%'}} src={image} alt="Upload Photo" />
         </Avatar>
       </div>
       <div style={{ margin: "10px" }}>

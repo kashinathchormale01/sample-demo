@@ -5,7 +5,8 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  Typography
+  Typography,
+  CircularProgress
 } from "@mui/material";
 import dayjs from "dayjs";
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
@@ -89,7 +90,7 @@ const EmployeeExitPage = () => {
     };
  
 const activeEmployees = emplist.filter(emp => emp.empstatus === 'Active');
-  
+if (loading) return <div className="overlay"><div className="loadingicon"><CircularProgress color="inherit" /><br/>Loading...</div></div>;
   return (
    <>
     <div className="App">

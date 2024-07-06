@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Typography,Container,Paper, Grid, Button,Chip } from "@mui/material";
+import { Typography,Container,Paper, Grid, Button,Chip,CircularProgress } from "@mui/material";
 import { toast } from "react-toastify";
 import axiosHttp from '../../../AxiosInstance';
 
@@ -33,6 +33,8 @@ const UserPasswordReset = () => {
       console.error(error);
     } 
   }
+
+  if (loading) return <div className="overlay"><div className="loadingicon"><CircularProgress color="inherit" /><br/>Loading...</div></div>;
 
   return (
     <>

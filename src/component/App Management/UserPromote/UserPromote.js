@@ -102,13 +102,7 @@ const UserPromote = () => {
     }
   };
 
-  if (loading)
-    return (
-      <>
-        Loading...
-        <CircularProgress />
-      </>
-    );
+  if (loading) return <div className="overlay"><div className="loadingicon"><CircularProgress color="inherit" /><br/>Loading...</div></div>;
   if (!empList)
     return (
       <Typography color="error" sx={{color:'red'}}>

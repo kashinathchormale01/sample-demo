@@ -5,7 +5,8 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  Typography
+  Typography,
+  CircularProgress
 } from "@mui/material";
 import dayjs from "dayjs";
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
@@ -21,7 +22,7 @@ const CryptoJS = require("crypto-js");
 const MyAttendance = ({userRole}) => {
   const navigate = useNavigate();
   const [dateValue, setDateValue] = useState(dayjs());
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [barchartdata, setBarchartdata] = useState();
   const { register, control, handleSubmit, formState: { errors } } = useForm();
@@ -40,6 +41,7 @@ const MyAttendance = ({userRole}) => {
     };
     console.log('makePayload',makePayload)
     try {
+      setLoading(true);
       let result = await axiosHttp.post("/GetAttendanceId", makePayload);
     setBarchartdata(result.data.data)
       setLoading(false);
@@ -66,7 +68,9 @@ const MyAttendance = ({userRole}) => {
   let plotAtteCount = barchartdata?.map((chart)=>{
     return chart.AttendanceCount;
   })
- 
+
+  if (loading) return <div className="overlay"><div className="loadingicon"><CircularProgress color="inherit" /><br/>Loading...</div></div>;
+
   return (
     <>
    { userRole !== 'Admin' && userRole !== 'Super' ? ( 

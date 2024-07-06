@@ -1,7 +1,7 @@
 import React, { useState, useEffect,useMemo} from "react";
 import axios from "axios";
 import * as moment from 'moment';
-import { Grid, Typography,FormControlLabel,Checkbox,Chip } from "@mui/material";
+import { Grid, Typography,FormControlLabel,Checkbox,Chip,CircularProgress } from "@mui/material";
 import {
   MaterialReactTable,
   useMaterialReactTable,  
@@ -177,8 +177,9 @@ const UserPromotedList = ({ sendempid }) => {
     ),
     
   });
-
+  
   if (error) return `Error: ${error.message}`;
+  if (loading) return <div className="overlay"><div className="loadingicon"><CircularProgress color="inherit" /><br/>Loading...</div></div>;
   if (!empData.length) return <Typography color="error">No Employees available!</Typography>;
 
   return (

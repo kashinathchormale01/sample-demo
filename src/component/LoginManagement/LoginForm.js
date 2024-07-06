@@ -1,5 +1,5 @@
-import React from "react";
-import { Box, Grid, Paper } from "@mui/material";
+import React,{useEffect} from "react";
+import { Box, Grid, Paper,CircularProgress } from "@mui/material";
 import { styled } from "@mui/material/styles";
 // import loginimg from "../../Asset/Images/Deep1.jpg";
 // import loginimg from "../../Asset/Images/Deep.webp";
@@ -28,7 +28,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const LoginForm = () => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null)
   const [userId, setUsername] = useState("");
   const [userPassword, setPassword] = useState("");
@@ -37,8 +37,7 @@ const LoginForm = () => {
     toast.error("Please contact to Administrator.")
   }
 
-  const handleSubmit = async(e) => {
-    e.preventDefault();
+  const submitLogin = async()=>{
     if (!userId || !userPassword) {
 
       /**
@@ -65,11 +64,10 @@ const LoginForm = () => {
       userPassword: hashedPassword,
       roleID: "0",
     };
-
     try {
       setLoading(true);
      // let res = await axios.post("http://192.168.1.121:8089/Login", sendingdata)
-     let res = await axios.post("https://epdsback.onrender.com/Login", sendingdata)     
+     const res = await axios.post("https://epdsback.onrender.com/Login", sendingdata)     
       if (res.data.msg === "Succesfull") {
           
         /**
@@ -102,8 +100,9 @@ const LoginForm = () => {
       } else {
         sessionStorage.setItem("user", false);
         toast.error(res.data.msg);
+        window.location.href = '/login';
       }  
-      setLoading(false);    
+     // setLoading(false);    
   } catch (err) {
       if (err.response) {
         setLoading(false);    
@@ -117,8 +116,24 @@ const LoginForm = () => {
           setError(err.message);     
       }
   }
+  }
+
+  const handleSubmit = async(e) => {
+   // setLoading(true);
+    console.log('click on login')
+    e.preventDefault();
+    
+
+    submitLogin();
+    
+    
 
   };
+  useEffect(() => {
+    submitLogin();
+  }, []);
+
+  if (loading) return <div className="overlay"><div className="loadingicon"><CircularProgress color="inherit" /><br/>Loading...</div></div>;
 
   return (
     <>

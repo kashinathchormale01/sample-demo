@@ -76,7 +76,7 @@ const SiteLocationManagement = (props) => {
     }
   };  
 
-  if (loading) return <>Loading...<CircularProgress /></>;
+  if (loading) return <div className="overlay"><div className="loadingicon"><CircularProgress color="inherit" /><br/>Loading...</div></div>;
   if (error) return <p>Error: {error}</p>;
   if (!sitelocations.length) return <>
     <Button

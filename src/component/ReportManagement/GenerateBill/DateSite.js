@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { Button, FormGroup, FormControlLabel, Checkbox, Typography } from "@mui/material";
+import { Button, FormGroup, FormControlLabel, Checkbox, Typography,CircularProgress } from "@mui/material";
 import { MonthCalendar } from "@mui/x-date-pickers/MonthCalendar";
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { useFormContext, Controller } from "react-hook-form";
@@ -12,6 +12,7 @@ let siteIdCookie = sessionStorage?.getItem("site.Id")?.split(",")?.map(Number);
 
 const DateSite = () => {
   const { control } = useFormContext();
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState()
   const { register, setValue, getValues } = useFormContext();
   const [sitedata, setSitedata] = React.useState();
@@ -27,6 +28,7 @@ const DateSite = () => {
           // console.log("success", res.data.data);
           const allSiteIds = res.data.data.map((site) => site.Id);
           setSitedata(res.data.data);
+          setLoading(false);
           if (siteIdCookie === undefined) {
             // console.log(
             //   "Cookie Status if",
@@ -36,6 +38,7 @@ const DateSite = () => {
             // );
             console.log(allSiteIds)
             setSelectedsite(allSiteIds);
+            setLoading(false);
           } else {
             // console.log(
             //   "Cookie Status else",
@@ -48,10 +51,12 @@ const DateSite = () => {
         } else {
           alert(res.data.msg);
           console.log("Erro occured");
+          setLoading(false);
         }
       })
       .catch((error) => {
         console.log(error);
+        setLoading(false);
       });
   }, []);
 
@@ -74,6 +79,8 @@ const DateSite = () => {
       sessionStorage.setItem("site.Id", selectedsite);
     }
   }, [selectedsite]);
+
+  if (loading) return <div className="overlay"><div className="loadingicon"><CircularProgress color="inherit" /><br/>Loading...</div></div>;
 
   return (
     <div

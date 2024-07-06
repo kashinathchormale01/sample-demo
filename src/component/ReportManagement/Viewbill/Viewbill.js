@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect, useMemo } from "react";
 import axiosHttp from "../../../AxiosInstance";
-import { Typography, Box, Button } from "@mui/material";
+import { Typography, Box, Button,CircularProgress } from "@mui/material";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 import { MaterialReactTable, useMaterialReactTable } from "material-react-table";
@@ -34,6 +34,7 @@ const Viewbill = () => {
   useEffect(() => {
     loadBilldata();
   }, []);
+  //if (loading) return <div className="overlay"><div className="loadingicon"><CircularProgress color="inherit" /><br/>Loading...</div></div>;
 
   const handleExportRows = (rows) => {
     const doc = new jsPDF();
@@ -84,6 +85,7 @@ const Viewbill = () => {
     }
   }
   }
+ 
 
   const columns = useMemo(
     () => [
@@ -151,7 +153,7 @@ const Viewbill = () => {
     ],
     []
   );
-
+ 
   const table = useMaterialReactTable({
     columns,
     data: billList,
@@ -197,8 +199,9 @@ const Viewbill = () => {
   });
 
   if (error) return `Error: ${error.message}`;
+  if (loading) return <div className="overlay"><div className="loadingicon"><CircularProgress color="inherit" /><br/>Loading...</div></div>;
   if (!billList.length) return <Typography color="error">No Bill available!</Typography>;
-
+  
   return (
     <>
       <marquee

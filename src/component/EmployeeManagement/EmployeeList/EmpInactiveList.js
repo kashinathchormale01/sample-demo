@@ -1,6 +1,6 @@
 import React, { useState, useEffect,useMemo} from "react";
 import * as moment from 'moment';
-import { Typography} from "@mui/material";
+import { Typography,CircularProgress} from "@mui/material";
 import {
   MaterialReactTable,
   useMaterialReactTable,  
@@ -258,7 +258,9 @@ const EmployeeInActiveList = () => {
     });
   
     if (error) return `Error: ${error.message}`;
+    if (loading) return <div className="overlay"><div className="loadingicon"><CircularProgress color="inherit" /><br/>Loading...</div></div>;
     if (!empData.length) return <Typography color="error">No Employees available!</Typography>;
+    
     return (
         <>      
           <MaterialReactTable table={table} />
