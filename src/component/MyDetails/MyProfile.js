@@ -84,7 +84,7 @@ console.log('userRole',userRole)
   }, []);  
 
   if (error) return `Error: ${error.message}`;
-  if (!selectedEmp) return <Typography color="error">No Data! Please login again!<div className="overlay"><div className="loadingicon">Loading...<CircularProgress /></div></div></Typography>;
+  if (!selectedEmp) return <Typography component={"span"} variant={"body2"} color="error">No Data! Please login again!<div className="overlay"><div className="loadingicon">Loading...<CircularProgress /></div></div></Typography>;
   if (loading) return <div className="overlay"><div className="loadingicon"><CircularProgress /><br/>Loading...</div></div>;
 
   return (
