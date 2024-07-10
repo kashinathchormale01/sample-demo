@@ -18,7 +18,7 @@ const SiteRegisterSchema = yup.object().shape({
 const initialValues = {
   siteName: "",
   siteArea: "",
-  creationDate: ""
+  creationDate: new Date()
 };
 
 const EditSiteLocation = () => {
@@ -71,7 +71,7 @@ const EditSiteLocation = () => {
     } 
   }
 
-  if (loading) return <>Loading...<CircularProgress /></>;
+  if (loading) return <div className="overlay"><div className="loadingicon"><CircularProgress /><br/>Loading...</div></div>;
   if (error) return <p>Error: {error}</p>;
 
   return (
@@ -124,7 +124,7 @@ const EditSiteLocation = () => {
                 <DatePicker
                   label="Creation Date"
                   disableFuture
-                  value={values.creationDate}
+                  value={new Date(values.creationDate)}
                   slotProps={{ field: { shouldRespectLeadingZeros: true } }}
                   error={
                     Boolean(touched.creationDate) &&

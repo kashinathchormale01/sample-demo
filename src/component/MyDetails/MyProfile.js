@@ -91,7 +91,7 @@ console.log('userRole',userRole)
     <>
       <Box className="wrapper-main">
         <Typography
-          variant="h4"
+          variant="h4" component={"span"}
           sx={{
             color: "#808080",
             fontSize: "28px",
@@ -110,7 +110,7 @@ console.log('userRole',userRole)
             spacing={2}
           >
             {" "}
-            <Typography sx={{ color: "#1f93ce" }}>
+            <Typography component={"span"} variant={"body2"} sx={{ color: "#1f93ce" }}>
               Employee Information summary
             </Typography>
           </Stack>
@@ -120,8 +120,8 @@ console.log('userRole',userRole)
             alignItems="flex-start"
             spacing={2}
           >
-            <Typography>Designation</Typography>
-            <Typography className="summaryData">
+            <Typography component={"span"} variant={"body2"}>Designation</Typography>
+            <Typography component={"span"} variant={"body2"} className="summaryData">
               {selectedEmp.designation1}
             </Typography>
           </Stack>
@@ -131,8 +131,8 @@ console.log('userRole',userRole)
             alignItems="flex-start"
             spacing={2}
           >
-            <Typography>Site Locaion</Typography>
-            <Typography className="summaryData">
+            <Typography component={"span"} variant={"body2"}>Site Locaion</Typography>
+            <Typography component={"span"} variant={"body2"} className="summaryData">
               {selectedEmp.siteName}
             </Typography>
           </Stack>
@@ -142,8 +142,8 @@ console.log('userRole',userRole)
             alignItems="flex-start"
             spacing={2}
           >
-            <Typography>Present Address</Typography>
-            <Typography className="summaryData">
+            <Typography component={"span"} variant={"body2"}>Present Address</Typography>
+            <Typography component={"span"} variant={"body2"} className="summaryData">
               {selectedEmp.presentAddress}
             </Typography>
           </Stack>
@@ -153,8 +153,8 @@ console.log('userRole',userRole)
             alignItems="flex-start"
             spacing={2}
           >
-            <Typography>Permanent Address</Typography>
-            <Typography className="summaryData">
+            <Typography component={"span"} variant={"body2"}>Permanent Address</Typography>
+            <Typography component={"span"} variant={"body2"} className="summaryData">
               {selectedEmp.permanentAddress}
             </Typography>
           </Stack>
@@ -164,8 +164,8 @@ console.log('userRole',userRole)
             alignItems="flex-start"
             spacing={2}
           >
-            <Typography>city Name</Typography>
-            <Typography className="summaryData">
+            <Typography component={"span"} variant={"body2"}>city Name</Typography>
+            <Typography component={"span"} variant={"body2"} className="summaryData">
               {selectedEmp.cityName}
             </Typography>
           </Stack>
@@ -175,8 +175,8 @@ console.log('userRole',userRole)
             alignItems="flex-start"
             spacing={2}
           >
-            <Typography>Mobile</Typography>
-            <Typography className="summaryData">
+            <Typography component={"span"} variant={"body2"}>Mobile</Typography>
+            <Typography component={"span"} variant={"body2"} className="summaryData">
               {selectedEmp.mobileNumber}
             </Typography>
           </Stack>
@@ -186,8 +186,8 @@ console.log('userRole',userRole)
             alignItems="flex-start"
             spacing={2}
           >
-            <Typography>Alternate Mobile Number</Typography>
-            <Typography className="summaryData">
+            <Typography component={"span"} variant={"body2"}>Alternate Mobile Number</Typography>
+            <Typography component={"span"} variant={"body2"} className="summaryData">
               {selectedEmp.alternateMobileNumber}
             </Typography>
           </Stack>

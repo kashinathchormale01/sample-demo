@@ -8,7 +8,7 @@ const MenuItems = ({ items }) => {
         {items.submenu ? (         
             <Dropdown submenus={items.submenu} />         
         ) : (
-          <Typography href={items.url}>{items.title}</Typography>  
+          <Typography component={"span"} variant={"body2"} href={items.url}>{items.title}</Typography>  
         )}
         </List>
       

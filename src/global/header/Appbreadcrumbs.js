@@ -22,7 +22,7 @@ const Appbreadcrumbs = () => {
     </Link>
     {
     currentRoutes.length === 1
-    ? <Typography color="textPrimary" sx={{textTransform:'capitalize'}}>{currentRoutes[0]}</Typography>
+    ? <Typography component={"span"} variant={"body2"} color="textPrimary" sx={{textTransform:'capitalize'}}>{currentRoutes[0]}</Typography>
     : currentRoutes.map((route, index) => {
     return (index !== currentRoutes.length - 1
     ? <Link key={index} color="inherit" style={{ cursor: 'pointer' }} onClick={() => {
@@ -30,7 +30,7 @@ const Appbreadcrumbs = () => {
     }} >
     {route}
     </Link>
-    : <Typography key={index} color="textPrimary">{route}</Typography>)
+    : <Typography component={"span"} variant={"body2"} key={index} color="textPrimary">{route}</Typography>)
     })
     }
     </Breadcrumbs>

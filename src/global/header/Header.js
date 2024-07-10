@@ -75,7 +75,7 @@ const Header = () => {
       <a href="/"> <img src={logoimg} height={60} alt="logo" className={useStyles.logo} /></a>
       </Toolbar>
 
-      <Typography variant="h6" color="inherit" noWrap>
+      <Typography variant="h6" component={"span"} color="inherit" noWrap>
         Employee Management System
       </Typography>
       {selectedEmp ? (
@@ -88,11 +88,11 @@ const Header = () => {
       >
         <>
        
-          <Typography variant="h6" color="inherit" sx={{ marginRight: "10px" }}>
+          <Typography variant="h6" component={"span"} color="inherit" sx={{ marginRight: "10px" }}>
             Welcome
           </Typography>
           <Typography
-            variant="h6"
+            variant="h6" component={"span"}
             sx={{ color: "#ffe200", marginRight: "10px" }}
           >
             {selectedEmp?.firstName} {selectedEmp?.lastName}
@@ -120,14 +120,14 @@ const Header = () => {
           onClose={handleCloseUserMenu}
         >
           <MenuItem onClick={handleCloseUserMenu}>
-            <Typography textAlign="center" sx={{ color: "#1976d2" }}>
+            <Typography component={"span"} variant={"body2"} textAlign="center" sx={{ color: "#1976d2" }}>
               <Link underline="none" color="inherit" href="/my-profile">
                 Profile
               </Link>
             </Typography>
           </MenuItem>
           <MenuItem onClick={handleLogout}>
-            <Typography textAlign="center" sx={{ color: "#1976d2" }}>
+            <Typography component={"span"} variant={"body2"} textAlign="center" sx={{ color: "#1976d2" }}>
               <Link underline="none" color="inherit">
                 Logout
               </Link>

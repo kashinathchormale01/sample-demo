@@ -181,7 +181,7 @@ export default function MiniDrawer({ userRole}) {
                 {index === 3 && <SummarizeIcon color="primary" />}
                 {index === 4 && <SettingsIcon color="primary" />}
                 {index === 5 && <ManageAccountsIcon color="primary" />}
-                <Typography
+                <Typography component={"span"} variant={"body2"}
                   sx={{
                     color: "#0000008a",
                     fontWeight: "700",

@@ -70,7 +70,7 @@ const EditDesignation = () => {
           navigate('/designation-management');
       };
 
-      if (loading) return <>Loading...<CircularProgress /></>;
+      if (loading) return <div className="overlay"><div className="loadingicon"><CircularProgress /><br/>Loading...</div></div>;
       if (error) return <p>Error: {error}</p>;
 
   return (
@@ -98,27 +98,24 @@ const EditDesignation = () => {
             display="grid"
             gap="30px"
             gridTemplateColumns="repeat(4, minmax(0, 1fr))"
-          >
-
-      <TextField
-            select
-            id="CatagoryId"
-            label="Select Employee Category"
-            defaultValue = ""
-            value={values.CatagoryId}
-            onChange={handleChange('CatagoryId')}
-            helperText={touched.CatagoryId ? errors.CatagoryId : ''}
-            error={touched.CatagoryId && Boolean(errors.CatagoryId)}
-            variant="outlined"
-            fullWidth
-          >
-            {categorylist.map(option => (
-              <MenuItem key={option.Id} value={option.Id}>
-                {option.CategoryWork}
-              </MenuItem>
-            ))}
-          </TextField>     
-
+          > 
+<TextField
+  select
+  id="CatagoryId"
+  label="Select Employee Category"
+  value={values.CatagoryId}
+  onChange={handleChange('CatagoryId')}
+  helperText={touched.CatagoryId ? errors.CatagoryId : ''}
+  error={touched.CatagoryId && Boolean(errors.CatagoryId)}
+  variant="outlined"
+  fullWidth
+>
+  {categorylist.map(option => (
+    <MenuItem key={option.Id} value={option.Id}>
+      {option.CategoryWork}
+    </MenuItem>
+  ))}
+</TextField>
             <TextField
               label="Designation"
               onBlur={handleBlur}
