@@ -7,7 +7,7 @@ const VerticalReview = () => {
 
   useEffect(() => {
     axiosHttp.get("/GetProj_Site").then((res) => {
-      if (res.data.msg === "Sites Dilo Bagh") {
+      if (res.data.msg === "Sites List") {
         setSitenames(res.data.data); // Set array of site names
       }
     });

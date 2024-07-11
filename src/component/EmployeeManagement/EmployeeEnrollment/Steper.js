@@ -154,7 +154,7 @@ methods.setValue("Id", selectedid.sentid.Id);
        .post("/SaveEmp", values)
        .then((res) => {
         console.log(res);
-         if(res.data.msg==="Succesfull")
+         if(res.data.msg==="Employee Saved Successfully")
          {
           setActiveStep(activeStep + 1); 
          console.log("success");
@@ -194,7 +194,7 @@ methods.setValue("Id", selectedid.sentid.Id);
           .put("/UpdateEmp", values)
           .then((res) => {
            console.log(res);
-            if(res.data.msg==="Succesfull")
+            if(res.data.msg==="Employee Updated")
             {
             console.log("success");
             setLastMessage("Employe Updated Successfully");

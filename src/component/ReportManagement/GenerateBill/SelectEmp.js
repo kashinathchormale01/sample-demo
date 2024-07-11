@@ -133,7 +133,7 @@ const SentSite = {
   .post("/GetSiteEmp",SentSite)
   .then((res) => {
   //console.log(res.data.msg);
-    if(res.data.msg==="worker ale ka")
+    if(res.data.msg==="worker list")
     {
    // console.log("success",res.data.data);
   const parsedata = res.data.data.map((entry,index) => ({

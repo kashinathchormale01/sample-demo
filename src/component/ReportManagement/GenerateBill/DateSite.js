@@ -24,7 +24,7 @@ const DateSite = () => {
     axiosHttp
       .get("/GetProj_Site")
       .then((res) => {
-        if (res.data.msg === "Sites Dilo Bagh") {
+        if (res.data.msg === "Sites List") {
           // console.log("success", res.data.data);
           const allSiteIds = res.data.data.map((site) => site.Id);
           setSitedata(res.data.data);
