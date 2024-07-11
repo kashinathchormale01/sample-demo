@@ -29,7 +29,7 @@ const EditDesignation = () => {
    
       const loadCategories = async () => {      
         try {
-          let result = await axiosHttp.get('/GetCategory');
+          let result = await axiosHttp.get('/GetCategoryAdmin');
           setCategorylist(result.data.data);          
           setLoading(false);
       } catch (err) {
