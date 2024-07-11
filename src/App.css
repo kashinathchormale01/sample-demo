@@ -149,3 +149,7 @@
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
+.SelectedSiteName{
+  vertical-align: top;
+  margin-top: -30px;
+}
