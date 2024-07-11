@@ -46,7 +46,7 @@ const AddSiteLocation = () => {
       .then(res=>{
         console.log(res);
         console.log(res.data);
-        toast.success(res.data.msg);  
+        toast.success("New site location has been added Successfully.");  
         setIsDirty(false);
         navigate('/work-location-management');
       })

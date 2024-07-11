@@ -65,7 +65,7 @@ const EditDesignation = () => {
         console.log(values);
         axiosHttp.put('/UpdateRole', values)
           .then(res=>{
-            toast.success(res.data.msg);  
+            toast.success("Role has been updated Successfully.");  
           })      
           navigate('/designation-management');
       };

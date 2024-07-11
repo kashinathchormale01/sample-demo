@@ -71,7 +71,7 @@ const EmployeeExitPage = () => {
         try {
           let result = await axiosHttp.post("/DeleteEmp", makePayload);
           toast.warn("Employee Made Inactive successfully.");
-          navigate("/employee-list");
+          navigate("/employee-inactive-list");
           setLoading(false);
         } catch (err) {
           if (err.response) {

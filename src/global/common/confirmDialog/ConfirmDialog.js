@@ -28,7 +28,7 @@ import {
         TransitionComponent={Transition}
       >
         <DialogTitle sx={{ fontSize: "1.5em" }}>
-          This is Delete Warning !!! for {" "}
+          This is Inactive Warning !!! for {" "}
           <label className="DialogTitle">{title}</label>
           <IconButton
             size="medium"
@@ -50,15 +50,10 @@ import {
                   flexDirection: "column",
                 }}
               >
-                {/* <Typography variant="h5">
-                  This is Delete Warning !!! for{" "}
-                  <label className="DialogTitle">{title}</label>
-                </Typography> */}
-
                 <Typography variant="body1">
-                  Can not delete the {" "}
+                  Are you sure want to make in Inactive to {" "}
                   <label className="DialogTitle">{title}</label> <br /> If
-                  deleted then you will loss for all the refference data related
+                  made in-active then you will loss for all the refference data related
                   to the same.
                 </Typography>
               </Box>
@@ -80,9 +75,9 @@ import {
                 onClick={deleteFunction}
                 size="medium"
                 variant="contained"
-                color="error"
+                color="warning"
               >
-                Delete
+                InActive
               </Button>{" "}
             </Grid>
           </Grid>

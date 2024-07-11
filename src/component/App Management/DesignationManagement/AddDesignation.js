@@ -51,7 +51,7 @@ const AddDesignation = () => {
   function handleFormSubmit(values) {
     console.log('values',values)
     axiosHttp.post("/AddRole", values).then((res) => {
-      toast.success(res.data.msg);
+      toast.success("Role has been added Successfully.");
     });
     navigate("/designation-management");
   }

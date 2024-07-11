@@ -316,7 +316,7 @@ const EmployeeProfile = (defaultdates,profileimg, data) => {
               name="aadharNumber"
               defaultValue={""}
               rules={{
-                required: "Aadhar Number is required",
+                required: "Aadhar Number is required.",
                 minLength:{
                   value:12,
                   message:"Aadhar Number is 12 Digits(Format:000011112222) "
@@ -326,7 +326,7 @@ const EmployeeProfile = (defaultdates,profileimg, data) => {
                   message:"Aadhar Number is 12 Digits(Format:000011112222) "
                 },
                 pattern:{
-                  value: /^[0-9]*$/,
+                  value: /^[0-9]+$/,
                   message:"Aadhar Number is Invalid (Format:000011112222)"
                 },
               }}

@@ -112,6 +112,7 @@ const DesignationManagement = () => {
               <TableCell>Sr.No</TableCell>
               <TableCell>Role Id</TableCell>
               <TableCell>Role/Designation Name</TableCell>
+              <TableCell>Category Name</TableCell>
               <TableCell>Action</TableCell>
             </TableRow>
           </TableHead>
@@ -121,6 +122,7 @@ const DesignationManagement = () => {
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>{item.Id}</TableCell>
                 <TableCell>{item.RoleName}</TableCell>
+                <TableCell></TableCell>
                 <TableCell>
                   <Stack direction="row" spacing={2}>
                     <Button

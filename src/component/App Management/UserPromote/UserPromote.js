@@ -96,7 +96,7 @@ const UserPromote = () => {
       const res = await axiosHttp.post("/PramoteUser", userPromotePayload);
       toast.success(res.data.msg);
       setLoading(false); 
-      navigate("/access-management");
+      navigate("/user-promoted-list");
     } catch (err) {
       setLoading(false); 
     }

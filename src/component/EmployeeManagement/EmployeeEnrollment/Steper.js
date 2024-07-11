@@ -34,7 +34,7 @@ let values={};
 
 const Steper = (selectedid) => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [profileimg, setProfileimg] = useState(selectedid.sentid.img);
   const [activeStep, setActiveStep] = useState(0);
@@ -237,7 +237,7 @@ methods.setValue("Id", selectedid.sentid.Id);
   else
     setActiveStep(activeStep - 1);
   }; 
-
+  if (loading) return <div className="overlay"><div className="loadingicon"><CircularProgress /><br/>Loading...</div></div>;
   return (
     <>
       <Stepper alternativeLabel activeStep={activeStep}>
@@ -296,7 +296,6 @@ methods.setValue("Id", selectedid.sentid.Id);
                 variant="contained"
                 color="primary"
                 type="submit"
-                
               >
                 {activeStep === steps.length - 1 ? "Finish" : "Next"}
               </Button>

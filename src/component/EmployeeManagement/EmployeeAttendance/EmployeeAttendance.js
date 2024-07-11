@@ -75,6 +75,7 @@ export const EmployeeTimeSheet = () => {
   const [sitelocationlist, setSitelocationlist] = useState();
   const [error, setError] = useState(null);
   const [selectedSite, setSelectedSite] = React.useState([]);
+  const [selectedSiteName, setSelectedSiteName] = React.useState(null);
   const [dateValue, setDateValue] = React.useState(dayjs());
   const [loading, setLoading] = useState(false);
   const [emplistbylocation, setEmplistbylocation] = useState();
@@ -173,9 +174,12 @@ export const EmployeeTimeSheet = () => {
       }
   }    
   }; 
-
+console.log('selectedSite',selectedSite)
 const handleSiteSubmit = (values) => {
-  setSelectedSite(values);
+  setSelectedSite(values.siteId); // Store selected site ID
+    const siteNameselected = sitelocationlist.find(site => site.Id === values.siteId)?.siteName; // Get selected site name
+    setSelectedSiteName(siteNameselected || "");
+  //setSelectedSite(values);
   if (!values.siteId || values.siteId.length === 0) {
     // Show an error message or handle the case where required fields are missing
     toast.error("Please select site to mark an attendance.");
@@ -194,7 +198,7 @@ const handleSiteSubmit = (values) => {
       setIsButtonDisabled(false);
       setLoading(false); 
       setData([]);
-      toast.error("Data Not exists.");      
+      toast.error("Data Not exists or No Employee mapped with this site. For more info. please contact to Administrator.");      
       return;
     }
 
@@ -214,9 +218,11 @@ const handleSiteSubmit = (values) => {
       };
     });
     setData(transformData);
-    toast.success(res.data.msg);
+    toast.success("Please mark the attendance for this site worker/Employee.");
     setLoading(false); 
     setIsButtonDisabled(false);
+    // const siteNameselected = sitelocationlist.filter(site => site?.siteId === selectedSite?.siteId)?.siteName;
+    // setSelectedSiteName(siteNameselected);
   });
 };
 
@@ -246,7 +252,7 @@ const submitAttendance = async () => {
   try {
     setLoading(true); 
     const res = await axiosHttp.post("/Attendance", makeAttendancePayload);
-    toast.success(res.data.msg);
+    toast.success("Attendance Marked for resp. worker/Employee.");
     navigate('/employee-attendance');
     setLoading(false); 
   } catch (err) {
@@ -260,6 +266,8 @@ const submitAttendance = async () => {
 
   if (loading) return <div className="overlay"><div className="loadingicon"><CircularProgress /><br/>Loading...</div></div>;
   if (!sitelocationlist) return 'No Sites available';
+console.log('selectedSiteName',selectedSiteName)
+
 
   return (
     <>
@@ -275,12 +283,15 @@ const submitAttendance = async () => {
           }) => (
             <Form>
               <Autocomplete
+              sx={{marginRight:'20pt'}}
                 id="userroles"
                 name="userroles"
                 options={sitelocationlist}
                 getOptionLabel={(option) => option.siteName}
                 style={{ width: 300 }}
                 onChange={(e, value) => {
+                  setSelectedSite(value ? value.Id : null); // Update selectedSite state
+                setSelectedSiteName(value ? value.siteName : ""); // Update selectedSiteName state
                   isSubmitting = false;
                   setIsButtonDisabled(false);
                   setFieldValue(
@@ -299,6 +310,8 @@ const submitAttendance = async () => {
                 )}
               />
 
+{/* <Typography variant="h3" component={"span"}>{selectedSiteName}</Typography> */}
+
               <Button
                 type="submit"
                 variant="contained"
@@ -310,8 +323,13 @@ const submitAttendance = async () => {
             </Form>
           )}
         </Formik>
+        {selectedSiteName && (
+          <div className="SelectedSiteName"><Typography variant="h3" component="span">
+          Selected Site Name: {selectedSiteName}
+        </Typography></div>        
+      )}
       </Box>
-      {data.length && (
+      {data.length>0 && (
         <>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer
