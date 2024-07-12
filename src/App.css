@@ -8,6 +8,13 @@
 .MuiAccordion-gutters.Mui-expanded {
   margin: 20px 15px 0 15px !important;
 }
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0; 
+}
 
 /* .loginContainer {
   background-image: url('./images/bg.jpg');
@@ -152,9 +159,15 @@
 .SelectedSiteName{
   vertical-align: top;
   margin-top: -30px;
+  background-color: bisque;
+  padding: 10pt;
 }
 .ChangePasswrapper{
   margin: 0 auto;
   max-width: 500pt;
   padding-top: 20pt;
+}
+.labelvalue{
+  color: #255cb1;
+  padding-left: 7pt;
 }

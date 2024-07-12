@@ -325,7 +325,7 @@ console.log('selectedSiteName',selectedSiteName)
         </Formik>
         {selectedSiteName && (
           <div className="SelectedSiteName"><Typography variant="h3" component="span">
-          Selected Site Name: {selectedSiteName}
+          <Typography variant="h3" component="span">Selected Site Name:</Typography><Typography variant="h3" component="span" className="labelvalue">{selectedSiteName}</Typography> 
         </Typography></div>        
       )}
       </Box>
