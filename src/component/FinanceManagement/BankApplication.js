@@ -148,6 +148,7 @@ const generatePDF = () => {
                 sx={{ gridColumn: "span 2" }}
               />
                <TextField
+               type='number'
                 label="Cheque Number"
                 onBlur={handleBlur}
                 onChange={handleChange}
@@ -168,6 +169,7 @@ const generatePDF = () => {
                 sx={{ gridColumn: "span 2" }}
               />
                <TextField
+               type='number'
                 label="Amount to Pay"
                 onBlur={handleBlur}
                 onChange={handleChange}

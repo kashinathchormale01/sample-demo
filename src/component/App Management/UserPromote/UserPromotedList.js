@@ -88,10 +88,10 @@ const UserPromotedList = ({ sendempid }) => {
       {
         id: 'PasswordResetLink',
         header: 'Password Reset',
-        accessorFn: (row) => `PassWord Reset`,         
+        accessorFn: (row) => `Password Reset`,         
         //Add a link in a cell render
         Cell: ({ renderedCellValue, cell,row }) => {
-          return(<Link style={{color:'#1976d2'}} to={`/user-password-reset`} state={{ id:row.original }}>
+          return(<Link style={{color:'red'}} to={`/user-password-reset`} state={{ id:row.original }}>
           {renderedCellValue}
         </Link>   )                 
         },

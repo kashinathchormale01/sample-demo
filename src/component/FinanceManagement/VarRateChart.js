@@ -45,6 +45,7 @@ const VarRateChart = () => {
     });
 
     try {
+      setLoading(true);
       const result = await axiosHttp.put('/UpdateFixRates', updatedInitialValues);
       toast.success(result.data.msg);
       setLoading(false);
@@ -55,7 +56,7 @@ const VarRateChart = () => {
   };
 
   const watchAllFields = watch(["High_Skilled","Semi_Skilled","Skilled","UnSkilled","DArate", "HRARate", "PFRate", "ESICRate", "incomeTax"]);
-
+  if (loading) return <div className="overlay"><div className="loadingicon"><CircularProgress color="inherit" /><br/>Loading...</div></div>;
   return (
     <>
       <Checkbox 
@@ -66,7 +67,7 @@ const VarRateChart = () => {
       <label htmlFor="showTable">Are you want to update the rate chart?</label>
 
       {showTable && (
-        loading ? <CircularProgress /> : error ? <div>Error: {error}</div> : vrates && (
+        loading ? <div className="overlay"><div className="loadingicon"><CircularProgress color="inherit" /><br/>Loading...</div></div> : error ? <div>Error: {error}</div> : vrates && (
           <TableContainer sx={{ maxWidth: '100%', marginTop: '20px' }} component={Paper}>
             <form onSubmit={handleSubmit(onSubmit)}>
               <Table aria-label="customized table">

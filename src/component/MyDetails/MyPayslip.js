@@ -5,6 +5,7 @@ import { saveAs } from "file-saver";
 import Invoice from "../../global/common/Reports/Invoice";
 import myInvoice from "../../global/common/Reports/Data";
 import axiosHttp from "../../AxiosInstance";
+import { toast } from "react-toastify";
 const CryptoJS = require("crypto-js");
 
 
@@ -43,19 +44,23 @@ const MyPayslip = ({userRole}) => {
     ],
   });
   const handleDownload = async () => {
-    const encryptedId = sessionStorage.getItem("Id");
     const bytes = await CryptoJS.AES.decrypt(sessionStorage.getItem("Id"), "nks");
     const originalId = await bytes.toString(CryptoJS.enc.Utf8);
 
-   // const blob = await pdf(<Invoice invoice={myPayslipData} />).toBlob();
-    //saveAs(blob, "MyPaySlip.pdf");
     try {
+      setLoading(true);
       let result = await axiosHttp.get(`/GetPaySlip/${originalId}`);
        //setWageslipData(result.data.data);
-      console.log('myslipData',result.data.data) ;
-      setLoading(false);
-      const blob = await pdf(<Invoice invoice={result.data.data}/>).toBlob()
-      saveAs(blob, 'wageslip.pdf')
+       if(result.data.data.length>0){
+       // console.log('myslipData',result.data.data.length) ;
+        setLoading(false);
+        const blob = await pdf(<Invoice invoice={result.data.data}/>).toBlob()
+        saveAs(blob, 'wageslip.pdf')
+       }else{
+        setLoading(false);
+      //  console.log('no data',result.data.data.length) ;
+        toast.error("There is no payslip data available for this employee, Please contact to administrator for more info.")
+       }     
     } catch (err) {
       setLoading(false);
       setError(err.message);

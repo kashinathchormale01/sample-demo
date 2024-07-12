@@ -265,14 +265,14 @@ const BankDetail = () => {
           name='lwf'
           defaultValue={""}
           rules={{
-            required:"Labour Welfair Fund Name is required"
+            required:"Labour Welfare Fund Name is required"
           }}
           render={({field})=>(
             <TextField
            
             fullWidth
             id="LabourFund"
-            label="Labour Welfair Fund Name"
+            label="Labour Welfare Fund Name"
             variant="outlined"
             {...field}
             error={Boolean( errors.lwf)}
