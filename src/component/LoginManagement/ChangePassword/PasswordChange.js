@@ -39,7 +39,11 @@ const PasswordChange = () => {
     try {
       let result = await axiosHttp.post("/UpdateTempPassword", payload);
       toast.success(result.data.msg);
-      navigate("/my-profile");
+    //  navigate("/my-profile");
+    sessionStorage.removeItem("Id");
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem('rePass');
+    window.location.href = '/login';
       setLoading(false);
     } catch (err) {
       if (err.response) {

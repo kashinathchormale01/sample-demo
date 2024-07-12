@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import MiniDrawer from './sidebar/sidebar';
 import LoginForm from '../component/LoginManagement/LoginForm';
 import axiosHttp from '../AxiosInstance';
+import PasswordChange from "../component/LoginManagement/ChangePassword/PasswordChange";
 const CryptoJS = require("crypto-js");
 
 const Layout =  () => {    
@@ -9,6 +10,7 @@ const Layout =  () => {
   const [loading, setLoading] = useState(false);
   const [selectedEmp, setSelectedEmp] = useState();
   const userLoggedIn = sessionStorage.getItem('token');
+  const defaultPass = sessionStorage.getItem('rePass');
 
   const getrolename = async()=>{
     try {
@@ -41,7 +43,7 @@ const Layout =  () => {
 
   return (
     <>    
-      {userLoggedIn?.length>4 ? <MiniDrawer userRole={selectedEmp?.SupperAccess} /> : <LoginForm />}
+      {userLoggedIn?.length>4 ? (defaultPass? <PasswordChange />:<MiniDrawer key="0" userRole={selectedEmp?.SupperAccess} />): <LoginForm />}
     </>
   )
 }

@@ -86,16 +86,14 @@ const LoginForm = () => {
          */ 
         sessionStorage.removeItem("Id");
         sessionStorage.setItem("Id", hashedEmpId);
-        
         if ("1234" === defaultOrigional) {
-          //navigate("/change-password",{replace: true});
+          sessionStorage.removeItem("rePass");
+        sessionStorage.setItem("rePass", 'default');
          // window.location.replace("/change-password");
          window.location.href = '/change-password';
         } else {
           //window.location.replace("/my-profile");
           window.location.href = '/';
-          // navigate("/errorpage",{replace: true});
-          // navigate("/my-profile",{replace: true});
         }
       } else {
         sessionStorage.setItem("user", false);

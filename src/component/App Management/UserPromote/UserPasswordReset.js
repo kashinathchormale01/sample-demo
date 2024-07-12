@@ -27,7 +27,7 @@ const UserPasswordReset = () => {
       const response = res; 
       toast.success(res.data.msg);
       setLoading(false); 
-      navigate('/access-management');
+      navigate('/user-promoted-list');
     } catch (err) {
       setLoading(false); 
       console.error(error);
