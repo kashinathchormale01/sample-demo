@@ -15,24 +15,24 @@ const UserPasswordReset = () => {
     setSelectedadminemp(location.state.id);
   }, [location]);
   
-  const handlereset = async()=>{
-    let userResetPayload = {};
-    userResetPayload = {
-      empid:selectedadminemp.empid
-    }
-    console.log(userResetPayload)
-    try {
-      setLoading(true); 
-      const res = await axiosHttp.get(`/ResetEmpPass/${userResetPayload.empid}`);
-      const response = res; 
-      toast.success(res.data.msg);
-      setLoading(false); 
-      navigate('/user-promoted-list');
-    } catch (err) {
-      setLoading(false); 
-      console.error(error);
-    } 
-  }
+  // const handlereset = async()=>{
+  //   let userResetPayload = {};
+  //   userResetPayload = {
+  //     empid:selectedadminemp.empid
+  //   }
+  //   console.log(userResetPayload)
+  //   try {
+  //     setLoading(true); 
+  //     const res = await axiosHttp.get(`/ResetEmpPass/${userResetPayload.empid}`);
+  //     const response = res; 
+  //     toast.success(res.data.msg);
+  //     setLoading(false); 
+  //     navigate('/confirm-pass',{ state: selectedadminemp.empid });
+  //   } catch (err) {
+  //     setLoading(false); 
+  //     console.error(error);
+  //   } 
+  // }
 
   if (loading) return <div className="overlay"><div className="loadingicon"><CircularProgress color="inherit" /><br/>Loading...</div></div>;
 
@@ -87,7 +87,8 @@ const UserPasswordReset = () => {
               variant="contained"
               color="primary"
               type="submit"
-              onClick={handlereset}
+              // onClick={handlereset}
+              onClick={() => navigate('/confirm-pass',{ state: selectedadminemp.empid })}
             >
               Reset Password
             </Button>

@@ -6,7 +6,7 @@ const MenuItems = ({ items }) => {
       <>
       <List sx={{padding:'0'}}>
         {items.submenu ? (         
-            <Dropdown submenus={items.submenu} />         
+            <Dropdown key="0" submenus={items.submenu} />         
         ) : (
           <Typography component={"span"} variant={"body2"} href={items.url}>{items.title}</Typography>  
         )}

@@ -192,7 +192,7 @@ export default function MiniDrawer({ userRole}) {
                 </Typography>
               </AccordionSummary>
               <AccordionDetails sx={{ padding: "8px 0px 16px 10px" }}>
-                <MenuItems items={text} />
+                <MenuItems key={index} items={text} />
               </AccordionDetails>
             </Accordion>
           </>
@@ -202,6 +202,7 @@ export default function MiniDrawer({ userRole}) {
           {filteredMenuItems().map((text, index) => (
             <ListItem key={index} disableGutters={true}>
               <ListItemButton
+               key={index}
                 onClick={handleDrawerOpen}
                 sx={{
                   minHeight: 48,

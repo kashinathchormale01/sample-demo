@@ -31,6 +31,8 @@ import Viewbill from '../../component/ReportManagement/Viewbill/Viewbill';
 import PFValidationReport from '../../component/FinanceManagement/PFValidationReport/PFValidationReport';
 // import EmployeeInActiveList1 from '../../component/EmployeeManagement/EmployeeList/EmployeeInActiveList';
 import EmployeeInActiveList from '../../component/EmployeeManagement/EmployeeList/EmpInactiveList';
+import Inactivesites from '../../component/App Management/SiteLocationManagement/Inactivesites';
+import ConfirmPassword from '../../component/LoginManagement/ConfirmPassword';
 
 const Routing = ({userRole}) => {
   return (
@@ -75,6 +77,9 @@ const Routing = ({userRole}) => {
         <Route path='/work-location-management' exact element={<SiteLocationManagement />} />
         <Route path='/add-site-location' exact element={<AddSiteLocation /> } />
         <Route path='/edit-site-location/:id' exact element={<EditSiteLocation />} />
+        <Route path='/inactive-locations' exact element={<Inactivesites />} />
+        
+        
         
          {/* Finance Managament Routes */}
         <Route path='/bank-application' exact element={<BankApplication />} />
@@ -82,6 +87,7 @@ const Routing = ({userRole}) => {
 
 
         {/* Redirect for login page */}
+        <Route path='/confirm-pass' exact element={<ConfirmPassword />} />
         <Route path='/login' exact element={<LoginForm />} />
         <Route path='/' element={<Navigate to='/my-profile' />} />
         <Route path='*' element={<Navigate to='/login' />} />
