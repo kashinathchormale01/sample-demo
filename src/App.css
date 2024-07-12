@@ -9,12 +9,12 @@
   margin: 20px 15px 0 15px !important;
 }
 
-.loginContainer {
-  background-image: url('./images/bg.png');
+/* .loginContainer {
+  background-image: url('./images/bg.jpg');
   background-repeat: no-repeat;
   background-position: center;
   border-radius: 10px;
-}
+} */
 
 .SummaryMain {
   background-color: #eeeeee;
@@ -152,4 +152,9 @@
 .SelectedSiteName{
   vertical-align: top;
   margin-top: -30px;
+}
+.ChangePasswrapper{
+  margin: 0 auto;
+  max-width: 500pt;
+  padding-top: 20pt;
 }

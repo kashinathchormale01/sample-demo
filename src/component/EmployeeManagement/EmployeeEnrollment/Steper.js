@@ -5,7 +5,6 @@ import BankDetails from "./Layout/BankDetail";
 import WorkDetails from "./Layout/WorkDetails";
 import CommunicationBio from "./Layout/CommunicationBio";
 import Review from "./Layout/Review";
-import axios from "axios";
 import dayjs from 'dayjs';
 import {
   useForm,
@@ -15,7 +14,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axiosHttp from "../../../AxiosInstance";
-import { Buffer } from "buffer";
 
 
 
@@ -45,6 +43,7 @@ const Steper = (selectedid) => {
     doj:dayjs(selectedid.sentid.dateOfJoning),
     img: selectedid.sentid.img
   });
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   const steps = getSteps();
   const methods = useForm();
@@ -150,6 +149,7 @@ methods.setValue("Id", selectedid.sentid.Id);
     if(activeStep===steps.length-1&&savelabel==="Finish")
       {
        console.log('finish values',values);
+       setIsButtonDisabled(true);
        axiosHttp
        .post("/SaveEmp", values)
        .then((res) => {
@@ -163,7 +163,7 @@ methods.setValue("Id", selectedid.sentid.Id);
          setTimeout(()=> {
           navigate("/employee-list");
          }, 2000);
-         
+         setIsButtonDisabled(false);
          }
          else
          {
@@ -188,6 +188,7 @@ methods.setValue("Id", selectedid.sentid.Id);
         {
           //alert("This is Triggered");
           console.log("update values",values);
+          setIsButtonDisabled(true);
           if (window.confirm("Update the employee details?")) {
             console.log('if true');
           axiosHttp
@@ -216,6 +217,7 @@ methods.setValue("Id", selectedid.sentid.Id);
             setLastMessage("Technical Error please contact Administrator");
             toast.error("Technical Error please contact Administrator");
           });
+          setIsButtonDisabled(false);
           setActiveStep(activeStep + 1); 
         }
         
@@ -296,6 +298,7 @@ methods.setValue("Id", selectedid.sentid.Id);
                 variant="contained"
                 color="primary"
                 type="submit"
+                disabled={isButtonDisabled}
               >
                 {activeStep === steps.length - 1 ? "Finish" : "Next"}
               </Button>

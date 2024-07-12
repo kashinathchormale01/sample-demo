@@ -6,7 +6,6 @@ import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import MuiDatePicker from "./../MuiDatePicker";
 import Avatar from "@mui/material/Avatar";
-import defaultimage from "./../../../../Asset/Images/Deep1.jpg";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { Button } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";

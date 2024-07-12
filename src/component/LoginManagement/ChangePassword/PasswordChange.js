@@ -70,8 +70,10 @@ const PasswordChange = () => {
   if (error) return <p>Error: {error}</p>;
   return (
     <>
-      <h2>Change Password</h2>
-      <ChangePasswordForm onSubmit={handleSubmit} />
+      <div className="ChangePasswrapper">
+        <h2>Change Password</h2>
+        <ChangePasswordForm onSubmit={handleSubmit} />
+      </div>
     </>
   );
 };

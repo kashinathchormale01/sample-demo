@@ -1,8 +1,6 @@
 import React,{useEffect} from "react";
 import { Box, Grid, Paper,CircularProgress } from "@mui/material";
 import { styled } from "@mui/material/styles";
-// import loginimg from "../../Asset/Images/Deep1.jpg";
-// import loginimg from "../../Asset/Images/Deep.webp";
  import loginimg from "../../Asset/Images/wallpaper.jpg";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
