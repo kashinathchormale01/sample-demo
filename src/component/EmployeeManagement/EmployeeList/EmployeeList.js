@@ -65,11 +65,7 @@ const loadEmployees = async () => {
     doc.save('Employee-List.pdf');
   }; 
 
-  const handleDownloadRows = (rows) => {
-    const tableData = rows.map((row) => Object.values(row.original));
-    setSelectedRowsData(tableData);
-  }
-    
+  
   const columns = useMemo(
     () => [
       {

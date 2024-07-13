@@ -61,10 +61,7 @@ const UserPromotedList = ({ sendempid }) => {
     doc.save('PromotedUserList.pdf');
   }; 
 
-  const handleDownloadRows = (rows) => {
-    const tableData = rows.map((row) => Object.values(row.original));
-    setSelectedRowsData(tableData);
-  }
+  
 
   const columns = useMemo(
     () => [
@@ -162,8 +159,7 @@ const UserPromotedList = ({ sendempid }) => {
         startIcon={<FileDownloadIcon />}
       >
         Export Selected Rows
-      </Button>
-      
+      </Button>      
     </Box>
     ),
     

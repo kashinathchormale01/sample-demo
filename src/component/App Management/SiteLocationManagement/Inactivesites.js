@@ -67,11 +67,7 @@ const Inactivesites = () => {
       doc.save('Employee-List.pdf');
     }; 
   
-    const handleDownloadRows = (rows) => {
-      const tableData = rows.map((row) => Object.values(row.original));
-      setSelectedRowsData(tableData);
-    }
-
+  
     const handleInactive = async (id) => {
       //  console.log('id clicked', id)
       if (window.confirm("Are you sure you want to make active this employee?")) {
