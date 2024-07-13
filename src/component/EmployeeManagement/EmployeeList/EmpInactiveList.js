@@ -243,16 +243,7 @@ const EmployeeInActiveList = () => {
             startIcon={<FileDownloadIcon />}
           >
             Export Selected Rows
-          </Button>
-          <Button
-            disabled={
-              !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
-            }
-            onClick={() => handleDownloadRows(table.getSelectedRowModel().rows)}
-            startIcon={<FileDownloadIcon />}
-          >
-            Download Selected Rows
-          </Button>
+          </Button>          
         </Box>
       ),
     });

@@ -163,16 +163,7 @@ const UserPromotedList = ({ sendempid }) => {
       >
         Export Selected Rows
       </Button>
-      <Button
-        disabled={
-          !table.getIsSomeRowsSelected() && !table.getIsAllRowsSelected()
-        }
-        //only export selected rows
-        onClick={() => handleDownloadRows(table.getSelectedRowModel().rows)}
-        startIcon={<FileDownloadIcon />}
-      >
-        Download Selected Rows
-      </Button>
+      
     </Box>
     ),
     
