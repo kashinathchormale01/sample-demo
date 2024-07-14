@@ -23,6 +23,7 @@ const ConfirmPassword = () => {
     const {
       register,
       handleSubmit,
+      reset,
       formState: { errors },
     } = useForm();
 
@@ -48,19 +49,38 @@ const ConfirmPassword = () => {
       const sendingdata = {
         userId: sessionStorage.getItem("Id"),
         userPassword: hashedPassword,
-        empidreset: selectedadminemp,
         roleID: "0",
       };
       console.log(sendingdata);
       try {
         setLoading(true);
         const res = await axiosHttp.post("/VerifyPassword", sendingdata);
-        toast.success(res.data.msg);
-        setLoading(false);
-        navigate("/user-promoted-list");
+       if(res.data.data === true){       
+            let userResetPayload = {};
+            userResetPayload = {
+              empid:selectedadminemp
+            }
+            console.log(userResetPayload)
+            try {
+              setLoading(true); 
+              const res = await axiosHttp.get(`/ResetEmpPass/${userResetPayload.empid}`);
+              toast.success(res.data.msg);
+              setLoading(false); 
+              navigate('/user-promoted-list');
+              reset();
+            } catch (err) {
+              setLoading(false); 
+              console.error(err);
+            } 
+          
+       }else{
+        reset();
+        setLoading(false); 
+        toast.error("Please enter valid password..");
+       }
       } catch (err) {
         setLoading(false);
-        console.error(error);
+        console.error(err);
       }
     };
 

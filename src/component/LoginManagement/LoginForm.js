@@ -32,7 +32,7 @@ const LoginForm = () => {
   const [userPassword, setPassword] = useState("");
 
   const handlenoaccount = ()=>{
-    toast.error("Please contact to Administrator.")
+    toast.warning("Please contact to Administrator.")
   }
 
   const submitLogin = async()=>{
@@ -136,14 +136,15 @@ const LoginForm = () => {
       <form onSubmit={handleSubmit}>
         <Box sx={{ height: "100vh" }}>
           <Grid
+          className="LoginWrapper"
             container
             direction="row"
             justifyContent="center"
             alignItems="center"
-            spacing={2}
-            sx={{ height: "100%", width: "100%", p: 1, mx: 1 }}
+           
+            sx={{ height: "100%", width: "100%", }}
           >
-            <Grid
+            {/* <Grid
               container
               direction="row"
               justifyContent="center"
@@ -160,9 +161,9 @@ const LoginForm = () => {
                   src={loginimg}
                 ></img>
               </div>
-            </Grid>
+            </Grid> */}
             <Grid item xs={4}>
-              <Item>
+              <Item className="LoginContainer">
                 <Grid item xs={12}>
                   <LockPersonIcon fontSize="large" sx={{ color: "red" }} />
                 </Grid>
@@ -170,12 +171,12 @@ const LoginForm = () => {
                   <label>Sign in</label>
                 </Grid>
 
-                <Grid container spacing={2}>
+                <Grid container>
                   <Grid item xs={12}>
-                    <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-                      <AccountCircle
+                    <Box sx={{ display: "flex", alignItems: "flex-end", marginTop:"10pt" }}>
+                      {/* <AccountCircle
                         sx={{ color: "action.active", mr: 1, my: 0.5 }}
-                      />
+                      /> */}
                       <TextField
                         fullWidth
                         id="usernametxt"
@@ -183,14 +184,15 @@ const LoginForm = () => {
                         variant="standard"
                         required
                         onChange={(e) => setUsername(e.target.value)}
+                        sx={{marginTop:"10pt"}}
                       />
                     </Box>
                   </Grid>
                   <Grid item xs={12}>
-                    <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-                      <PasswordRoundedIcon
+                    <Box sx={{ display: "flex", alignItems: "flex-end",marginTop:"15pt" }}>
+                      {/* <PasswordRoundedIcon
                         sx={{ color: "action.active", mr: 1, my: 0.5 }}
-                      />
+                      /> */}
                       <TextField
                         fullWidth
                         id="passwordtxt"
@@ -204,6 +206,7 @@ const LoginForm = () => {
                   </Grid>{" "}
                   <Grid item xs={12}>
                     <Button
+                    sx={{ marginTop:"15pt" }}
                       variant="contained"
                       type="sumbit"
                       size="large"
@@ -213,7 +216,7 @@ const LoginForm = () => {
                       Login
                     </Button>
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid item xs={12} sx={{marginTop:"15pt" }}>
                     <Link onClick={handlenoaccount} to={`/`}>Dont Have an Account </Link>
                   </Grid>
                 </Grid>
