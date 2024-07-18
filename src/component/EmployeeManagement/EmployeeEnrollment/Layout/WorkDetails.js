@@ -189,6 +189,7 @@ const WorkDetails = (data) => {
               }}
               render={({ field }) => (
                 <TextField
+                type="number"
                   fullWidth
                   id="serviceBookNo"
                   label="Service Book Number"
