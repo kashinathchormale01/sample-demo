@@ -8,15 +8,11 @@ import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { pdf} from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
  import Invoice from './../../../global/common/Reports/Invoice';
-import { Link, useNavigate } from "react-router-dom";
 import moment from "moment";
-import { toast } from "react-toastify";
 
-const Viewbill = () => {
-  const navigate = useNavigate();
+const AllpaySlips = () => {
   const [billList, setBillList] = useState([]);
   const [wageslipData, setWageslipData] = useState([]);
-  const [wageRegisterData, setWageRegisterData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -34,8 +30,7 @@ const Viewbill = () => {
   useEffect(() => {
     loadBilldata();
   }, []);
-  //if (loading) return <div className="overlay"><div className="loadingicon"><CircularProgress color="inherit" /><br/>Loading...</div></div>;
-
+  
   const handleExportRows = (rows) => {
     const doc = new jsPDF();
     const title = "Bill List";
@@ -56,37 +51,18 @@ const Viewbill = () => {
     try {
       let result = await axiosHttp.get(`/GetBillSlip/${billId}`);
        setWageslipData(result.data.data);
-      console.log('wageslipData',result.data.data) ;
+      //console.log('wageslipData',result.data.data) ;
       setLoading(false);
-       const blob = await pdf(<Invoice invoice={result.data.data}/>).toBlob()
+       const blob = await pdf(<Invoice invoice={result?.data?.data}/>).toBlob()
        saveAs(blob, 'wageslip.pdf')
     } catch (err) {
       setLoading(false);
       setError(err.message);
     }
-    // console.log('wageslipData',wageslipData) ;   
-    //   const blob = await pdf(<Invoice invoice={invoice}/>).toBlob()
-    //   saveAs(blob, 'wageslip.pdf')
-   
+    
   };
  
-  const handleDeletebill = async(billId) =>{
-    console.log(`delete clicked for billId ${billId}`);
-    if (window.confirm("Are you sure you want to delete this Bill?")) {
-    try {
-      let result = await axiosHttp.delete(`/DeleteBill/${billId}`);
-     //  setWageslipData(result.data.data);
-     toast.error(result.data.msg);
-     loadBilldata();
-      setLoading(false);
-    } catch (err) {
-      setLoading(false);
-      setError(err.message);
-    }
-  }
-  }
- 
-
+  
   const columns = useMemo(
     () => [
       {
@@ -115,24 +91,24 @@ const Viewbill = () => {
         accessorKey: "Total Sites",
         header: "Total Sites",
       },
-      
       {
-        id: "actions",
-        header: "Actions",
+        id: "reports",
+        header: "Reports",
         accessorFn: (row) => ``,
         Cell: ({ row }) => {
-          return(<Box state={{ id:row.original }}>            
+          return(<Box state={{ id:row.original }}>
             <Button
-              variant="contained"
-              color="error"
-              onClick={() => handleDeletebill(row.original.billid)}
-              style={{ marginRight: 10 }}
+              variant="outlined"
+              color="primary"
+              onClick={() => handleWageSlip(row.original.billid)}
+              style={{ marginRight: 7 }}
             >
-              Delete Bill
+              Wage Slip
             </Button>
+            
           </Box>)                 
         },
-      },
+      }
     ],
     []
   );
@@ -188,8 +164,6 @@ const Viewbill = () => {
   return (
     <>
       <marquee
-        onmouseover="this.stop();"
-        onmouseout="this.start();"
         style={{ color: "red", fontSize: "12pt" }}
       >
         If you delete bill then may be impact on the employee reports or may
@@ -200,4 +174,4 @@ const Viewbill = () => {
   );
 };
 
-export default Viewbill;
+export default AllpaySlips;

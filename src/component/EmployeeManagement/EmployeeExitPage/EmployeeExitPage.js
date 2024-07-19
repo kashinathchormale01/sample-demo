@@ -98,7 +98,7 @@ if (loading) return <div className="overlay"><div className="loadingicon"><Circu
         <Typography color="error">No active employees found.</Typography>
       ) : (
       <form onSubmit={handleSubmit(formSubmitHandler)}>
-        <marquee onmouseover="this.stop();" onmouseout="this.start();" style={{ color: 'red', fontSize: '12pt' }}>If employee made exit then may be impact on the employee reports or may loose the important related to the that employee.</marquee>
+        <marquee style={{ color: 'red', fontSize: '12pt' }}>If employee made exit then may be impact on the employee reports or may loose the important related to the that employee.</marquee>
         <Controller
           name="empid"
           control={control}

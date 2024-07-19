@@ -99,7 +99,7 @@ export const menuItemsData = [
       },
       {
         menu: "Employee Payslip",
-        url: "view-bill",
+        url: "emp-payslips",
       },     
     ],
   },

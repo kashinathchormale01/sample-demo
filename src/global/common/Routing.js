@@ -33,6 +33,8 @@ import PFValidationReport from '../../component/FinanceManagement/PFValidationRe
 import EmployeeInActiveList from '../../component/EmployeeManagement/EmployeeList/EmpInactiveList';
 import Inactivesites from '../../component/App Management/SiteLocationManagement/Inactivesites';
 import ConfirmPassword from '../../component/LoginManagement/ConfirmPassword';
+import AllpaySlips from '../../component/ReportManagement/WageSlip/AllpaySlip';
+import AllWageReport from '../../component/ReportManagement/AllwageReports/AllWageReport';
 
 const Routing = ({userRole}) => {
   return (
@@ -49,11 +51,12 @@ const Routing = ({userRole}) => {
         {/* Employee Wage Register */}
         <Route path="/generate-wage-reports" exact element={<BasicTable />} />
         <Route path="/view-wage-bill" exact element={<Viewbill />} />
-        <Route path="/show-bill" exact element={<Viewbill />} />
+        <Route path="/show-bill" exact element={<AllWageReport />} />
         <Route path='/rate-chart' exact element={<VarRateChart />} />
         <Route path='/generate-bill' exact element={<GenerateBill />} />
         <Route path='/view-bill' exact element={<Viewbill />} />
         <Route path='/emp-pf-validation' exact element={<PFValidationReport />} />
+        <Route path="/emp-payslips" exact element={<AllpaySlips />} />
 
         {/* Employee attendance */}
         <Route path='/employee-attendance' exact element={<EmployeeTimeSheet />} />

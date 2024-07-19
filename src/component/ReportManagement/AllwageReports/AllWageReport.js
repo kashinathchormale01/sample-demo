@@ -7,16 +7,14 @@ import { MaterialReactTable, useMaterialReactTable } from "material-react-table"
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { pdf} from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
- import Invoice from './../../../global/common/Reports/Invoice';
+ import Invoice from '../../../global/common/Reports/Invoice';
 import { Link, useNavigate } from "react-router-dom";
 import moment from "moment";
 import { toast } from "react-toastify";
 
-const Viewbill = () => {
-  const navigate = useNavigate();
+const AllWageReport = () => {
   const [billList, setBillList] = useState([]);
   const [wageslipData, setWageslipData] = useState([]);
-  const [wageRegisterData, setWageRegisterData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -34,7 +32,6 @@ const Viewbill = () => {
   useEffect(() => {
     loadBilldata();
   }, []);
-  //if (loading) return <div className="overlay"><div className="loadingicon"><CircularProgress color="inherit" /><br/>Loading...</div></div>;
 
   const handleExportRows = (rows) => {
     const doc = new jsPDF();
@@ -56,7 +53,7 @@ const Viewbill = () => {
     try {
       let result = await axiosHttp.get(`/GetBillSlip/${billId}`);
        setWageslipData(result.data.data);
-      console.log('wageslipData',result.data.data) ;
+      //console.log('wageslipData',result.data.data) ;
       setLoading(false);
        const blob = await pdf(<Invoice invoice={result.data.data}/>).toBlob()
        saveAs(blob, 'wageslip.pdf')
@@ -64,9 +61,6 @@ const Viewbill = () => {
       setLoading(false);
       setError(err.message);
     }
-    // console.log('wageslipData',wageslipData) ;   
-    //   const blob = await pdf(<Invoice invoice={invoice}/>).toBlob()
-    //   saveAs(blob, 'wageslip.pdf')
    
   };
  
@@ -115,24 +109,16 @@ const Viewbill = () => {
         accessorKey: "Total Sites",
         header: "Total Sites",
       },
-      
       {
-        id: "actions",
-        header: "Actions",
+        id: "reports",
+        header: "Reports",
         accessorFn: (row) => ``,
         Cell: ({ row }) => {
-          return(<Box state={{ id:row.original }}>            
-            <Button
-              variant="contained"
-              color="error"
-              onClick={() => handleDeletebill(row.original.billid)}
-              style={{ marginRight: 10 }}
-            >
-              Delete Bill
-            </Button>
+          return(<Box state={{ id:row.original }}>           
+            <Link to={{pathname:`/generate-wage-reports`}} state={{ id:row.original.billid }}>WageRegister</Link>
           </Box>)                 
         },
-      },
+      }
     ],
     []
   );
@@ -188,8 +174,6 @@ const Viewbill = () => {
   return (
     <>
       <marquee
-        onmouseover="this.stop();"
-        onmouseout="this.start();"
         style={{ color: "red", fontSize: "12pt" }}
       >
         If you delete bill then may be impact on the employee reports or may
@@ -200,4 +184,4 @@ const Viewbill = () => {
   );
 };
 
-export default Viewbill;
+export default AllWageReport;
