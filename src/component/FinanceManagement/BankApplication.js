@@ -1,7 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import jsPDF from "jspdf";
-import pdf from './BankApplication.pdf';
-import headimg from './header.png';
+import React, { useState } from 'react';
 import * as yup from "yup";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -9,21 +6,6 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { TextField,Box,Button } from '@mui/material'
 import { Formik, Form, } from 'formik';
 import BankApp from './BankApp';
-
-let doc = new jsPDF("p", "pt", "a4");
-const title = "Bank Application";
-doc.text(title, 15, 15);
- const source = document.getElementById("converts");
-
-let updateapplicationDate = new Date();
-let updatechequeDate = new Date();
-
-const clickhandle = () => {
-    //alert('Clicked')
-    doc.addImage(headimg, 'png', 10, 10, 575, 100);
-    doc.html(source, { margin:[100, 10, 10, 10],autoPaging:'text',callback: (doc) => doc.save("BankApplication.pdf") });
-   
-}
  
 const BankApplication = () => {
 
@@ -49,18 +31,10 @@ const initialValues = {
   chequeBy: "N.K.Sharma"
 };
 
-const [applicationData, setApplicationData] = useState([initialValues])
+const [applicationData, setApplicationData] = useState(null);
 
-const generatePDF = () => {    
-    let doc = new jsPDF("p", "pt");
-   doc.addImage(headimg, 'png', 20, 10, 550, 84);
-    doc.text(20, 20, "This is the first title.");
-    doc.addFont("helvetica", "normal");
-    doc.text(20, 60, "This is the second title.");
-    doc.text(20, 100, "This is the thrid title.");  
-    doc.html(source, { margin:[100, 10, 10, 10],autoPaging:'text',callback: (doc) => doc.save("BankApplication.pdf") });
-    doc.save("demo.pdf");
-  };
+let updateapplicationDate = new Date();
+let updatechequeDate = new Date();
 
   const handleDateChange = (date)=>{
     updatechequeDate = date;
@@ -83,6 +57,7 @@ const generatePDF = () => {
 
   return (
     <>
+   <marquee style={{ color: 'red', fontSize: '12pt' }}>If you have generated the bank application by filling a valid form then you will have to save it or print.</marquee>
     <Formik
         initialValues={initialValues}
         onSubmit={(values, { resetForm }) => {
@@ -206,8 +181,7 @@ const generatePDF = () => {
           </Form>
         )}
       </Formik>
-    <a href = {pdf} target = "_blank">Bank Application</a><br/>
-
+      
     <BankApp data={applicationData} />
 
     </>    

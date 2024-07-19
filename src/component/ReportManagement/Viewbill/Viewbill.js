@@ -97,13 +97,13 @@ const Viewbill = () => {
       {
         accessorKey: "fromdate",
         header: "From Date",
-        accessorFn: (row) => moment(row.fromdate).format('DD/MM/YYYY'),
+        accessorFn: (row) => moment(row.fromdate).format('MMMM-YYYY'),
         size: 50,
       },
       {
         accessorKey: "todate",
         header: "To Date",
-        accessorFn: (row) => moment(row.todate).format('DD/MM/YYYY'),
+        accessorFn: (row) => moment(row.todate).format('MMMM-YYYY'),
         size: 50,
       },
       {

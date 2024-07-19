@@ -50,7 +50,7 @@ const Routing = ({userRole}) => {
 
         {/* Employee Wage Register */}
         <Route path="/generate-wage-reports" exact element={<BasicTable />} />
-        <Route path="/view-wage-bill" exact element={<Viewbill />} />
+        <Route path="/view-wage-slip" exact element={<AllpaySlips />} />
         <Route path="/show-bill" exact element={<AllWageReport />} />
         <Route path='/rate-chart' exact element={<VarRateChart />} />
         <Route path='/generate-bill' exact element={<GenerateBill />} />

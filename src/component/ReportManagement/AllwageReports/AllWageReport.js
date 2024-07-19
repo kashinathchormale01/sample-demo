@@ -91,13 +91,13 @@ const AllWageReport = () => {
       {
         accessorKey: "fromdate",
         header: "From Date",
-        accessorFn: (row) => moment(row.fromdate).format('DD/MM/YYYY'),
+        accessorFn: (row) => moment(row.fromdate).format('MMMM-YYYY'),
         size: 50,
       },
       {
         accessorKey: "todate",
         header: "To Date",
-        accessorFn: (row) => moment(row.todate).format('DD/MM/YYYY'),
+        accessorFn: (row) => moment(row.todate).format('MMMM-YYYY'),
         size: 50,
       },
       {
@@ -115,7 +115,7 @@ const AllWageReport = () => {
         accessorFn: (row) => ``,
         Cell: ({ row }) => {
           return(<Box state={{ id:row.original }}>           
-            <Link to={{pathname:`/generate-wage-reports`}} state={{ id:row.original.billid }}>WageRegister</Link>
+            <Link style={{color:'#1976d2'}} to={{pathname:`/generate-wage-reports`}} state={{ id:row.original.billid }}>WageRegister</Link>
           </Box>)                 
         },
       }

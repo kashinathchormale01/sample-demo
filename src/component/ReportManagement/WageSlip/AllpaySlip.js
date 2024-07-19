@@ -9,6 +9,7 @@ import { pdf} from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
  import Invoice from './../../../global/common/Reports/Invoice';
 import moment from "moment";
+import { toast } from "react-toastify";
 
 const AllpaySlips = () => {
   const [billList, setBillList] = useState([]);
@@ -49,12 +50,18 @@ const AllpaySlips = () => {
        
     console.log(`Wage Slip clicked for billId ${billId}`);
     try {
+      setLoading(true);
       let result = await axiosHttp.get(`/GetBillSlip/${billId}`);
        setWageslipData(result.data.data);
       //console.log('wageslipData',result.data.data) ;
       setLoading(false);
-       const blob = await pdf(<Invoice invoice={result?.data?.data}/>).toBlob()
+      if(result.data.data.length>0){
+        const blob = await pdf(<Invoice invoice={result?.data?.data}/>).toBlob()
        saveAs(blob, 'wageslip.pdf')
+      }else{
+        toast.error("There is no payslip data available, Please contact to administrator for more info.")
+      }
+       
     } catch (err) {
       setLoading(false);
       setError(err.message);
@@ -73,13 +80,13 @@ const AllpaySlips = () => {
       {
         accessorKey: "fromdate",
         header: "From Date",
-        accessorFn: (row) => moment(row.fromdate).format('DD/MM/YYYY'),
+        accessorFn: (row) => moment(row.fromdate).format('MMMM-YYYY'),
         size: 50,
       },
       {
         accessorKey: "todate",
         header: "To Date",
-        accessorFn: (row) => moment(row.todate).format('DD/MM/YYYY'),
+        accessorFn: (row) => moment(row.todate).format('MMMM-YYYY'),
         size: 50,
       },
       {

@@ -1,8 +1,7 @@
 import React, { useState,useEffect} from "react";
-import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-import { Typography,Container } from "@mui/material";
+import { Typography,Container,CircularProgress } from "@mui/material";
 import axiosHttp from "../../../AxiosInstance";
 import { useLocation } from "react-router-dom";
 
@@ -27,6 +26,7 @@ const EmployeeDetails = (props) => {
     }
   }, [location.state]);
 
+  if (loading) return <div className="overlay"><div className="loadingicon"><CircularProgress color="inherit" /><br/>Loading...</div></div>;
   if (error) return <Typography color="error">Something went wrong !</Typography>
   if (!selectedEmp) return <Typography color="error"> No data available for selected employee!</Typography>
 

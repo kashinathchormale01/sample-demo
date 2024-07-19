@@ -89,11 +89,6 @@ export const menuItemsData = [
         url: "bank-application",
       },
       {
-        menu: "Generate Employee Bill",
-        url: "generate-bill",
-      },
-      
-      {
         menu:"Update Rate Chart",
         url:"rate-chart"
       },
@@ -111,7 +106,7 @@ export const menuItemsData = [
     submenu: [      
       {
         menu: "Generate Wage Slips",
-        url: "view-wage-bill",
+        url: "view-wage-slip",
       },     
       {
         menu: "Generate Bill",
