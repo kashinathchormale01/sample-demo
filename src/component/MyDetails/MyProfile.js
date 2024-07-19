@@ -192,8 +192,8 @@ console.log('userRole',userRole)
             </Typography>
           </Stack>
         </Paper> <br/>  
-        { userRole==='Admin' || userRole==='Super'?(     
-        <Paper>
+        { userRole==='Admin' || userRole==='Super'?(  <>   
+        {plotSiteNames && plotAtteCount? <Paper>
           <BarChart
             xAxis={[
               {
@@ -205,8 +205,8 @@ console.log('userRole',userRole)
             width={700}
             height={300}
           />
-        </Paper>
-):''}
+        </Paper>:'No data available'}</>        
+):'you are not authorized.'}
       </Box>     
     </>
   );

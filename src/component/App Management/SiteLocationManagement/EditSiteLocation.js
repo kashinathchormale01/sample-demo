@@ -8,6 +8,9 @@ import { TextField,Box,Button,CircularProgress } from '@mui/material'
 import { Formik, Form, } from 'formik';
 import { toast } from "react-toastify";
 import axiosHttp from "../../../AxiosInstance";
+import { isValid, parseISO } from 'date-fns';
+
+let updatedDate = new Date();
 
 const SiteRegisterSchema = yup.object().shape({
   siteName: yup.string().required("required"),
@@ -18,7 +21,7 @@ const SiteRegisterSchema = yup.object().shape({
 const initialValues = {
   siteName: "",
   siteArea: "",
-  creationDate: new Date()
+  creationDate: ""
 };
 
 const EditSiteLocation = () => {
@@ -26,7 +29,7 @@ const EditSiteLocation = () => {
   const navigate = useNavigate();
   const [savedsites, setSavedsites] = useState();
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null)
+  const [error, setError] = useState(null); 
 
   const loadSelectedSiteLocation = async() => {
     try {
@@ -50,11 +53,17 @@ const EditSiteLocation = () => {
     loadSelectedSiteLocation();
   }, []);
 
+  const handleDateChange = (date) => {
+    updatedDate = date;
+  };
+ 
+
   const handleFormSubmit = async(values) => {
+    values.creationDate = updatedDate;
     try {
       let result = await axiosHttp.put("/UpdateProj_Site", values);
       console.log(result.data.msg);
-      toast.success(result.data.msg);
+      toast.success("Site has been updated Successfully.");
       setLoading(false);
       navigate("/work-location-management");
     } catch (err) {
@@ -124,7 +133,8 @@ const EditSiteLocation = () => {
                 <DatePicker
                   label="Creation Date"
                   disableFuture
-                  value={new Date(values.creationDate)}
+                  value={updatedDate}
+                  onChange={handleDateChange}
                   slotProps={{ field: { shouldRespectLeadingZeros: true } }}
                   error={
                     Boolean(touched.creationDate) &&

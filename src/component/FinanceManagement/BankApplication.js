@@ -10,14 +10,13 @@ import { TextField,Box,Button } from '@mui/material'
 import { Formik, Form, } from 'formik';
 import BankApp from './BankApp';
 
-
 let doc = new jsPDF("p", "pt", "a4");
 const title = "Bank Application";
 doc.text(title, 15, 15);
  const source = document.getElementById("converts");
-//  const newSource = doc.splitTextToSize(source, 850);
-// const button = document.getElementsByTagName("button")[0];
 
+let updateapplicationDate = new Date();
+let updatechequeDate = new Date();
 
 const clickhandle = () => {
     //alert('Clicked')
@@ -27,8 +26,6 @@ const clickhandle = () => {
 }
  
 const BankApplication = () => {
-//     doc.text("Hello world!", 10, 10);
-// doc.save("a4.pdf");
 
 const bankApplicationSchema = yup.object().shape({
   applicationDate: yup.date().nullable(),
@@ -53,13 +50,6 @@ const initialValues = {
 };
 
 const [applicationData, setApplicationData] = useState([initialValues])
-console.log('applicationData',applicationData)
-// const docdate = '01/01/2010';
-// const bankname = 'Bank Of Maharashtra';
-// const bankAdress = 'Navi peth Solapur';
-// const ChequeNo = 'ds0212125';
-// const yourName = 'N.K.Sharma';
-// const amount = '204010';
 
 const generatePDF = () => {    
     let doc = new jsPDF("p", "pt");
@@ -72,13 +62,24 @@ const generatePDF = () => {
     doc.save("demo.pdf");
   };
 
+  const handleDateChange = (date)=>{
+    updatechequeDate = date;
+    console.log("changed date",date, "updated date",updatechequeDate)
+  }
+
+  const datehandleChange = (date)=>{
+    updateapplicationDate = date;
+    console.log("changed date",date, "updated date",updateapplicationDate)
+  }
+  
   function handleFormSubmit (values){
+   
+  values.applicationDate = updateapplicationDate;
+   values.chequeDateApp = updatechequeDate;
+   console.log("handle submit",values, "handle submit onchange",updatechequeDate)
     setApplicationData([values])
   }
 
-  useEffect(()=>{
-    handleFormSubmit();
-  },[])
 
   return (
     <>
@@ -109,7 +110,8 @@ const generatePDF = () => {
                 <DatePicker
                   label="Date of Application"
                   disableFuture
-                  value={values.applicationDate}
+                  value={updateapplicationDate}
+                  onChange={datehandleChange}
                   slotProps={{ field: { shouldRespectLeadingZeros: true } }}
                   error={Boolean(touched.applicationDate) && Boolean(errors.applicationDate)}
                   helperText={touched.applicationDate && errors.applicationDate}
@@ -184,7 +186,8 @@ const generatePDF = () => {
                 <DatePicker
                   label="Cheque Date"
                   name='chequeDateApp'
-                  value={values.chequeDateApp}
+                  value={updatechequeDate}
+                  onChange={handleDateChange}
                   slotProps={{ field: { shouldRespectLeadingZeros: true } }}
                   error={Boolean(touched.chequeDateApp) && Boolean(errors.creationDate)}
                   helperText={touched.chequeDateApp && errors.chequeDateApp}
