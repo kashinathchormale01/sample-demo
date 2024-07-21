@@ -94,7 +94,6 @@ export const EmployeeTimeSheet = () => {
 
   const [monthly, setMonthly] = React.useState(true);
   const [data, setData] = useState([]);
-  
   const handlePreviousWeek = () => {
     if(monthly === true){
     setStartDate((currDate) => dateOffset(currDate, -31));
@@ -214,7 +213,8 @@ const handleSiteSubmit = (values) => {
         name: fullname,
         emp_id: emp.Id,
         sheet: sheetObject,
-        weekOff:""
+        weekOff:"",
+        attendenceBy: emp.attendenceBy
       };
     });
     setData(transformData);
@@ -247,6 +247,7 @@ const submitAttendance = async () => {
   const makeAttendancePayload = {
     selectedSite,
     filteredData,
+    attendanceBy:sessionStorage.getItem('userId')
   };  
   // post api call for attendance with required payload
   try {
@@ -310,7 +311,7 @@ console.log('selectedSiteName',selectedSiteName)
                 )}
               />
 
-{/* <Typography variant="h3" component={"span"}>{selectedSiteName}</Typography> */}
+
 
               <Button
                 type="submit"
@@ -420,20 +421,21 @@ console.log('selectedSiteName',selectedSiteName)
                   }}
                 >
                   <TableCell>Employee Id</TableCell>
-                  <TableCell>Employee Name</TableCell>
+                  <TableCell>Employee Name</TableCell>                  
                   <TableCell>Total Attendance</TableCell>
                   {weekDates?.map((day) => (
                     <TableCell key={day}>
                       {day.toLocaleDateString("en-US", weekDayFormat)}
                     </TableCell>
                   ))}
+                  <TableCell>Attendance Marked By</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {data.sort((a,b)=>a.emp_id > b.emp_id ? 1 : -1)?.map((item, index) => (
                   <StyledTableRow key={index}>
                     <TableCell>{item.emp_id}</TableCell>
-                    <TableCell>{item.name}</TableCell>
+                    <TableCell>{item.name}</TableCell>                    
                     <TableCell>
                       <Chip
                         label={getTotal(index, weekDates)}
@@ -456,9 +458,10 @@ console.log('selectedSiteName',selectedSiteName)
                           checkedIcon={<ToggleOn />}
                           icon={<ToggleOff />}
                         />
-                      </TableCell>
+                      </TableCell>                      
                     ))}
-                  </StyledTableRow>
+                   <TableCell>{item.attendenceBy}</TableCell>
+                  </StyledTableRow>                  
                 ))}
                 <TableRow>
                 <TableCell></TableCell>
