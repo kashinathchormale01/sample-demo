@@ -206,7 +206,7 @@ console.log('userRole',userRole)
             height={300}
           />
         </Paper>:'No data available'}</>        
-):'you are not authorized.'}
+):''}
       </Box>     
     </>
   );

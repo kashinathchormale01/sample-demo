@@ -49,7 +49,6 @@ const LoginForm = () => {
      * encrypt
      */
     const hashedPassword = CryptoJS.AES.encrypt(userPassword, "nks").toString();
-
     /**
      * Decrypt
      */
@@ -65,7 +64,9 @@ const LoginForm = () => {
     try {
       setLoading(true);
      // let res = await axios.post("http://192.168.1.121:8089/Login", sendingdata)
-     const res = await axios.post("https://epdsback.onrender.com/Login", sendingdata)     
+      const res = await axios.post("http://epds.epdssoft.xyz/Login", sendingdata)     
+   //  const res = await axios.post("https://epds.luknos.shop/Login", sendingdata)     
+
       if (res.data.msg === "Succesfull") {
           
         /**
@@ -84,6 +85,8 @@ const LoginForm = () => {
          */ 
         sessionStorage.removeItem("Id");
         sessionStorage.setItem("Id", hashedEmpId);
+        const hashedUserID = CryptoJS.AES.encrypt(userId, "nks").toString();
+        sessionStorage.setItem("userId", hashedUserID);
         if ("1234" === defaultOrigional) {
           sessionStorage.removeItem("rePass");
         sessionStorage.setItem("rePass", 'default');
@@ -94,9 +97,10 @@ const LoginForm = () => {
           window.location.href = '/';
         }
       } else {
+        setLoading(false);
         sessionStorage.setItem("user", false);
         toast.error(res.data.msg);
-        window.location.href = '/login';
+        //window.location.href = '/login';
       }  
      // setLoading(false);    
   } catch (err) {
@@ -117,13 +121,8 @@ const LoginForm = () => {
   const handleSubmit = async(e) => {
    // setLoading(true);
     console.log('click on login')
-    e.preventDefault();
-    
-
-    submitLogin();
-    
-    
-
+    e.preventDefault();   
+    submitLogin(); 
   };
   useEffect(() => {
     submitLogin();
