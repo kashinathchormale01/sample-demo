@@ -114,7 +114,7 @@ const DateSite = () => {
                   setStartdate(newValue.$d);
                   sessionStorage.setItem(
                     "billStartDate",
-                    moment(newValue.$d).format("YYYY/MM/DD")
+                    moment(newValue.$d).startOf("month").format("YYYY/MM/DD")
                   );
                 }
               }}

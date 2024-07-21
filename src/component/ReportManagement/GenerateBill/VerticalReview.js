@@ -20,12 +20,12 @@ const VerticalReview = () => {
   // Get selected sites from sessionStorage
   const selectedSites = sessionStorage?.getItem('site.Id')?.split(',') || [];
   const selectedSiteIds = selectedSites.map(number => parseInt(number));
-
+  const empLength = (sessionStorage.getItem('selectedemp').trim()).split(',');
   // Prepare the payload object
   const payload = {
     id: generateId(),
     sites: selectedSiteIds.length,
-    totalEmps: sessionStorage.getItem('selectedEmployee') ? JSON.parse(sessionStorage.getItem('selectedEmployee')).length : 0,
+    totalEmps: sessionStorage.getItem('selectedemp') ? empLength.length : 0,
     billStartDate: sessionStorage.getItem('billStartDate'),
     billEndDate: sessionStorage.getItem('billEndDate'),
   };

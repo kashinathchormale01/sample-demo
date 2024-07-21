@@ -124,16 +124,27 @@ let sessionsids = [];
 const SentSite = {
   siteId: newsiteData,
 };
+
+let sessionsiteids1 = [];
+sessionsiteids1.push(sessionStorage.getItem("site.Id"));
+const newsiteData1 = sessionsiteids1[0].split(",").map((item) => parseInt(item));
+const makepayloadForDate = {
+ siteId: newsiteData1,
+ billStartDate: sessionStorage.getItem('billStartDate'),
+ billEndDate: sessionStorage.getItem('billEndDate'),
+}
+//console.log('makepayloadForDate',makepayloadForDate)
  
 
   React.useEffect(()=>{
   
 
     axiosHttp
-  .post("/GetSiteEmp",SentSite)
+  // .post("/GetSiteEmp",SentSite)
+   .post("/GetBillEmp",makepayloadForDate)
   .then((res) => {
   //console.log(res.data.msg);
-    if(res.data.msg==="worker list")
+    if(res.data.msg==="Worker Updated")
     {
    // console.log("success",res.data.data);
   const parsedata = res.data.data.map((entry,index) => ({
