@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, TextField,Typography } from "@mui/material";
 import { DataGrid, useGridApiRef } from "@mui/x-data-grid";
 import axiosHttp from "../../../AxiosInstance";
 import { toast } from "react-toastify";
@@ -43,6 +43,7 @@ const columns = [
 ];
 
 const SelectEmp = () => {
+  const [error, setError] = useState(null);
 const [sitedata,setSitedata]=React.useState();
 let stateFromLocalStorage = sessionStorage?.getItem('dataGridState');
 
@@ -137,7 +138,7 @@ const makepayloadForDate = {
  
 
   React.useEffect(()=>{
-  
+    if (makepayloadForDate.siteId && sessionStorage.getItem('billStartDate') && sessionStorage.getItem('billEndDate')) {
 
     axiosHttp
   // .post("/GetSiteEmp",SentSite)
@@ -147,6 +148,8 @@ const makepayloadForDate = {
     if(res.data.msg==="Worker Updated")
     {
    // console.log("success",res.data.data);
+   if(res.data.data.length > 0){
+  
   const parsedata = res.data.data.map((entry,index) => ({
     id: entry.Id,
 
@@ -156,6 +159,7 @@ const makepayloadForDate = {
     dateOfJoning: entry.dateOfJoning,
     SPLallowance:entry.SPLallowance// Age is not provided in the original data
   }));
+
  // console.log("all data",parsedata);
 
 const selectedidlist= parsedata.map((value,index)=>(
@@ -221,7 +225,10 @@ stateFromLocalStorage===null|| Object.keys(stateFromLocalStorage).length === 0  
   
    // console.log("in axios call",sitedata)
     // return(res.data.data);
-     
+  }else{
+    setError("There is no attendance of employee availance for this bill period.")
+    //toast.error("There is no attendance of employee availance for this bill period.")
+  }
     }
     else
     {
@@ -233,8 +240,8 @@ stateFromLocalStorage===null|| Object.keys(stateFromLocalStorage).length === 0  
     console.log(error);
   });
   
- 
-},[])
+}
+},[makepayloadForDate.siteId, sessionStorage.getItem('billStartDate'), sessionStorage.getItem('billEndDate')])
 
 
 
@@ -244,6 +251,7 @@ stateFromLocalStorage===null|| Object.keys(stateFromLocalStorage).length === 0  
 
   return (
     <Box sx={{ height: 400, width: '100%' }}>
+       {<Typography color="error">{error}</Typography>}
     <DataGrid
       rows={rows}
       columns={columns}
@@ -264,7 +272,7 @@ stateFromLocalStorage===null|| Object.keys(stateFromLocalStorage).length === 0  
     
       
     />
-    
+   
   </Box>
   )
 }
