@@ -94,6 +94,7 @@ export const EmployeeTimeSheet = () => {
 
   const [monthly, setMonthly] = React.useState(true);
   const [data, setData] = useState([]);
+ // const [dataagain, setDataagain] = useState([]);
   const handlePreviousWeek = () => {
     if(monthly === true){
     setStartDate((currDate) => dateOffset(currDate, -31));
@@ -149,6 +150,7 @@ export const EmployeeTimeSheet = () => {
     setDateValue(date);
     const firstDayOfWeek = getFirstDayOfWeek(date.$d);
     setStartDate(firstDayOfWeek);
+   // setData(dataagain);
   };
 
  
@@ -218,6 +220,7 @@ const handleSiteSubmit = (values) => {
       };
     });
     setData(transformData);
+   // setDataagain(transformData);
     toast.success("Please mark the attendance for this site worker/Employee.");
     setLoading(false); 
     setIsButtonDisabled(false);
@@ -487,7 +490,7 @@ console.log('selectedSiteName',selectedSiteName)
           </Button>
         </>
       )}  
-      {/* <pre>{JSON.stringify(data, null, 4)}</pre> */}
+      <pre>{JSON.stringify(data, null, 4)}</pre>
     </>
   );
 };

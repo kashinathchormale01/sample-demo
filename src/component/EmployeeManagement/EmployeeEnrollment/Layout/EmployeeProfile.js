@@ -276,16 +276,19 @@ const EmployeeProfile = (defaultdates,profileimg, data) => {
                 required: "Please select Gender",
               }}
               render={({ field }) => (
-                <FormControl fullWidth>
+                <FormControl
+                variant="outlined"
+                style={{ width: "100%", }}
+              >
                   <InputLabel id="demo-simple-select-helper-label">
-                    Select Gender
+                    Gender
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-helper-label"
-                    id="demo-simple-select-helper"
+                    id="Gender"
                     value={age}
                     fullWidth
-                    label="Gender *"
+                    label={"Gender *"}
                     onChange={handleChange}
                     {...field}
                     error={Boolean(errors.gender)}

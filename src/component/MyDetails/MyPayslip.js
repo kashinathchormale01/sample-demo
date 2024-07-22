@@ -143,13 +143,21 @@ const MyPayslip = ({userRole}) => {
             >
          <form onSubmit={handleSubmit(onSubmit)}>
      
-      <FormControl fullWidth>
-        <InputLabel id="period-label">Period</InputLabel>
+         <FormControl
+          variant="outlined"
+          margin={"1"}
+          style={{ width: "100%", marginBottom: 32 }}
+        >
+        <InputLabel id="test-select-label">Period</InputLabel>
         <Select
-          labelId="period-label"
+         style={{ width: "100%" }}
+            variant="outlined"
+         // labelId="period-label"
           id="period"
           {...register('period')}
           defaultValue=""
+          labelId="test-select-label"
+            label={"Period"}
         >
           {slipBill.map((item,index)=>(
             <MenuItem key={index} value={item.BillId}>{moment(item.fromdate).format('MMM/YY')} - {moment(item.todate).format('MMM/YY')}</MenuItem>

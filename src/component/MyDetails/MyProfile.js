@@ -200,7 +200,13 @@ console.log('userRole',userRole)
                 scaleType: "band",
                 data: plotSiteNames
               },
+              {
+                label: 'Site Locations',
+              }
             ]}
+            yAxis={[{
+              label: 'Employee Count',
+            }]}
             series={[{ data: plotAtteCount }]}
             width={700}
             height={300}

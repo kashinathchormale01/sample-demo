@@ -18,7 +18,9 @@ import {
 } from "react-hook-form";
 import { toast } from 'react-toastify';
 import axiosHttp from '../../../AxiosInstance';
+import {CircularProgress} from "@mui/material";
 import moment from 'moment';
+import { useNavigate } from 'react-router-dom';
 
 function getSteps() {
     return [
@@ -30,11 +32,11 @@ function getSteps() {
   }
   let values={};
 const VerticalStepper = () => {
-
+const navigate = useNavigate();
   let selectedEmps = sessionStorage?.getItem('selectedemp')?.split(",")?.map(Number);
     const steps = getSteps();
     const methods = useForm();
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
     function getActiveStepContent(steps) {
@@ -72,6 +74,7 @@ const VerticalStepper = () => {
         billEndDate: sessionStorage.getItem('billEndDate'),
        }
        console.log('makepayloadForDate',makepayloadForDate)
+       
        if((makepayloadForDate.billStartDate && makepayloadForDate.billEndDate) === null){
         alert('Please select date first');
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
@@ -94,12 +97,20 @@ const VerticalStepper = () => {
       }
     }
 
-    const handleNext = (data) => {
-      handleDatealert()
+    const handleNext = (data) => {      
+        handleDatealert();      
       //console.log('values',data);
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
       console.log('steps.length',activeStep)
-      
+      if((activeStep>0))
+      {
+       if(sessionStorage.getItem('selectedemp') === 'NaN' || sessionStorage.getItem('selectedemp').length<1){
+        toast.error('There is no employee attendance for this month period, Please mark attendance or contact to administrator.');
+        setActiveStep(0); 
+        handleResetBill();
+      }
+    }
+
       if(activeStep === steps.length-1){
         //console.log('last step');
 
@@ -145,6 +156,14 @@ keysToRemove.forEach(key => {
     console.log(error);
   });
       }
+
+      if(activeStep === steps.length-1){
+        setLoading(true);
+        window.setTimeout(function(){
+          navigate('/view-bill');      
+        }, 2000);
+      }
+     
     };
   
     const handleBack = () => {
@@ -162,7 +181,7 @@ keysToRemove.forEach(key => {
       });
       setActiveStep(0);
     }
-  
+    if (loading) return <div className="overlay"><div className="loadingicon"><CircularProgress /><br/>Loading...</div></div>;
     return (
       <Box sx={{ width: "100%" ,display:"flex",flexDirection:"row",justifyContent:"center"}}>
         <Paper sx={{padding:'10px', width:'auto', minWidth:'60%'}}>
