@@ -97,7 +97,7 @@ export const EmployeeTimeSheet = () => {
  // const [dataagain, setDataagain] = useState([]);
   const handlePreviousWeek = () => {
     if(monthly === true){
-    setStartDate((currDate) => dateOffset(currDate, -31));
+    setStartDate((currDate) => dateOffset(currDate, -31)); 
     }else{
     setStartDate((currDate) => dateOffset(currDate, -7));
     }
