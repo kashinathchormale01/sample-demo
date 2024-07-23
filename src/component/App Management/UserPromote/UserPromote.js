@@ -130,7 +130,7 @@ const UserPromote = () => {
               }
               style={{ width: 300 }}
               onChange={(e, value) => {
-                console.log(value);
+               // console.log(value);
                 setSelectedEmps(value);
                 setFieldValue(
                   "selectedEmpId",

@@ -14,6 +14,7 @@ import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { jsPDF } from 'jspdf'; //or use your library of choice here
 import autoTable, { Row } from 'jspdf-autotable';
 import axiosHttp from "../../../AxiosInstance";
+import { toast } from "react-toastify";
 
 
 const UserPromotedList = ({ sendempid }) => {
@@ -60,6 +61,21 @@ const UserPromotedList = ({ sendempid }) => {
 
     doc.save('PromotedUserList.pdf');
   }; 
+
+  const handleDemoteEmp = async(Id) =>{
+    console.log(`delete clicked for Id ${Id}`);
+    if (window.confirm("Are you sure you want to demote this employee?")) {
+    try {
+      let result = await axiosHttp.delete(`/DemoteEmp/${Id}`);
+     toast.error(result.data.msg);
+     loadpromotedEmployees();
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+      setError(err.message);
+    }
+  }
+  }
 
   
 
@@ -109,7 +125,24 @@ const UserPromotedList = ({ sendempid }) => {
             hasComma.map((item,index)=>(<Chip key={index} label={item.trim()} color='warning' variant="outlined" sx={{ marginRight: "5px" }} />))
           );
         }         
-      }       
+      },
+      {
+        id: "demotion",
+        header: "Demotion",
+        accessorFn: (row) => ``,
+        Cell: ({ row }) => {
+          return(<Box state={{ id:row.original }}>            
+            <Button
+              variant="contained"
+              color="error"
+              onClick={() => handleDemoteEmp(row.original.empid)}
+              style={{ marginRight: 10 }}
+            >
+              Employee Demotion
+            </Button>
+          </Box>)                 
+        },
+      },       
     ],
     [],
   );
