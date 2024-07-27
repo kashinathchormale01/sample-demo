@@ -23,15 +23,19 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import ToggleOn from "@mui/icons-material/ToggleOn";
 import ToggleOff from "@mui/icons-material/ToggleOff";
-import { Checkbox,CircularProgress,Box, Typography } from "@mui/material";
+import { Checkbox,CircularProgress,Box, Chip } from "@mui/material";
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import ViewWeekOutlinedIcon from '@mui/icons-material/ViewWeekOutlined';
 import CalendarTodayOutlinedIcon from '@mui/icons-material/CalendarTodayOutlined';
 import { toast } from "react-toastify";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    textAlign:'center'
+  },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
+    textAlign:'center'
   },
 }));
 
@@ -365,8 +369,8 @@ export const EmployeeTimeSheet = () => {
                       backgroundColor: "#b1dbdf",
                     },
                   }}>
-            <StyledTableCell sx={{textAlign:'left', maxWidth:'300pt'}}>Id</StyledTableCell>
-            <StyledTableCell>
+            <StyledTableCell>Id</StyledTableCell>
+            <StyledTableCell sx={{minWidth:'200pt', textAlign:'left !important'}}>
               Name
             </StyledTableCell>
             {daysarry.map((value, index) => (
@@ -378,18 +382,12 @@ export const EmployeeTimeSheet = () => {
 
         <TableBody>
           {mapsheet.map((row, index) => (
-            <StyledTableRow key={row.Id} 
-            sx={{ "& th": {
-              fontSize: "1rem",
-              textAlign:'left'
-            },
-          }}>
+            <StyledTableRow key={row.Id}>
               <StyledTableCell component="th">{row.Id}</StyledTableCell>
-              <StyledTableCell>{row.name}</StyledTableCell>
+              <StyledTableCell sx={{minWidth:'200pt', textAlign:'left !important'}}>{row.name}</StyledTableCell>
 
               {daysarry.map((value) => (
-                <StyledTableCell key={`${row.Id}-${value}`} align="center">
-                 
+                <StyledTableCell key={`${row.Id}-${value}`}>                 
                   <Checkbox
                     id={`${row.Id}`}
                     name={`day${dayjs(value).format("YYYYMMDD")}`}
@@ -403,7 +401,13 @@ export const EmployeeTimeSheet = () => {
                   />
                 </StyledTableCell>             
               ))}
-              <TableCell>{row.attendenceBy}</TableCell>
+              <TableCell>
+              <Chip
+                        label={row.attendenceBy}
+                        color="success"
+                        variant="filled"
+                      />
+              </TableCell>
             </StyledTableRow>
           ))}
         </TableBody>
