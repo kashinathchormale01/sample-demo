@@ -1,44 +1,52 @@
-import React, { useMemo, useState,useEffect } from "react";
-import { Formik, Form, } from 'formik';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TextField,
-  TableHead,
-  TableRow,
-  Paper,
-  Typography,Box,Chip,CircularProgress
-} from "@mui/material";
-import Checkbox from "@mui/material/Checkbox";
+import React,{useState} from "react";
+import axiosHttp from "../../../AxiosInstance";
 import { styled } from "@mui/material/styles";
-import ToggleOn from "@mui/icons-material/ToggleOn";
-import ToggleOff from "@mui/icons-material/ToggleOff";
-import Button from "@mui/material/Button";
-import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
-import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
-import ViewWeekIcon from '@mui/icons-material/ViewWeek';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormHelperText from "@mui/material/FormHelperText";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import axios from "axios";
 import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
 import dayjs from "dayjs";
-import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import Autocomplete from '@mui/material/Autocomplete';
+import ToggleOn from "@mui/icons-material/ToggleOn";
+import ToggleOff from "@mui/icons-material/ToggleOff";
+import { Checkbox,CircularProgress,Box, Typography } from "@mui/material";
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import ViewWeekOutlinedIcon from '@mui/icons-material/ViewWeekOutlined';
+import CalendarTodayOutlinedIcon from '@mui/icons-material/CalendarTodayOutlined';
 import { toast } from "react-toastify";
-import axiosHttp from "../../../AxiosInstance";
-import { useNavigate } from "react-router-dom";
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
-    backgroundColor: "white",
+    backgroundColor: theme.palette.action.hover,
   },
-  "&:nth-of-type(even)": {
-    backgroundColor: "#f1f1f1",
+  // hide last border
+  "&:last-child td, &:last-child th": {
+    border: 0,
   },
 }));
+let rows = [];
+let daylenth = 0;
+let firstview = null;
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -51,446 +59,369 @@ const MenuProps = {
   },
 };
 
-const initialValues = {
-  siteId: "",
-};
-
-const dateOffset = (date, offset) => {
-  const newDate = new Date(date);
-  newDate.setDate(date.getDate() + offset);
-  return newDate;
-};
-
-const getFirstDayOfWeek = (date) => {
-  const day = (date.getDay() + 6) % 7; 
-  return dateOffset(date, -day);
-};
-
-const weekDayFormat = { weekday: "short", month: "short", day: "numeric" };
 
 export const EmployeeTimeSheet = () => {
   /**
    * site locationlist state
    */
-  const [sitelocationlist, setSitelocationlist] = useState();
-  const [error, setError] = useState(null);
-  const [selectedSite, setSelectedSite] = React.useState([]);
-  const [selectedSiteName, setSelectedSiteName] = React.useState(null);
-  const [dateValue, setDateValue] = React.useState(dayjs());
+  function createData(Id, firstName, fatherSpouseName, lastName) {
+    return { Id, name: firstName + " " + fatherSpouseName + " " + lastName };
+  }
   const [loading, setLoading] = useState(false);
-  const [emplistbylocation, setEmplistbylocation] = useState();
-  const [getAttendanceres, setGetAttendanceres] = useState([]);
-  const [weekoffday, setWeekoffday] = useState([]);   
-  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-  const navigate = useNavigate();
-  /**
-   * week start date
-   */
-  const [startDate, setStartDate] = useState(getFirstDayOfWeek(new Date()));
-  /**
-   * Week end date
-   */
-  const isFutureStartDate = useMemo(() => startDate > new Date(), [startDate]);
+  const [age, setAge] = useState("");
+  const [siteLocaionlist, setSiteLocaionlist] = useState([]);
+  const [sheet, setSheet] = useState([]);
+  const [mapsheet, setMapsheet] = useState([]);
+  const [sendingsheet, setSendingsheet] = useState([]);
+  const [selecteddate, setSelecteddate] = useState(dayjs()); 
 
-  const [monthly, setMonthly] = React.useState(true);
-  const [data, setData] = useState([]);
- // const [dataagain, setDataagain] = useState([]);
-  const handlePreviousWeek = () => {
-    if(monthly === true){
-    setStartDate((currDate) => dateOffset(currDate, -31)); 
-    }else{
-    setStartDate((currDate) => dateOffset(currDate, -7));
+  const [daysarry, setDaysarry] = useState([
+    dayjs(selecteddate).format("YYYY-MM-DD"),
+  ]);
+  const siteobjet = { siteId: age };
+
+  const handleChange = (event) => {
+    setAge(event.target.value);
+  };
+
+  const createweeklyview = () => {
+   
+    firstview = null;
+    let tempdayarry = [dayjs(selecteddate).format("YYYY-MM-DD")];
+    if (
+      daylenth > 7 &&
+      dayjs(selecteddate).startOf("month").diff(selecteddate, "day")
+    ) {
+      setSelecteddate(dayjs(selecteddate).startOf("month"));
+     
+      console.log(
+        "date 1 month",
+        Boolean(
+          daylenth > 7 &&
+            dayjs(selecteddate).startOf("month").diff(selecteddate, "day")
+        )
+      );
     }
+
+    for (var i = 0; i < daylenth - 1; i++) {
+      try {
+        tempdayarry.push(
+          dayjs(selecteddate)
+            .add(i + 1, "day")
+            .format("YYYY-MM-DD")
+        );
+      } catch (err) {}
+    }
+    setDaysarry(tempdayarry);
+    
   };
-
-  const handleNextWeek = () => {
-    if(monthly === true){
-      setStartDate((currDate) => dateOffset(currDate, 31));
-      }else{
-      setStartDate((currDate) => dateOffset(currDate, 7));
-      }
-  };  
-
-  const getValue = (index, date) => {
-    const key = date.toLocaleDateString("en-US");
-    return data[index].sheet[key] ?? "";
+  const handledatchange = (value) => {
+    setSelecteddate(value);
   };
-
-  const setValue = (index, date, value) => {
-    const key = date.toLocaleDateString("en-US");
-    setData((prevData) => {
-      const newData = [...prevData];
-      // remove key if empty
-      if (value === "") delete newData[index].sheet[key];
-      else newData[index].sheet[key] = value;
-      return newData;
+  const getsitedata = async () => {
+    await axiosHttp.get("/GetProj_Site").then((res) => {
+      setSiteLocaionlist(
+        res.data.data.map((value) => ({
+          valueitem: value.Id,
+          labelitem: value.siteName,
+        }))
+      );
+      
     });
   };
-  
-  const handleCalendarTableWeekly = () => {
-    setMonthly(false);
+
+  const loademployee = async () => {
+    firstview = null;
+    await axiosHttp
+      .post("/GetAttendance", siteobjet)
+      .then((res) => {
+        setSheet(
+          res.data.data.map((value) => ({
+            
+            Id: value.Id,
+            name:value.firstName +" " +value.fatherSpouseName +" " +value.lastName,
+            daysheet: String(value.Sheet).split(","),
+            attendenceBy: value.attendenceBy
+          }
+        
+        ))
+        );      
+      });
   };
 
-  const handleCalendarTableMonthly = () => {
-    setMonthly(true);
-  };
+  const reeditsheet = async () => {
+    const result = [];
+    
+    sheet.forEach((obj) => {     
+      const newObj = {
+        Id: obj.Id,
+        name: obj.name,
+        attendenceBy: obj.attendenceBy
+      };
 
-  const getTotal = (index, dates) => {
-    return dates.reduce((total, date) => {
-      const val = 1 * getValue(index, date);
-      return total + val;
-    }, 0);
-  };
+      
+      daysarry.forEach((date) => {
+        const key = `day${date.replace(/-/g, "")}`;
+        if (obj.daysheet.includes(date)) {
+          newObj[key] = "true";
+        } else {
+          newObj[key] = "false";
+        }
+      });
 
-  const weekDates = Array.from({ length: monthly ? 32 : 7 }, (_, i) =>
-    dateOffset(startDate, i)
-  );
+      result.push(newObj);
+    });
 
-  const handleDateChange = (date) => {
-    setDateValue(date);
-    const firstDayOfWeek = getFirstDayOfWeek(date.$d);
-    setStartDate(firstDayOfWeek);
-   // setData(dataagain);
-  };
-
- 
-  const loadSiteLocation = async () => {  
-    try {
-      setLoading(true);
-      let result = await axiosHttp.get('/GetProj_Site');
-      setSitelocationlist(result.data.data);          
-      setLoading(false);
-      // Work with the response...
-  } catch (err) {
-      if (err.response) {
-        setLoading(false);
-        setError(err.message);
-      } else if (err.request) {
-        setLoading(false);
-        setError(err.message);
-      } else {
-          // Anything else
-          setLoading(false);
-          setError(err.message);
-      }
-  }    
-  }; 
-console.log('selectedSite',selectedSite)
-const handleSiteSubmit = (values) => {
-  setSelectedSite(values.siteId); // Store selected site ID
-    const siteNameselected = sitelocationlist.find(site => site.Id === values.siteId)?.siteName; // Get selected site name
-    setSelectedSiteName(siteNameselected || "");
-  //setSelectedSite(values);
-  if (!values.siteId || values.siteId.length === 0) {
-    // Show an error message or handle the case where required fields are missing
-    toast.error("Please select site to mark an attendance.");
-    return;
-  }
-  setIsButtonDisabled(true);
-  setLoading(true); 
-  axiosHttp.post("/GetAttendance", values).then((res) => {
-    const formatDate = (dateString) => {
-      if (!dateString) return null;
-      const [year, month, day] = dateString.split("-");
-      return `${parseInt(month)}/${day}/${year}`;
-    };
-   
-    if (!res.data.data || res.data.data.length === 0) {
-      setIsButtonDisabled(false);
-      setLoading(false); 
-      setData([]);
-      toast.error("Data Not exists or No Employee mapped with this site. For more info. please contact to Administrator.");      
-      return;
+    setMapsheet(result);
+    if (firstview === null && result.length>0){ 
+   // console.log('Result.lengh',result.length)
+      firstview = result;
     }
+  };
 
-    const transformData = res.data.data.map((emp) => {
-      const sheetObject = {};
-      const fullname = emp.firstName + ' ' + emp.lastName;
-      if (emp.Sheet) {
-        emp.Sheet.split(", ").forEach((date) => {
-          sheetObject[formatDate(date)] = true;
+  const handleChangecheckbox = (e) => {
+    const { name, checked } = e.target;
+
+    const updatedMapsheet = mapsheet.map((row) => {
+      if (row.Id === parseInt(e.target.id)) {
+        return {
+          ...row,
+          [name]: checked ? "true" : "false",
+        };
+      }
+      return row;
+    });
+
+    setMapsheet(updatedMapsheet); 
+  };
+
+  
+  const compareObjects = (first, second) => {
+    const result = {
+      selectedSite: age, 
+      filteredData: [],
+    };
+
+    first.forEach((firstItem, index) => {
+      const secondItem = second[index];
+      const pushdate = [];
+      const popdate = [];
+
+      Object.keys(firstItem).forEach((key) => {
+        if (key.startsWith("day")) {
+          console.log("format date", key.substring(3));
+          const date = dayjs(key.substring(3), "YYYYMMDD").format("YYYY/MM/DD");
+          if (firstItem[key] === "false" && secondItem[key] === "true") {
+            pushdate.push(date);
+          } else if (firstItem[key] === "true" && secondItem[key] === "false") {
+            popdate.push(date);
+          }
+        }
+      });
+
+      if (pushdate.length > 0 || popdate.length > 0) {
+        result.filteredData.push({
+          emp_id: firstItem.Id.toString(),
+          pushdate,
+          popdate,
         });
       }
-      return {
-        name: fullname,
-        emp_id: emp.Id,
-        sheet: sheetObject,
-        weekOff:"",
-        attendenceBy: emp.attendenceBy
-      };
     });
-    setData(transformData);
-   // setDataagain(transformData);
-    toast.success("Please mark the attendance for this site worker/Employee.");
-    setLoading(false); 
-    setIsButtonDisabled(false);
-    // const siteNameselected = sitelocationlist.filter(site => site?.siteId === selectedSite?.siteId)?.siteName;
-    // setSelectedSiteName(siteNameselected);
-  });
-};
 
-const submitAttendance = async () => {
-  let dateKeys = {};
-  data.forEach((emp) => {
-    Object.entries(emp.sheet).forEach(([date, value],i) => {
-      if (i == 0) 
-      dateKeys[emp.emp_id] = [];
-      if (value === true) {        
-        dateKeys[emp.emp_id].push(date);
-      }      
-    });
-  });
+    return result;
+  };
 
-  // Create filtered data with emp_id arrays
-  const filteredData = Object.keys(dateKeys).map((emp_id) => ({
-    emp_id,
-    Date: dateKeys[emp_id],
-  }));
+  const submitattendance = async () => {
+    if (firstview != null) {
+      const result = compareObjects(firstview, mapsheet);
+      console.log("firstview", firstview);
+      console.log("mapsheet", mapsheet);
+      console.log("result is", result);
+      await axiosHttp
+        .post("/AttendanceNew", result)
+        .then((res) => {
+          toast.success(res.data.msg);
+        });
+        getsitedata();
+    }
+  };
 
-  const makeAttendancePayload = {
-    selectedSite,
-    filteredData,
-    attendanceBy:sessionStorage.getItem('userId')
-  };  
-  // post api call for attendance with required payload
-  try {
-    setLoading(true); 
-    const res = await axiosHttp.post("/Attendance", makeAttendancePayload);
-    toast.success("Attendance Marked for resp. worker/Employee.");
-    navigate('/employee-attendance');
-    setLoading(false); 
-  } catch (err) {
-    setLoading(false); 
-  }  
-};
-
-  useEffect(() => {
-    loadSiteLocation();
+  React.useEffect(() => {
+    if (age) loademployee();
+  }, [age]);
+  React.useEffect(() => {
+    getsitedata();
   }, []);
+  React.useEffect(() => {
+    reeditsheet();
+    createweeklyview();
+  }, [selecteddate]);
+  React.useEffect(() => {
+    reeditsheet();
+  }, [sheet]);
+  React.useEffect(() => {
+    reeditsheet();
+  }, [daysarry]); 
+  
 
   if (loading) return <div className="overlay"><div className="loadingicon"><CircularProgress /><br/>Loading...</div></div>;
-  if (!sitelocationlist) return 'No Sites available';
-console.log('selectedSiteName',selectedSiteName)
-
+ 
 
   return (
     <>
-      <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-        <Formik initialValues={initialValues} onSubmit={handleSiteSubmit}>
-          {({
-            handleChange,
-            isValid,
-            dirty,
-            isSubmitting,
-            values,
-            setFieldValue,
-          }) => (
-            <Form>
-              <Autocomplete
-              sx={{marginRight:'20pt'}}
-                id="userroles"
-                name="userroles"
-                options={sitelocationlist}
-                getOptionLabel={(option) => option.siteName}
-                style={{ width: 300 }}
-                onChange={(e, value) => {
-                  setSelectedSite(value ? value.Id : null); // Update selectedSite state
-                setSelectedSiteName(value ? value.siteName : ""); // Update selectedSiteName state
-                  isSubmitting = false;
-                  setIsButtonDisabled(false);
-                  setFieldValue(
-                    "siteId",
-                    value !== null ? value.Id : initialValues.siteId
-                  );
-                }}
-                renderInput={(params) => (
-                  <TextField
-                    margin="normal"
-                    label="Select Site Location"
-                    fullWidth
-                    name="role"
-                    {...params}
-                  />
-                )}
-              />
-
-
-
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                disabled={isButtonDisabled}
-              >
-                Go
-              </Button>
-            </Form>
-          )}
-        </Formik>
-        {selectedSiteName && (
-          <div className="SelectedSiteName"><Typography variant="h3" component="span">
-          <Typography variant="h3" component="span">Selected Site Name:</Typography><Typography variant="h3" component="span" className="labelvalue">{selectedSiteName}</Typography> 
-        </Typography></div>        
-      )}
-      </Box>
-      {data.length>0 && (
-        <>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DemoContainer
-              sx={{ margin: "20px 0" }}
-              components={["DatePicker"]}
-            >
-              <DatePicker
-                label="Select a Date"
-                value={dateValue}
-                onChange={handleDateChange}
-              />
-            </DemoContainer>
-          </LocalizationProvider>
-
-          <Box sx={{ display: "flex", flexDirection: "row" }}>
-            <Stack direction="row" spacing={2} alignItems={"center"}>
-              <Button
-                size="medium"
-                onClick={handlePreviousWeek}
-                variant="outlined"
-                startIcon={<ArrowBackIosOutlinedIcon />}
-              >
-               {monthly ? ( 'Previous Month') : ('Previous Week')}
-              </Button>
-              {monthly ? (
-                <Typography>
-                  {` ${weekDates[0].toLocaleDateString(
-                    "en-US"
-                  )} - ${weekDates[31].toLocaleDateString("en-US")} `}
-                </Typography>
-              ) : (
-                <Typography>
-                  {` ${weekDates[0].toLocaleDateString(
-                    "en-US"
-                  )} - ${weekDates[6].toLocaleDateString("en-US")} `}
-                </Typography>
-              )}
-
-              <Button
-                size="medium"
-                onClick={handleNextWeek}
-                variant="outlined"
-                endIcon={<ArrowForwardIosOutlinedIcon />}
-              >
-               {monthly ? ( 'Next Month') : ('Next Week')}
-              </Button>
-            </Stack>
-
-            <Stack
-              direction="row"
-              spacing={2}
-              alignItems={"center"}
-              marginLeft={"100px"}
-            >
-              <Button
-                variant="outlined"
-                color="warning"
-                size="medium"
-                endIcon={<ViewWeekIcon />}
-                onClick={handleCalendarTableWeekly}
-              >
-                Weekly view
-              </Button>
-              <Button
-                variant="outlined"
-                color="success"
-                size="medium"
-                endIcon={<CalendarMonthIcon />}
-                onClick={handleCalendarTableMonthly}
-              >
-                Monthly view
-              </Button>
-            </Stack>
-          </Box>
-          <TableContainer
-            sx={{ maxWidth: "100%", marginTop: "20px" }}
-            component={Paper}
-          >
-            <Table aria-label="customized table">
-              <TableHead>
-                <TableRow
-                  sx={{
-                    "& th": {
+   <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+      <FormControl sx={{ m: 1, minWidth: 120 }}>
+        <InputLabel id="demo-simple-select-helper-label">
+          Select Site
+        </InputLabel>
+        <Select
+          labelId="demo-simple-select-helper-label"
+          id="demo-simple-select-helper"
+          style={{ width: 300 }}
+          defaultValue=""
+          value={age}
+          label="Select Site"
+          onChange={handleChange}
+        >
+          {siteLocaionlist?.map((valueitem, index) => {
+            return (
+              <MenuItem key={index} value={valueitem.valueitem}>
+                {valueitem.labelitem}
+              </MenuItem>
+            );
+          })}
+        </Select>
+       
+      </FormControl>
+   </Box>
+    
+    <>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DemoContainer
+          components={["DatePicker", "DatePicker", "DatePicker"]}
+          sx={{ margin: "20px 0", maxWidth:'230pt' }}
+        >
+          <DatePicker
+            label={"Select Date"}
+            views={["year", "month", "day"]}
+            value={selecteddate}
+            format="DD/MM/YYYY"
+            sx={{ width: "100%" }}
+            onChange={handledatchange}
+          />
+        </DemoContainer>
+      </LocalizationProvider>
+      </>
+   
+   {mapsheet.length>0 && (
+     <>
+    <Box>
+      <Stack spacing={4} marginBottom={2} direction="row" justifyContent={'left'}>
+        
+        <Button
+          variant="outlined"
+          onClick={() => {
+            daylenth = 1;
+            createweeklyview();
+          }}
+          endIcon={<CalendarTodayOutlinedIcon />}
+          
+        >
+          Day View
+        </Button>
+        <Button
+         size="medium"
+         variant="outlined"
+         color="warning"
+         onClick={() => {
+            daylenth = 7;
+            createweeklyview();
+          }}
+          endIcon={<ViewWeekOutlinedIcon />}>
+          Weekly View
+        </Button>
+        <Button
+        size="medium"
+          variant="outlined"
+           color="success"
+          endIcon={<CalendarMonthIcon />}
+          onClick={() => {
+            daylenth = 28;
+            createweeklyview();          
+            
+          }}
+        >
+          Monthly View
+        </Button>
+      </Stack>
+    </Box>
+    <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 700 }} aria-label="customized table">
+        <TableHead>
+          <TableRow  
+            sx={{ "& th": {
                       fontSize: "1rem",
                       color: "rgba(96, 96, 96)",
                       backgroundColor: "#b1dbdf",
                     },
-                  }}
-                >
-                  <TableCell>Employee Id</TableCell>
-                  <TableCell>Employee Name</TableCell>                  
-                  <TableCell>Total Attendance</TableCell>
-                  {weekDates?.map((day) => (
-                    <TableCell key={day}>
-                      {day.toLocaleDateString("en-US", weekDayFormat)}
-                    </TableCell>
-                  ))}
-                  <TableCell>Attendance Marked By</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {data.sort((a,b)=>a.emp_id > b.emp_id ? 1 : -1)?.map((item, index) => (
-                  <StyledTableRow key={index}>
-                    <TableCell>{item.emp_id}</TableCell>
-                    <TableCell>{item.name}</TableCell>                    
-                    <TableCell>
-                      <Chip
-                        label={getTotal(index, weekDates)}
-                        color="success"
-                        variant="filled"
-                      />
-                    </TableCell>                  
-                    {weekDates.map((date) => (
-                      <TableCell key={date}>
-                        <Checkbox
-                          id={`epds-${index}`}
-                          type="checkbox"
-                          name={getValue(index, date).toString()}
-                          checked={Boolean(getValue(index, date))}
-                          onChange={(e) =>
-                            setValue(index, date, e.target.checked)
-                          }
-                          disabled={isFutureStartDate || (weekoffday === item.weekOff && date.getDay() === weekoffday)}
-                          sx={{ "& .MuiSvgIcon-root": { fontSize: 48 } }}
-                          checkedIcon={<ToggleOn />}
-                          icon={<ToggleOff />}
-                        />
-                      </TableCell>                      
-                    ))}
-                   <TableCell>{item.attendenceBy}</TableCell>
-                  </StyledTableRow>                  
-                ))}
-                <TableRow>
-                <TableCell></TableCell>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
-                  {weekDates.map((day) => (
-                    <TableCell key={day}>
-                      {day.toLocaleDateString("en-US", weekDayFormat)}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            onClick={submitAttendance}
-            sx={{ marginTop: "20pt" }}
-          >
-            {loading ? <>Loading..</> : <>Submit Attendance</>}
-          </Button>
-        </>
-      )}  
-      <pre>{JSON.stringify(data, null, 4)}</pre>
+                  }}>
+            <StyledTableCell sx={{textAlign:'left', maxWidth:'300pt'}}>Id</StyledTableCell>
+            <StyledTableCell>
+              Name
+            </StyledTableCell>
+            {daysarry.map((value, index) => (
+              <StyledTableCell key={index}>{dayjs(value).format('ddd,MMM DD')}</StyledTableCell>
+            ))}
+            <TableCell>Attendance Marked By</TableCell>
+          </TableRow>
+        </TableHead>
+
+        <TableBody>
+          {mapsheet.map((row, index) => (
+            <StyledTableRow key={row.Id} 
+            sx={{ "& th": {
+              fontSize: "1rem",
+              textAlign:'left'
+            },
+          }}>
+              <StyledTableCell component="th">{row.Id}</StyledTableCell>
+              <StyledTableCell>{row.name}</StyledTableCell>
+
+              {daysarry.map((value) => (
+                <StyledTableCell key={`${row.Id}-${value}`} align="center">
+                 
+                  <Checkbox
+                    id={`${row.Id}`}
+                    name={`day${dayjs(value).format("YYYYMMDD")}`}
+                    checked={
+                      row[`day${dayjs(value).format("YYYYMMDD")}`] === "true"
+                    }
+                    onChange={handleChangecheckbox}
+                    sx={{ "& .MuiSvgIcon-root": { fontSize: 48 } }}
+                    checkedIcon={<ToggleOn />}
+                    icon={<ToggleOff />}
+                  />
+                </StyledTableCell>             
+              ))}
+              <TableCell>{row.attendenceBy}</TableCell>
+            </StyledTableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+   
+      <Stack spacing={2} direction="row" marginTop={2}>
+        <Button 
+          type="submit" 
+          variant="contained"
+          color="primary" 
+          onClick={submitattendance}>
+          Submit Attendance
+        </Button>
+      </Stack>
+   
     </>
+   )}
+  </>
   );
 };

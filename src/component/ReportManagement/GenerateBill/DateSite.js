@@ -107,7 +107,7 @@ const DateSite = () => {
             <DateCalendar
             disableFuture={true}
             className="monthcal"
-              views={["month", "year"]}
+              views={["year", "month"]}
               openTo="month"
               onChange={(newValue) => {
                 if (newValue) {
@@ -124,7 +124,7 @@ const DateSite = () => {
              <DateCalendar
              disableFuture={true}
            className="monthcal 2ndmonth"
-              views={["month", "year"]}
+              views={["year", "month"]}
               openTo="month"
               onChange={(newValue) => {
                 if (newValue) {

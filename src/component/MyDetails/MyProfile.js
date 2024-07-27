@@ -195,14 +195,30 @@ console.log('userRole',userRole)
         { userRole==='Admin' || userRole==='Super'?(  <>   
         {plotSiteNames && plotAtteCount? <Paper>
           <BarChart
+          sx={{
+    //change left yAxis label styles
+   "& .MuiChartsAxis-left .MuiChartsAxis-tickLabel":{
+    strokeWidth:"0.4",
+    fill:"#1976d2"
+   },
+   // change all labels fontFamily shown on both xAxis and yAxis
+   "& .MuiChartsAxis-tickContainer .MuiChartsAxis-tickLabel":{
+       fontFamily: "Roboto",
+    },
+    // change bottom label styles
+    "& .MuiChartsAxis-bottom .MuiChartsAxis-tickLabel":{
+        strokeWidth:"0.5",
+        fill:"#1976d2"
+     },
+     
+     
+  }}
             xAxis={[
               {
                 scaleType: "band",
-                data: plotSiteNames
-              },
-              {
+                data: plotSiteNames,
                 label: 'Site Locations',
-              }
+              }                         
             ]}
             yAxis={[{
               label: 'Employee Count',

@@ -105,7 +105,11 @@ const MyAttendance = ({userRole}) => {
   
 {(userRole !== 'Admin' || 'Super') && barchartdata && (
         <BarChart
-          xAxis={[{ scaleType: 'band', data: plotmonthNames }]}
+          xAxis={[{ label: 'Month', scaleType: 'band', data: plotmonthNames }]}
+          
+          yAxis={[{
+            label: 'Present Days',
+          }]}
           series={[{ data: plotAtteCount }]}
           width={700}
           height={300}
