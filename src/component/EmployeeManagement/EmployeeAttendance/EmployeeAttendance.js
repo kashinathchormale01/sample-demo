@@ -73,6 +73,9 @@ export const EmployeeTimeSheet = () => {
   }
   const [loading, setLoading] = useState(false);
   const [age, setAge] = useState("");
+  const [error, setError] = useState('');
+  const [dateError, setDateError] = useState('');
+  const [attendanceError, setAttendanceError] = useState('');  
   const [siteLocaionlist, setSiteLocaionlist] = useState([]);
   const [sheet, setSheet] = useState([]);
   const [mapsheet, setMapsheet] = useState([]);
@@ -89,7 +92,12 @@ export const EmployeeTimeSheet = () => {
   };
 
   const createweeklyview = () => {
-   
+    if (!selecteddate) {
+      setDateError('Please select a date.');
+      return;
+    }
+    setDateError('');
+
     firstview = null;
     let tempdayarry = [dayjs(selecteddate).format("YYYY-MM-DD")];
     if (
@@ -120,36 +128,58 @@ export const EmployeeTimeSheet = () => {
     
   };
   const handledatchange = (value) => {
-    setSelecteddate(value);
+    //setSelecteddate(value);
+    if (!value) {
+      setDateError('Please select a valid date.');
+    } else {
+      setDateError('');
+      setSelecteddate(value);
+    }
   };
   const getsitedata = async () => {
-    await axiosHttp.get("/GetProj_Site").then((res) => {
-      setSiteLocaionlist(
-        res.data.data.map((value) => ({
-          valueitem: value.Id,
-          labelitem: value.siteName,
-        }))
-      );
-      
-    });
+    try {
+       const res = await axiosHttp.get("/GetProj_Site");
+      if (res.data.data && res.data.data.length > 0) {
+        setSiteLocaionlist(
+          res.data.data.map((value) => ({
+            valueitem: value.Id,
+            labelitem: value.siteName,
+          }))
+        );
+        setError(''); 
+      } else {
+        setSiteLocaionlist([]);
+        setError('No site location data available.');
+      }
+    } catch (error) {
+      setError('Failed to fetch site location data.');
+    }
   };
 
   const loademployee = async () => {
     firstview = null;
+    setLoading(true); 
     await axiosHttp
       .post("/GetAttendance", siteobjet)
       .then((res) => {
+        if (!res.data.data || res.data.data.length === 0) {
+          setLoading(false); 
+          setSheet([]);
+          setAttendanceError('Attendance Data Not exists or No Employee mapped with this site. For more info. please contact to Administrator.');
+          toast.error("Attendance Data Not exists or No Employee mapped with this site. For more info. please contact to Administrator.");      
+          return;
+        }
+        setAttendanceError('');
         setSheet(
           res.data.data.map((value) => ({
-            
             Id: value.Id,
             name:value.firstName +" " +value.fatherSpouseName +" " +value.lastName,
             daysheet: String(value.Sheet).split(","),
-            attendenceBy: value.attendenceBy
+            attendenceBy: String(value.attendenceBy1).split(","),
           }
-        
         ))
         );      
+        setLoading(false); 
       });
   };
 
@@ -160,12 +190,13 @@ export const EmployeeTimeSheet = () => {
       const newObj = {
         Id: obj.Id,
         name: obj.name,
-        attendenceBy: obj.attendenceBy
+        attendenceBy: obj.attendenceBy,
       };
 
       
       daysarry.forEach((date) => {
         const key = `day${date.replace(/-/g, "")}`;
+      //  console.log('Attenda by..',obj.daysheet.findIndex((ele)=>(ele='2024-07-27')))
         if (obj.daysheet.includes(date)) {
           newObj[key] = "true";
         } else {
@@ -176,13 +207,16 @@ export const EmployeeTimeSheet = () => {
       result.push(newObj);
     });
 
+ //   console.log('dayjs().endod("month").day() ',dayjs().endOf("month"))
     setMapsheet(result);
+    // if (firstview === null && result.length>0){ 
+    console.log("firstview",firstview,'firstview sett',result)
     if (firstview === null && result.length>0){ 
-   // console.log('Result.lengh',result.length)
       firstview = result;
+      console.log('firstview in if',firstview)
     }
   };
-
+  console.log('mapsheet', mapsheet)
   const handleChangecheckbox = (e) => {
     const { name, checked } = e.target;
 
@@ -204,6 +238,7 @@ export const EmployeeTimeSheet = () => {
     const result = {
       selectedSite: age, 
       filteredData: [],
+      attendanceBy:sessionStorage.getItem('userId')
     };
 
     first.forEach((firstItem, index) => {
@@ -264,15 +299,15 @@ export const EmployeeTimeSheet = () => {
     reeditsheet();
   }, [sheet]);
   React.useEffect(() => {
+    firstview = null;
     reeditsheet();
   }, [daysarry]); 
   
 
   if (loading) return <div className="overlay"><div className="loadingicon"><CircularProgress /><br/>Loading...</div></div>;
- 
 
   return (
-    <>
+    <>        
    <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
       <FormControl sx={{ m: 1, minWidth: 120 }}>
         <InputLabel id="demo-simple-select-helper-label">
@@ -295,7 +330,7 @@ export const EmployeeTimeSheet = () => {
             );
           })}
         </Select>
-       
+        {error && <FormHelperText error>{error}</FormHelperText>}
       </FormControl>
    </Box>
     
@@ -312,11 +347,12 @@ export const EmployeeTimeSheet = () => {
             format="DD/MM/YYYY"
             sx={{ width: "100%" }}
             onChange={handledatchange}
-          />
+          />         
         </DemoContainer>
       </LocalizationProvider>
+      {dateError && <FormHelperText sx={{marginTop:'10pt !impotant'}} error>{dateError}</FormHelperText>}
       </>
-   
+   {attendanceError ? <FormHelperText error>{attendanceError}</FormHelperText>:''}
    {mapsheet.length>0 && (
      <>
     <Box>
@@ -350,7 +386,8 @@ export const EmployeeTimeSheet = () => {
            color="success"
           endIcon={<CalendarMonthIcon />}
           onClick={() => {
-            daylenth = 28;
+            firstview = null;
+            daylenth = parseInt(dayjs(selecteddate).endOf('month').format("DD"));
             createweeklyview();          
             
           }}
@@ -375,8 +412,7 @@ export const EmployeeTimeSheet = () => {
             </StyledTableCell>
             {daysarry.map((value, index) => (
               <StyledTableCell key={index}>{dayjs(value).format('ddd,MMM DD')}</StyledTableCell>
-            ))}
-            <TableCell>Attendance Marked By</TableCell>
+            ))}            
           </TableRow>
         </TableHead>
 
@@ -399,15 +435,16 @@ export const EmployeeTimeSheet = () => {
                     checkedIcon={<ToggleOn />}
                     icon={<ToggleOff />}
                   />
+                   {/* {(row.attendenceBy !== null) ? (
+    <Chip
+      label={row.attendenceBy}
+      color="success"
+      variant="filled"
+    />
+  ) : "no name"}      */}
                 </StyledTableCell>             
               ))}
-              <TableCell>
-              <Chip
-                        label={row.attendenceBy}
-                        color="success"
-                        variant="filled"
-                      />
-              </TableCell>
+             
             </StyledTableRow>
           ))}
         </TableBody>
