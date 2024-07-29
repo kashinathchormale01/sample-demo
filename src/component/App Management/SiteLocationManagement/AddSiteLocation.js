@@ -81,7 +81,7 @@ const AddSiteLocation = () => {
               <DatePicker
               disableFuture
               id="creationDate"
-                label="Date of Birth"
+                label="Creation Date"
                 value={selectedDate}
                 onChange={(date) => setSelectedDate(date)}
                 textField={(params) => <TextField {...params} />} 
