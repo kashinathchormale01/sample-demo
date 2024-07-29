@@ -435,7 +435,7 @@ const InvoiceTableRow = ({ items }) => {
               <Text style={styles.tableCell}>{item.totalWages}</Text>
             </View>
             <View style={[styles.tableCol, { width: "1.8%" }]}>
-              <Text style={styles.tableCell}>{item.registerNo}</Text>
+              <Text style={styles.tableCell}>{item.pf}</Text>
             </View>
             <View style={[styles.tableCol, { width: "7.6%" }]}>
               <Text style={styles.tableCell}>{item.pt}</Text>

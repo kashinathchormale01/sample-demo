@@ -186,7 +186,7 @@ const Example = () => {
         id: "netPayment",
         header: "Net Payment",
         accessorFn: (row) =>
-         (row.grandTotal + row.totalDeduction),
+         (row.grandTotal - row.totalDeduction),
         Cell: ({ renderedCellValue }) => {
           return <span>{Math.round(renderedCellValue)}</span>;
         },
