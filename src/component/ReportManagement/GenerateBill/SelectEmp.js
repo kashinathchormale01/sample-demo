@@ -241,7 +241,7 @@ stateFromLocalStorage===null|| Object.keys(stateFromLocalStorage).length === 0  
   });
   
 }
-},[makepayloadForDate.siteId, sessionStorage.getItem('billStartDate'), sessionStorage.getItem('billEndDate')])
+},[sessionStorage.getItem('site.Id'), sessionStorage.getItem('billStartDate'), sessionStorage.getItem('billEndDate')])
 
 
 

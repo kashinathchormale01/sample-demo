@@ -161,21 +161,6 @@ const CommunicationBio = (data) => {
               control={control}
               name="alternateMobileNumber"
               defaultValue={""}
-              rules={{
-                required: "Alternate is required if don't have then you can mention Mobile Number",
-                minLength:{
-                  value:10,
-                  message:"Alternate Mobile Number is 10 Digits(Format:9876543210) "
-                },
-                maxLength:{
-                  value:10,
-                  message:"Alternate Mobile Number is 10 Digits(Format:9876543210) "
-                },
-                pattern:{
-                  value: `^[6-9]\d{9}$`,
-                  message:"Alternate Mobile Number is Invalid (Format:9876543210)"
-                },
-              }}
               render={({ field }) => (
                 <TextField
                 type="number"
@@ -184,8 +169,6 @@ const CommunicationBio = (data) => {
                   label="Alternate Mobile Number"
                   variant="outlined"
                   {...field}
-                  error={Boolean(errors.alternateMobileNumber)}
-                  helperText={errors.alternateMobileNumber?.message}
                 />
               )}
             />

@@ -17,7 +17,7 @@ const Appbreadcrumbs = () => {
   return (
     <>
         <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb" style={{ marginBottom: 15 }}>
-    <Link color="inherit" onClick={() => navigate('/')} style={{ cursor: 'pointer', textTransform:'capitalize' }}>
+    <Link color="inherit" href="/" style={{ cursor: 'pointer', textTransform:'capitalize' }}>
     Home
     </Link>
     {

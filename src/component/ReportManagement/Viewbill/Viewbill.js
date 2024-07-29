@@ -192,8 +192,8 @@ const Viewbill = () => {
         onmouseout="this.start();"
         style={{ color: "red", fontSize: "12pt" }}
       >
-        If you delete bill then may be impact on the employee reports or may
-        loose the important related to the that employee.
+        If you delete any bill, then it may impact employee reports, you may also
+         loose important data related to the that employee.
       </marquee>
       <MaterialReactTable table={table} />
     </>

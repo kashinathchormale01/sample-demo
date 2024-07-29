@@ -64,7 +64,7 @@ const VarRateChart = () => {
         onChange={(e) => setShowTable(e.target.checked)} 
         color="primary"
       />
-      <label htmlFor="showTable">Are you want to update the rate chart?</label>
+      <label htmlFor="showTable">Do you want to update the rate chart?</label>
 
       {showTable && (
         loading ? <div className="overlay"><div className="loadingicon"><CircularProgress color="inherit" /><br/>Loading...</div></div> : error ? <div>Error: {error}</div> : vrates && (
