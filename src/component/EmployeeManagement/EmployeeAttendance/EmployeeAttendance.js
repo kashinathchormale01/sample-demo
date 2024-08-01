@@ -185,38 +185,35 @@ export const EmployeeTimeSheet = () => {
 
   const reeditsheet = async () => {
     const result = [];
-    
-    sheet.forEach((obj) => {     
+    //console.log("daysarry", daysarry);
+    sheet.forEach((obj) => {
       const newObj = {
         Id: obj.Id,
         name: obj.name,
-        attendenceBy: obj.attendenceBy,
       };
 
-      
       daysarry.forEach((date) => {
         const key = `day${date.replace(/-/g, "")}`;
-      //  console.log('Attenda by..',obj.daysheet.findIndex((ele)=>(ele='2024-07-27')))
+        const key1 = `attend${date.replace(/-/g, "")}`;       
         if (obj.daysheet.includes(date)) {
           newObj[key] = "true";
+          newObj[key1] = obj.attendenceBy[obj.daysheet.indexOf(date)];
         } else {
           newObj[key] = "false";
+          newObj[key1] = "";
         }
       });
-
       result.push(newObj);
     });
-
- //   console.log('dayjs().endod("month").day() ',dayjs().endOf("month"))
+    
     setMapsheet(result);
-    // if (firstview === null && result.length>0){ 
-    console.log("firstview",firstview,'firstview sett',result)
-    if (firstview === null && result.length>0){ 
+   // console.log("firstview", firstview, "firstview sett", result);
+    if (firstview === null) {
       firstview = result;
-      console.log('firstview in if',firstview)
+      console.log("firstview in if", firstview);
     }
   };
-  console.log('mapsheet', mapsheet)
+ // console.log('mapsheet', mapsheet)
   const handleChangecheckbox = (e) => {
     const { name, checked } = e.target;
 
@@ -423,27 +420,32 @@ export const EmployeeTimeSheet = () => {
               <StyledTableCell sx={{minWidth:'200pt', textAlign:'left !important'}}>{row.name}</StyledTableCell>
 
               {daysarry.map((value) => (
-                <StyledTableCell key={`${row.Id}-${value}`}>                 
-                  <Checkbox
-                    id={`${row.Id}`}
-                    name={`day${dayjs(value).format("YYYYMMDD")}`}
-                    checked={
-                      row[`day${dayjs(value).format("YYYYMMDD")}`] === "true"
-                    }
-                    onChange={handleChangecheckbox}
-                    sx={{ "& .MuiSvgIcon-root": { fontSize: 48 } }}
-                    checkedIcon={<ToggleOn />}
-                    icon={<ToggleOff />}
-                  />
-                   {/* {(row.attendenceBy !== null) ? (
-    <Chip
-      label={row.attendenceBy}
-      color="success"
-      variant="filled"
-    />
-  ) : "no name"}      */}
-                </StyledTableCell>             
-              ))}
+                      <StyledTableCell key={`${row.Id}-${value}`}>
+                        <Checkbox
+                          id={`${row.Id}`}
+                          name={`day${dayjs(value).format("YYYYMMDD")}`}
+                          checked={
+                            row[`day${dayjs(value).format("YYYYMMDD")}`] ===
+                            "true"
+                          }
+                          onChange={handleChangecheckbox}
+                          sx={{ "& .MuiSvgIcon-root": { fontSize: 48 } }}
+                          checkedIcon={<ToggleOn />}
+                          icon={<ToggleOff />}
+                        />
+                        {row.attendenceBy !== null ? (
+                          <Chip
+                            label={
+                              row[`attend${dayjs(value).format("YYYYMMDD")}`]
+                            }
+                            color="warning"
+                            variant="filled"
+                          />
+                        ) : (
+                          ""
+                        )}
+                      </StyledTableCell>
+                    ))}
              
             </StyledTableRow>
           ))}

@@ -190,7 +190,7 @@ const UserPromote = () => {
                 multiple
                 value={selectedSite}
                 onChange={handleChangeselect}
-                input={<OutlinedInput label="Tag" />}
+                input={<OutlinedInput label="multiple-location-label" />}
                 renderValue={(selected) => (
                   <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
                     {selected.map((item) => (
