@@ -182,7 +182,8 @@ const loadEmployees = async () => {
           display: "flex",
           gap: "16px",
           padding: "8px",
-          flexWrap: "wrap",
+          flexWrap: "wrap", 
+          alignItems:'center',
         }}
       >
         <Typography>Employee List</Typography>

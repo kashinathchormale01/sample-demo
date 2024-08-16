@@ -134,6 +134,7 @@ const AllpaySlips = () => {
           gap: "16px",
           padding: "8px",
           flexWrap: "wrap",
+          alignItems:'center',
         }}
       >
         <Typography>Bill List</Typography>
