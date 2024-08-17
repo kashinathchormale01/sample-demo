@@ -51,20 +51,23 @@ const DesignationManagement = () => {
     loadDesignations();
   }, []);
 
-  const deleteDesignations = async () => {
+ // console.log(deleteDesignationData?.Id)
+  const deleteDesignations = async (deleteId) => {
+   // setDeleteDesignationData(data);
+   //console.log(deleteId)
     await axiosHttp
-      .delete(`/DeleteProj_Site/${deleteDesignationData?.Id}`)
+      .delete(`/deleterole/${deleteId?.Id}`)
       .then((res) => {
         toast.error(res.data.msg);
         loadDesignations();
-        setOpen(false);
+        //setOpen(false);
       });
   };
 
-  function openDelete(data) {
-    setOpen(true);
-    setDeleteDesignationData(data);
-  }
+  // function openDelete(data) {
+  //   setOpen(true);
+  //   setDeleteDesignationData(data);
+  // }
 
   if (loading) return <div className="overlay"><div className="loadingicon"><CircularProgress color="inherit" /><br/>Loading...</div></div>;
   if (error) return <p>Error: {error}</p>;
@@ -137,7 +140,8 @@ const DesignationManagement = () => {
                       variant="contained"
                       color="error"
                       startIcon={<ManageAccountsIcon />}
-                      onClick={() => openDelete(item)}
+                      // onClick={() => openDelete(item)}
+                      onClick={()=> deleteDesignations(item)}
                     >
                       Delete
                     </Button>
@@ -150,12 +154,14 @@ const DesignationManagement = () => {
       </TableContainer>
 
       {/* Confirmation dialog functionality */}
-      <ConfirmBox
+
+      { /* <ConfirmBox
         open={open}
         closeDialog={() => setOpen(false)}
         title={deleteDesignationData?.RoleName}
         deleteFunction={deleteDesignations}
       />
+        */}
     </>
   );
 };
