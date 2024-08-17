@@ -23,7 +23,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import ToggleOn from "@mui/icons-material/ToggleOn";
 import ToggleOff from "@mui/icons-material/ToggleOff";
-import { Checkbox,CircularProgress,Box, Chip } from "@mui/material";
+import { Checkbox,CircularProgress,Box, Chip, Typography } from "@mui/material";
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import ViewWeekOutlinedIcon from '@mui/icons-material/ViewWeekOutlined';
 import CalendarTodayOutlinedIcon from '@mui/icons-material/CalendarTodayOutlined';
@@ -279,6 +279,7 @@ export const EmployeeTimeSheet = () => {
           toast.success(res.data.msg);
         });
         getsitedata();
+        loademployee();
     }
   };
 
@@ -304,122 +305,145 @@ export const EmployeeTimeSheet = () => {
   if (loading) return <div className="overlay"><div className="loadingicon"><CircularProgress /><br/>Loading...</div></div>;
 
   return (
-    <>        
-   <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-      <FormControl sx={{ m: 1, minWidth: 120 }}>
-        <InputLabel id="demo-simple-select-helper-label">
-          Select Site
-        </InputLabel>
-        <Select
-          labelId="demo-simple-select-helper-label"
-          id="demo-simple-select-helper"
-          style={{ width: 300 }}
-          defaultValue=""
-          value={age}
-          label="Select Site"
-          onChange={handleChange}
-        >
-          {siteLocaionlist?.map((valueitem, index) => {
-            return (
-              <MenuItem key={index} value={valueitem.valueitem}>
-                {valueitem.labelitem}
-              </MenuItem>
-            );
-          })}
-        </Select>
-        {error && <FormHelperText error>{error}</FormHelperText>}
-      </FormControl>
-   </Box>
-    
     <>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DemoContainer
-          components={["DatePicker", "DatePicker", "DatePicker"]}
-          sx={{ margin: "20px 0", maxWidth:'230pt' }}
-        >
-          <DatePicker
-            label={"Select Date"}
-            views={["year", "month", "day"]}
-            value={selecteddate}
-            format="DD/MM/YYYY"
-            sx={{ width: "100%" }}
-            onChange={handledatchange}
-          />         
-        </DemoContainer>
-      </LocalizationProvider>
-      {dateError && <FormHelperText sx={{marginTop:'10pt !impotant'}} error>{dateError}</FormHelperText>}
+      <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+        <FormControl sx={{ m: 1, minWidth: 120 }}>
+          <InputLabel id="demo-simple-select-helper-label">
+            Select Site
+          </InputLabel>
+          <Select
+            labelId="demo-simple-select-helper-label"
+            id="demo-simple-select-helper"
+            style={{ width: 300 }}
+            defaultValue=""
+            value={age}
+            label="Select Site"
+            onChange={handleChange}
+          >
+            {siteLocaionlist?.map((valueitem, index) => {
+              return (
+                <MenuItem key={index} value={valueitem.valueitem}>
+                  {valueitem.labelitem}
+                </MenuItem>
+              );
+            })}
+          </Select>
+          {error && <FormHelperText error>{error}</FormHelperText>}
+        </FormControl>
+      </Box>
+
+      <>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DemoContainer
+            components={["DatePicker", "DatePicker", "DatePicker"]}
+            sx={{ margin: "20px 0", maxWidth: "230pt" }}
+          >
+            <DatePicker
+              label={"Select Date"}
+              views={["year", "month", "day"]}
+              value={selecteddate}
+              format="DD/MM/YYYY"
+              sx={{ width: "100%" }}
+              onChange={handledatchange}
+            />
+          </DemoContainer>
+        </LocalizationProvider>
+        {dateError && (
+          <FormHelperText sx={{ marginTop: "10pt !impotant" }} error>
+            {dateError}
+          </FormHelperText>
+        )}
       </>
-   {attendanceError ? <FormHelperText error>{attendanceError}</FormHelperText>:''}
-   {mapsheet.length>0 && (
-     <>
-    <Box>
-      <Stack spacing={4} marginBottom={2} direction="row" justifyContent={'left'}>
-        
-        <Button
-          variant="outlined"
-          onClick={() => {
-            daylenth = 1;
-            createweeklyview();
-          }}
-          endIcon={<CalendarTodayOutlinedIcon />}
-          
-        >
-          Day View
-        </Button>
-        <Button
-         size="medium"
-         variant="outlined"
-         color="warning"
-         onClick={() => {
-            daylenth = 7;
-            createweeklyview();
-          }}
-          endIcon={<ViewWeekOutlinedIcon />}>
-          Weekly View
-        </Button>
-        <Button
-        size="medium"
-          variant="outlined"
-           color="success"
-          endIcon={<CalendarMonthIcon />}
-          onClick={() => {
-            firstview = null;
-            daylenth = parseInt(dayjs(selecteddate).endOf('month').format("DD"));
-            createweeklyview();          
-            
-          }}
-        >
-          Monthly View
-        </Button>
-      </Stack>
-    </Box>
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 700 }} aria-label="customized table">
-        <TableHead>
-          <TableRow  
-            sx={{ "& th": {
+      {attendanceError ? (
+        <FormHelperText error>{attendanceError}</FormHelperText>
+      ) : (
+        ""
+      )}
+      {mapsheet.length > 0 && (
+        <>
+          <Box>
+            <Stack
+              spacing={4}
+              marginBottom={2}
+              direction="row"
+              justifyContent={"left"}
+            >
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  daylenth = 1;
+                  createweeklyview();
+                }}
+                endIcon={<CalendarTodayOutlinedIcon />}
+              >
+                Day View
+              </Button>
+              <Button
+                size="medium"
+                variant="outlined"
+                color="warning"
+                onClick={() => {
+                  daylenth = 7;
+                  createweeklyview();
+                }}
+                endIcon={<ViewWeekOutlinedIcon />}
+              >
+                Weekly View
+              </Button>
+              <Button
+                size="medium"
+                variant="outlined"
+                color="success"
+                endIcon={<CalendarMonthIcon />}
+                onClick={() => {
+                  firstview = null;
+                  daylenth = parseInt(
+                    dayjs(selecteddate).endOf("month").format("DD")
+                  );
+                  createweeklyview();
+                }}
+              >
+                Monthly View
+              </Button>
+            </Stack>
+          </Box>
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 700 }} aria-label="customized table">
+              <TableHead>
+                <TableRow
+                  sx={{
+                    "& th": {
                       fontSize: "1rem",
                       color: "rgba(96, 96, 96)",
                       backgroundColor: "#b1dbdf",
                     },
-                  }}>
-            <StyledTableCell>Id</StyledTableCell>
-            <StyledTableCell sx={{minWidth:'200pt', textAlign:'left !important'}}>
-              Name
-            </StyledTableCell>
-            {daysarry.map((value, index) => (
-              <StyledTableCell key={index}>{dayjs(value).format('ddd,MMM DD')}</StyledTableCell>
-            ))}            
-          </TableRow>
-        </TableHead>
+                  }}
+                >
+                  <StyledTableCell>Id</StyledTableCell>
+                  <StyledTableCell
+                    sx={{ minWidth: "200pt", textAlign: "left !important" }}
+                  >
+                    Name
+                  </StyledTableCell>
+                  {daysarry.map((value, index) => (
+                    <StyledTableCell key={index}>
+                      {dayjs(value).format("ddd,MMM DD")}
+                    </StyledTableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
 
-        <TableBody>
-          {mapsheet.map((row, index) => (
-            <StyledTableRow key={row.Id}>
-              <StyledTableCell component="th">{row.Id}</StyledTableCell>
-              <StyledTableCell sx={{minWidth:'200pt', textAlign:'left !important'}}>{row.name}</StyledTableCell>
+              <TableBody>
+                {mapsheet.map((row, index) => (
+                  <StyledTableRow key={row.Id}>
+                    <StyledTableCell component="th">{row.Id}</StyledTableCell>
+                    <StyledTableCell
+                      sx={{ minWidth: "200pt", textAlign: "left !important" }}
+                    >
+                      {row.name}
+                    </StyledTableCell>
 
-              {daysarry.map((value) => (
+                    {daysarry.map((value) => (
                       <StyledTableCell key={`${row.Id}-${value}`}>
                         <Checkbox
                           id={`${row.Id}`}
@@ -433,38 +457,37 @@ export const EmployeeTimeSheet = () => {
                           checkedIcon={<ToggleOn />}
                           icon={<ToggleOff />}
                         />
-                        {row.attendenceBy !== null ? (
+
+                        {row[`attend${dayjs(value).format("YYYYMMDD")}`] ? (
                           <Chip
                             label={
                               row[`attend${dayjs(value).format("YYYYMMDD")}`]
                             }
-                            color="warning"
+                            color="default"
+                            sx={{ color: "red" }}
                             variant="filled"
                           />
-                        ) : (
-                          ""
-                        )}
+                        ) : <Typography sx={{height:'32px', visibility:'hidden'}}  />}
                       </StyledTableCell>
                     ))}
-             
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-   
-      <Stack spacing={2} direction="row" marginTop={2}>
-        <Button 
-          type="submit" 
-          variant="contained"
-          color="primary" 
-          onClick={submitattendance}>
-          Submit Attendance
-        </Button>
-      </Stack>
-   
+                  </StyledTableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+
+          <Stack spacing={2} direction="row" marginTop={2}>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              onClick={submitattendance}
+            >
+              Submit Attendance
+            </Button>
+          </Stack>
+        </>
+      )}
     </>
-   )}
-  </>
   );
 };

@@ -176,7 +176,9 @@ const loadEmployees = async () => {
         textDecoration: "none",
       },
     }),
-    renderTopToolbarCustomActions: ({ table }) => (
+    renderTopToolbarCustomActions: ({ table }) => {
+      const isLastPage = table.getState().pagination.pageIndex === table.getPageCount() - 1;
+      return(
       <Box
         sx={{
           display: "flex",
@@ -187,15 +189,15 @@ const loadEmployees = async () => {
         }}
       >
         <Typography>Employee List</Typography>
+        {isLastPage && (
         <Button
           disabled={table.getPrePaginationRowModel().rows.length === 0}
-          onClick={() =>
-            handleExportRows(table.getPrePaginationRowModel().rows)
-          }
+          onClick={() => handleExportRows(table.getPrePaginationRowModel().rows)}
           startIcon={<FileDownloadIcon />}
         >
           Export All Rows
         </Button>
+        )}
         <Button
           disabled={table.getRowModel().rows.length === 0}
           onClick={() => handleExportRows(table.getRowModel().rows)}
@@ -213,7 +215,8 @@ const loadEmployees = async () => {
           Export Selected Rows
         </Button>        
       </Box>
-    ),
+  )
+    },
   });
   
   if (loading) return <div className="overlay"><div className="loadingicon"><CircularProgress color="inherit" /><br/>Loading...</div></div>;

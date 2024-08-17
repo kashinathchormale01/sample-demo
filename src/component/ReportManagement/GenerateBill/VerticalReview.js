@@ -38,7 +38,7 @@ const VerticalReview = () => {
       <DataGrid
         rows={rows}
         columns={[
-          { field: 'id', headerName: 'ID', width: 150 },
+          // { field: 'id', headerName: 'ID', width: 150 },
           { field: 'sites', headerName: 'Sites', width: 150 },
           { field: 'totalEmps', headerName: 'Total Employees', width: 200 },
           { field: 'billStartDate', headerName: 'Bill Start Date', width: 200 },

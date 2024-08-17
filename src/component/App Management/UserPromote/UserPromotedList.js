@@ -155,7 +155,9 @@ const UserPromotedList = ({ sendempid }) => {
     columnFilterDisplayMode: 'popover',
     paginationDisplayMode: 'pages',
     positionToolbarAlertBanner: 'bottom',    
-    renderTopToolbarCustomActions: ({ table }) => (  
+    renderTopToolbarCustomActions: ({ table }) => {
+      const isLastPage = table.getState().pagination.pageIndex === table.getPageCount() - 1;
+      return(
       <Box
       sx={{
         display: 'flex',
@@ -166,16 +168,17 @@ const UserPromotedList = ({ sendempid }) => {
       }}
     >
       <Typography>Employee List</Typography>
-      <Button
-        disabled={table.getPrePaginationRowModel().rows.length === 0}
-        //export all rows, including from the next page, (still respects filtering and sorting)
-        onClick={() =>
-          handleExportRows(table.getPrePaginationRowModel().rows)
-        }
-        startIcon={<FileDownloadIcon />}
-      >
-        Export All Rows
-      </Button>
+      {isLastPage && (
+          <Button
+            disabled={table.getPrePaginationRowModel().rows.length === 0}
+            onClick={() =>
+              handleExportRows(table.getPrePaginationRowModel().rows)
+            }
+            startIcon={<FileDownloadIcon />}
+          >
+            Export All Rows
+          </Button>
+          )}
       <Button
         disabled={table.getRowModel().rows.length === 0}
         //export all rows as seen on the screen (respects pagination, sorting, filtering, etc.)
@@ -195,7 +198,7 @@ const UserPromotedList = ({ sendempid }) => {
         Export Selected Rows
       </Button>      
     </Box>
-    ),
+    )},
     
   });
   

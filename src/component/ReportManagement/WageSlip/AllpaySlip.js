@@ -127,7 +127,9 @@ const AllpaySlips = () => {
     columnFilterDisplayMode: "popover",
     paginationDisplayMode: "pages",
     positionToolbarAlertBanner: "bottom",
-    renderTopToolbarCustomActions: ({ table }) => (
+    renderTopToolbarCustomActions: ({ table }) => {
+      const isLastPage = table.getState().pagination.pageIndex === table.getPageCount() - 1;
+      return (
       <Box
         sx={{
           display: "flex",
@@ -138,15 +140,17 @@ const AllpaySlips = () => {
         }}
       >
         <Typography>Bill List</Typography>
-        <Button
-          disabled={table.getPrePaginationRowModel().rows.length === 0}
-          onClick={() =>
-            handleExportRows(table.getPrePaginationRowModel().rows)
-          }
-          startIcon={<FileDownloadIcon />}
-        >
-          Export All Rows
-        </Button>
+        {isLastPage && (
+          <Button
+            disabled={table.getPrePaginationRowModel().rows.length === 0}
+            onClick={() =>
+              handleExportRows(table.getPrePaginationRowModel().rows)
+            }
+            startIcon={<FileDownloadIcon />}
+          >
+            Export All Rows
+          </Button>
+          )}
         <Button
           disabled={table.getRowModel().rows.length === 0}
           onClick={() => handleExportRows(table.getRowModel().rows)}
@@ -162,7 +166,7 @@ const AllpaySlips = () => {
           Export Selected Rows
         </Button>
       </Box>
-    ),
+    )},
   });
 
   if (error) return `Error: ${error.message}`;

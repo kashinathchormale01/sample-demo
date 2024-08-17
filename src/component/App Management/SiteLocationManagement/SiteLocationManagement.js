@@ -45,7 +45,7 @@ const SiteLocationManagement = (props) => {
     await axiosHttp.delete(
       `/DeleteProj_Site/${deleteData?.Id}`
     ).then(res => {
-      toast.error(res.data.msg);
+      toast.error("Site location status made In-active...");
       loadSiteLocation();
       setOpen(false);
     });

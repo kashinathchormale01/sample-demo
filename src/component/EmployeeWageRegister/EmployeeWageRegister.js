@@ -213,7 +213,9 @@ const Example = () => {
     paginationDisplayMode: "pages",
     positionToolbarAlertBanner: "bottom",
     //optionally customize modal content
-    renderTopToolbarCustomActions: ({ table }) => (
+    renderTopToolbarCustomActions: ({ table }) => {
+        const isLastPage = table.getState().pagination.pageIndex === table.getPageCount() - 1;
+      return(
       <Box
         sx={{
           display: "flex",
@@ -223,16 +225,16 @@ const Example = () => {
           alignItems:'center',
         }}
       >
+        <Typography>Employee Wage Register</Typography>
+        {isLastPage && (
         <Button
           disabled={table.getPrePaginationRowModel().rows.length === 0}
-          //export all rows, including from the next page, (still respects filtering and sorting)
-          onClick={() =>
-            handleExportRows(table.getPrePaginationRowModel().rows)
-          }
+          onClick={() => handleExportRows(table.getPrePaginationRowModel().rows)}
           startIcon={<FileDownloadIcon />}
         >
           Export All Rows
         </Button>
+        )}
         <Button
           disabled={table.getRowModel().rows.length === 0}
           //export all rows as seen on the screen (respects pagination, sorting, filtering, etc.)
@@ -252,7 +254,7 @@ const Example = () => {
           Export Selected Rows
         </Button>
       </Box>
-    ),
+      )},
   });
 
   if (!location.state) return <Typography color="error">No Data available!</Typography>;

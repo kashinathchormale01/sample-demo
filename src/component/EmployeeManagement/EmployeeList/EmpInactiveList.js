@@ -205,7 +205,9 @@ const EmployeeInActiveList = () => {
           textDecoration: "none",
         },
       }),
-      renderTopToolbarCustomActions: ({ table }) => (
+      renderTopToolbarCustomActions: ({ table }) => {
+        const isLastPage = table.getState().pagination.pageIndex === table.getPageCount() - 1;
+        return(
         <Box
           sx={{
             display: "flex",
@@ -215,7 +217,8 @@ const EmployeeInActiveList = () => {
             alignItems:'center',
           }}
         >
-          <Typography>Employee List</Typography>
+          <Typography>In-active Employee List</Typography>
+          {isLastPage && (
           <Button
             disabled={table.getPrePaginationRowModel().rows.length === 0}
             onClick={() =>
@@ -225,6 +228,7 @@ const EmployeeInActiveList = () => {
           >
             Export All Rows
           </Button>
+          )}
           <Button
             disabled={table.getRowModel().rows.length === 0}
             onClick={() => handleExportRows(table.getRowModel().rows)}
@@ -242,7 +246,7 @@ const EmployeeInActiveList = () => {
             Export Selected Rows
           </Button>          
         </Box>
-      ),
+      )},
     });
   
     if (error) return `Error: ${error.message}`;
