@@ -15,7 +15,6 @@ import {
 } from "@mui/material";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import { toast } from "react-toastify";
-import ConfirmBox from "../../../global/common/confirmDialog/ConfirmDialog";
 import axiosHttp from "../../../AxiosInstance";
 
 const DesignationManagement = () => {
